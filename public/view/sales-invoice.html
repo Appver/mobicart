@@ -154,7 +154,7 @@
                                     <p class="category">
                                         <script>
                                              var d = new Date();
-                                            document.write(d.getFullYear() + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2) + ":" + ('0' + d.getSeconds()).slice(-2))
+                                            document.write(d.getFullYear() + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2))
                                         </script>
                                         Sales Invoice
                                     </p>
@@ -188,14 +188,19 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">Issue Date</label>
+                                                            <label class="control-label">Payment type</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="row">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">Payment type</label>
+                                                            <label class="control-label">Issue Date :
+                                                                <script>
+                                                                    var d = new Date();
+                                                                    document.write(d.getFullYear() + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + ('0' + d.getDate()).slice(-2))
+                                                                </script>
+                                                            </label>
                                                         </div>
                                                     </div>
                                                     <div class="row">
