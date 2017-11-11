@@ -29,14 +29,14 @@
         Tip 2: you can also add an image using data-image tag
     -->
             <div class="logo">
-                <a href="../index.html" class="simple-text">
+                <a href="admin-dashboard.html" class="simple-text">
                     SK Mobile Cart
                 </a>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="active">
-                        <a href="../index.html">
+                        <a href="admin-dashboard.html">
                             <i class="material-icons">dashboard</i>
                             <p>Dashboard</p>
                         </a>
@@ -174,7 +174,7 @@
                                                 </div>
                                                 <div class="col-md-1">
                                                     <div class="form-group label-floating">
-                                                        <a href="#" class="dropdown-toggle">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#myModal">
                                                             <i class="material-icons">person</i>
                                                             <p class="hidden-lg hidden-md">Profile</p>
                                                         </a>
@@ -481,6 +481,90 @@
             </footer>
         </div>
     </div>
+
+    <!-- Modal Core -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Add New Customer Details</h4>
+            </div>
+            <div class="modal-body">
+                    <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header" data-background-color="purple">
+                                            <h4 class="title">Add New Customer</h4>
+                                        </div>
+                                        <div class="card-content">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Fist Name</label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Last Name</label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Email address</label>
+                                                            <input type="email" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Adress</label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">City</label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Country</label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Postal Code</label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    <button type="submit" class="btn btn-primary pull-right">Add Customer</button>
+                                                    <div class="clearfix"></div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-simple" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info btn-simple">Save</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <!--   Core JS Files   -->
 <script src="../js/jquery-3.2.1.min.js" type="text/javascript"></script>
