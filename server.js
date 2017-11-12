@@ -10,6 +10,13 @@ const db = mysql.createConnection({
 	database : 'sql12204407'
 });
 
+//const db = mysql.createConnection({
+//	host : 'db4free.net',
+//	user : 'km1117',
+//	password : 'mobicart',
+//	database : 'km_db_mysql_1117'
+//});
+
 //DB Connect
 db.connect((err) =>{
 	if(err){
@@ -33,9 +40,17 @@ app.listen(port, function() {
 });
 
 // get all product
-app.get('/skm/productSearch/:productName', function(req, res) {
-	var queryParams = '%'+req.params.productName+'%';
-	let sql = "select product_name from skm_product where product_name like '"+queryParams+"'";
+app.get('/skm/productSearch/', function(req, res) {
+	let sql = "select product_name from skm_product";
+	let query = db.query(sql,(err,result) => {
+		if(err) throw err;
+		res.send(result);
+	});
+});
+
+// get product details
+app.get('/skm/productDetails/:productName', function(req, res) {
+	let sql = "select * from skm_product where product_name = '"+req.params.productName+"'";
 	let query = db.query(sql,(err,result) => {
 		if(err) throw err;
 		res.send(result);

@@ -211,52 +211,97 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group label-floating">
+                                                <div class="col-md-2">
+                                                    <div class="form-group label-floating" ng-init="productSearch()">
                                                         <label class="control-label">Product Name</label>
-                                                        <input type="text" class="form-control" ng-model="productName" ng-change="productSearch()">
+                                                        <input type="text" class="form-control" ng-model="productName"
+                                                        list="productNameList" ng-change="productDetails()">
+                                                        <datalist id="productNameList">
+                                                            <option ng-repeat="productName in productNameArray track by $index" value="{{productName}}">
+                                                                {{productName}}
+                                                            </option>
+                                                        </datalist>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-1"></div>
                                                 <div class="col-md-3">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Description</label>
-                                                        <input type="text" class="form-control">
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Description</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-show="isValueLoad">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">{{productDetail[2]}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">SKU No</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-show="isValueLoad">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">{{productDetail[0]}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">QTY</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isValueLoad">{{productQTY}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Unit Price</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isValueLoad">{{productDetail[3]}}</label>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Discount(%)</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isValueLoad">{{productDis}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Tax</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isValueLoad">{{productTax}}</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <div class="form-group label-floating">
-                                                        <label class="control-label">SKU No</label>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">QTY</label>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Unit Price</label>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Discount(%)</label>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Tax</label>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Add</label>
-                                                        <input type="text" class="form-control">
+                                                        <button class="btn btn-primary btn-fab btn-fab-mini btn-round" 
+                                                        ng-disabled="isAdd !== true">
+                                                            <i class="material-icons">add circle</i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
