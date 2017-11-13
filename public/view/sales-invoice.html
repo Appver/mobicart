@@ -153,8 +153,8 @@
                                     <h4 class="title">Sales Invoice </h4>
                                     <p class="category">
                                         <script>
-                                             var d = new Date();
-                                            document.write(d.getFullYear() + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2))
+                                            var d = new Date();
+                                            document.write(('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear()+" "+('0'+ d.getHours()).slice(-2)+":"+('0'+d.getMinutes()).slice(-2));
                                         </script>
                                         Sales Invoice
                                     </p>
@@ -195,7 +195,7 @@
                                                         <label class="control-label">Issue Date :
                                                             <script>
                                                                 var d = new Date();
-                                                                document.write(d.getFullYear() + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + ('0' + d.getDate()).slice(-2))
+                                                                document.write(('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear());
                                                             </script>
                                                         </label>
                                                     </div>
