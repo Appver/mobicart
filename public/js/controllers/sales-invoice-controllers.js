@@ -17,9 +17,9 @@ angular.module('salesInvoiceApp', [])
     $scope.productDetails = function(){
         var searchFlag = false;
         $scope.productDetail = [];
-        $scope.productDis = 0;
-        $scope.productTax = 12;
-        $scope.productQTY = 1;
+        $scope.productDis = '';
+        $scope.productTax = '';
+        $scope.productQTY = '';
         for(var i = 0, length = $scope.productNameArray.length; i < length; i++){
             if($scope.productName == $scope.productNameArray[i]){
                 searchFlag = true;
@@ -37,6 +37,9 @@ angular.module('salesInvoiceApp', [])
                 if($scope.productDetail.length >0){
                     $scope.isValueLoad = true;
                     $scope.isAdd = true;
+                    $scope.productDis = 0;
+                    $scope.productTax = 12;
+                    $scope.productQTY = 1;
                 }
             }, function(response) {
             });   
