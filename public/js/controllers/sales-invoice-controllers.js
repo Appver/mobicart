@@ -2,6 +2,38 @@ angular.module('salesInvoiceApp', [])
 .controller('salesInvoiceCtrl', ['$scope', '$http', function ($scope,$http) {
     $scope.isAdd = false;
     $scope.isValueLoad = false;
+    $scope.isAddProduct = false;
+    $scope.salesProductList = {
+        "cusDetails" : [{
+            "name" : null,
+            "phone" : null,
+            "email" : null,
+            "street" : null,
+            "city" : null,
+            "state" : null,
+            "postalCode" : null
+        }],
+        "pBillNo" : null,
+        "pList" : [{
+            "SNo" : null,
+            "pSkuno" : null,
+            "pName" : null,
+            "pDesc" : null,
+            "pQty" : null,
+            "pPrice" : null,
+            "pDis" : null,
+            "pTax" : null,
+            "pCTax" : null,
+            "pSTax": null
+        }],
+        "tDisc" : 0,
+        "tItems" : 0,
+        "subTotal" : 0,
+        "Total" : 0,
+        "roundOff" : 0,
+        "payType" : null,
+        "duePay" : null
+    };
     $scope.productSearch = function (){
         $scope.productNameArray = [];
         $http.get('/skm/productSearch/').then(function(response) {
@@ -20,6 +52,9 @@ angular.module('salesInvoiceApp', [])
         $scope.productDis = '';
         $scope.productTax = '';
         $scope.productQTY = '';
+        $scope.productPrice = '';
+        $scope.productSkuno = '';
+        $scope.productDesc = '';
         for(var i = 0, length = $scope.productNameArray.length; i < length; i++){
             if($scope.productName == $scope.productNameArray[i]){
                 searchFlag = true;
@@ -36,13 +71,40 @@ angular.module('salesInvoiceApp', [])
                 }
                 if($scope.productDetail.length >0){
                     $scope.isValueLoad = true;
-                    $scope.isAdd = true;
+                    $scope.isAdd = true;                    
+                    $scope.productDesc = $scope.productDetail[2];
+                    $scope.productSkuno = $scope.productDetail[0];
+                    $scope.productPrice =  $scope.productDetail[3];
+                    $scope.productQTY = 1;
                     $scope.productDis = 0;
                     $scope.productTax = 12;
-                    $scope.productQTY = 1;
                 }
             }, function(response) {
             });   
         }  
     };
+    $scope.changePrice = function(){
+        $scope.productPrice = $scope.productPrice * $scope.productQTY;
+
+    };
+    $scope.addProductList = function(pSkuno,pName,pDesc,pQty,pPrice,pDis,pTax){
+        tax = pTax/2;
+        $scope.salesProductList.tItems = $scope.salesProductList.tItems + 1;
+        $scope.salesProductList['pList'].push(
+        {
+                "SNo" : $scope.salesProductList.tItems,
+                "pSkuno" : pSkuno,
+                "pName" : pName,
+                "pDesc" : pDesc,
+                "pQty" : pQty,
+                "pPrice" : pPrice,
+                "pDis" : pDis,
+                "pTax" : pTax,
+                "pCTax" : tax,
+                "pSTax" : tax
+        });
+        $scope.salesProductList.subTotal = $scope.salesProductList.subTotal + pPrice;
+        $scope.salesProductList.Total = $scope.salesProductList.subTotal + $scope.salesProductList.tDisc + $scope.salesProductList.roundOff;
+        $scope.isAddProduct = true;
+    }
 }]);

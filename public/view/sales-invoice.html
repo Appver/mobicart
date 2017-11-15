@@ -154,17 +154,17 @@
                                     <p class="category">
                                         <script>
                                             var d = new Date();
-                                            var rhr=('0'+ d.getHours()).slice(-2);
-                                            var hr = Math.round(rhr-12);
-                                            var min = ('0'+d.getMinutes()).slice(-2);
                                             var ampm = '';
-                                            if(rhr>=12){
+                                            var rhr=('0'+ d.getHours()).slice(-2);
+                                            var min = ('0'+d.getMinutes()).slice(-2);
+                                            if (rhr >= 12){
                                                 ampm ='PM';
-                                            }else {
+                                                rhr = Math.abs(rhr-12);
+                                            } else {
                                                 ampm ='AM';
+                                                rhr = rhr;
                                             }
-                                            var hours = hr+":"+min+" "+ampm;
-                                            document.write(('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear()+" "+hours);
+                                            document.write(('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear()+" "+rhr+":"+min+" "+ampm);
                                         </script>
                                         Sales Invoice
                                     </p>
@@ -192,7 +192,7 @@
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group label-floating">
-                                                        <label class="control-label">Bill No : 
+                                                        <label class="control-label" ng-model="pBillNo">Bill No : 
                                                             <script>
                                                             var bno = Math.floor((Math.random() * 1000) + 1);
                                                             document.write('BNO-'+bno);
@@ -225,7 +225,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1"></div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="row">
                                                         <div class="form-group label-floating">
                                                             <label class="control-label">Description</label>
@@ -233,7 +233,7 @@
                                                     </div>
                                                     <div class="row" ng-show="isValueLoad">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">{{productDetail[2]}}</label>
+                                                            <label class="control-label">{{productDesc}}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -245,20 +245,28 @@
                                                     </div>
                                                     <div class="row" ng-show="isValueLoad">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">{{productDetail[0]}}</label>
+                                                            <label class="control-label">{{productSkuno}}</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <div class="row">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">QTY</label>
+                                                            <label class="control-label">Quantity</label>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group label-floating">
                                                             <label class="control-label" ng-show="isValueLoad">{{productQTY}}</label>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="form-group label-floating" ng-show="isValueLoad">
+                                                        <button type="button" rel="tooltip" title="Eit Quantity" 
+                                                        class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#editQTY">
+                                                            <i class="material-icons">edit</i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1">
@@ -269,7 +277,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isValueLoad">{{productDetail[3]}}</label>
+                                                            <label class="control-label" ng-show="isValueLoad">{{productPrice}}</label>
                                                         </div>
                                                     </div> 
                                                 </div>
@@ -299,8 +307,11 @@
                                                 </div>
                                                 <div class="col-md-1">
                                                     <div class="form-group label-floating">
-                                                        <button rel="tooltip" title="Add Product" class="btn btn-primary btn-fab btn-fab-mini btn-round" 
-                                                        ng-disabled="isAdd !== true">
+                                                        <button rel="tooltip" title="Add Product" 
+                                                        class="btn btn-primary btn-fab btn-fab-mini btn-round" 
+                                                        ng-disabled="isAdd !== true"
+                                                        ng-click="addProductList(productSkuno,productName, productDesc,
+                                                            productQTY, productPrice,productDis, productTax)">
                                                             <i class="material-icons">add circle</i>
                                                         </button>
                                                     </div>
@@ -322,53 +333,32 @@
                                                                     <th>Description</th>
                                                                     <th>QTY</th>
                                                                     <th>Unit Price</th>
-                                                                    <th>Value</th>
                                                                     <th>Discount</th>
                                                                     <th>CGST</th>
                                                                     <th>SGST</th>
                                                                     <th>Action</th>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>Samsung J6</td>
-                                                                        <td>SSJ6125</td>
-                                                                        <td>Samsung J6</td>
-                                                                        <td>2</td>
-                                                                        <td class="text-primary">1600</td>
-                                                                        <td class="text-primary">1600</td>
-                                                                        <td class="text-primary">0%</td>
-                                                                        <td class="text-primary">0</td>
-                                                                        <td class="text-primary">0</td>
+                                                                    <tr ng-repeat="product in salesProductList.pList">
+                                                                        <td>{{product.SNo}}</td>
+                                                                        <td>{{product.pName}}</td>
+                                                                        <td>{{product.pSkuno}}</td>
+                                                                        <td>{{product.pDesc}}</td>
+                                                                        <td>{{product.pQty}}</td>
+                                                                        <td>{{product.pPrice}}</td>
+                                                                        <td>{{product.pDis}}</td>
+                                                                        <td>{{product.pCTax}}</td>
+                                                                        <td>{{product.pSTax}}</td>
                                                                         <td class="text-primary td-actions text-right">
-                                                                            <button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
-                                                                                <i class="material-icons">edit</i>
-                                                                            </button>
-                                                                            <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-                                                                                <i class="material-icons">close</i>
-                                                                            </button>
+                                                                                <button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
+                                                                                    <i class="material-icons">edit</i>
+                                                                                </button>
+                                                                                <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
+                                                                                    <i class="material-icons">close</i>
+                                                                                </button>
                                                                         </td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td>2</td>
-                                                                        <td>Samsung G6</td>
-                                                                        <td>SSG6125</td>
-                                                                        <td>Samsung G6</td>
-                                                                        <td>2</td>
-                                                                        <td class="text-primary">1600</td>
-                                                                        <td class="text-primary">1600</td>
-                                                                        <td class="text-primary">0%</td>
-                                                                        <td class="text-primary">0</td>
-                                                                        <td class="text-primary">0</td>
-                                                                        <td class="text-primary td-actions text-right">
-                                                                            <button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
-                                                                                <i class="material-icons">edit</i>
-                                                                            </button>
-                                                                            <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-                                                                                <i class="material-icons">close</i>
-                                                                            </button>
-                                                                        </td>
-                                                                    </tr>
+                                                                    
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -469,27 +459,27 @@
                                                 <div class="col-md-2">
                                                     <div class="row">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">1545</label>
+                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.subTotal}}</label>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">54</label>
+                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.tDisc}}</label>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">189</label>
+                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.pList.pTax}}</label>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">0.84</label>
+                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.roundOff}}</label>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group label-floating">
-                                                            <label class="control-label">1600</label>
+                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.Total}}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -622,6 +612,41 @@
                 <button type="button" class="btn btn-info btn-simple">Save</button>
             </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Core -->
+    <div class="modal fade" id="editQTY" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Edit Quantity</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-header" data-background-color="purple">
+                                <h4 class="title">Edit Quantity</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">No of QTY :</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group label-floating">
+                                        <input type="text" class="form-control" ng-change="changePrice(productDetail[3])" ng-model="productQTY">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
         </div>
     </div>
 
