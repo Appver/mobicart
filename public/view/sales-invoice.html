@@ -154,7 +154,17 @@
                                     <p class="category">
                                         <script>
                                             var d = new Date();
-                                            document.write(('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear()+" "+('0'+ d.getHours()).slice(-2)+":"+('0'+d.getMinutes()).slice(-2));
+                                            var rhr=('0'+ d.getHours()).slice(-2);
+                                            var hr = Math.round(rhr-12);
+                                            var min = ('0'+d.getMinutes()).slice(-2);
+                                            var ampm = '';
+                                            if(rhr>=12){
+                                                ampm ='PM';
+                                            }else {
+                                                ampm ='AM';
+                                            }
+                                            var hours = hr+":"+min+" "+ampm;
+                                            document.write(('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear()+" "+hours);
                                         </script>
                                         Sales Invoice
                                     </p>
