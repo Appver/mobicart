@@ -96,7 +96,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Coming Soon !! </a>
+                        <a class="navbar-brand" href="#">Product Search</a>
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
@@ -156,70 +156,54 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header" data-background-color="purple">
-                                    <h4 class="title">Coming Soon !! </h4>
-                                    <p class="category">Coming Soon !! </p>
+                                    <h4 class="title">Product Search </h4>
+                                    <p class="category">
+                                        <script>
+                                            var d = new Date();
+                                            var ampm = '';
+                                            var rhr=('0'+ d.getHours()).slice(-2);
+                                            var min = ('0'+d.getMinutes()).slice(-2);
+                                            if (rhr >= 12){
+                                                ampm ='PM';
+                                                rhr = Math.abs(rhr-12);
+                                            } else {
+                                                ampm ='AM';
+                                                rhr = rhr;
+                                            }
+                                            document.write(('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear()+" "+rhr+":"+min+" "+ampm);
+                                        </script>
+                                        Product Search
+                                    </p>
                                 </div>
                                 <div class="card-content">
                                     <div id="typography">
                                         <div class="title">
-                                            <h2>Coming Soon !!</h2>
+                                            <h2>Product Search</h2>
                                         </div>
                                         <div class="row">
-                                            <div class="tim-typo">
-                                                <h1>
-                                                    <span class="tim-note">Header 1</span>Coming Soon !! </h1>
+                                            <div class="col-md-10">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Product Name</label>
+                                                    <input type="text" class="form-control" ng-model="productName" 
+                                                    ng-change="isValidProductName()">
+                                                </div>
                                             </div>
-                                            <div class="tim-typo">
-                                                <h2>
-                                                    <span class="tim-note">Header 2</span>Coming Soon !! </h2>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <h3>
-                                                    <span class="tim-note">Header 3</span>Coming Soon !! </h3>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <h4>
-                                                    <span class="tim-note">Header 4</span>Coming Soon !! </h4>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <h5>
-                                                    <span class="tim-note">Header 5</span>Coming Soon !! </h5>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <h6>
-                                                    <span class="tim-note">Header 6</span>Coming Soon !! </h6>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <span class="tim-note">Muted Text</span>
-                                                <p class="text-muted">
-                                                    Coming Soon !!
-                                                </p>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <span class="tim-note">Primary Text</span>
-                                                <p class="text-primary">
-                                                    Coming Soon !! </p>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <span class="tim-note">Info Text</span>
-                                                <p class="text-info">
-                                                    Coming Soon !! </p>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <span class="tim-note">Success Text</span>
-                                                <p class="text-success">
-                                                    Coming Soon !! </p>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <span class="tim-note">Warning Text</span>
-                                                <p class="text-warning">
-                                                    Coming Soon !!
-                                                </p>
-                                            </div>
-                                            <div class="tim-typo">
-                                                <span class="tim-note">Danger Text</span>
-                                                <p class="text-danger">
-                                                    Coming Soon !! </p>
+                                            <div class="col-md-2">
+                                                <div class="form-group label-floating">
+                                                    <div class="form-group label-floating" 
+                                                    ng-click="getProductDetails()" ng-disabled="isSearchProd !== true"
+                                                    ng-show="isSearchProd">
+                                                        <a href="#">
+                                                            <i class="material-icons" rel="tooltip" title="Search Product">search</i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="form-group label-floating" ng-show="isAddProd">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#myModal">
+                                                            <i class="material-icons" rel="tooltip" title="Add Product">person</i>
+                                                            <p class="hidden-lg hidden-md">Profile</p>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -285,5 +269,9 @@
 <script src="../js/material-dashboard.js?v=1.2.0"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../js/demo.js"></script>
+<!--  Angular JS  -->
+<!--<script src="../node_modules/angular/angular.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+<script src="../js/controllers/sales-invoice-controllers.js"></script>
 
 </html>

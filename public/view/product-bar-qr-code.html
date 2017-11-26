@@ -96,7 +96,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Coming Soon !! </a>
+                        <a class="navbar-brand" href="#">Product Bar/QR Code Generator </a>
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
@@ -156,70 +156,86 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header" data-background-color="purple">
-                                    <h4 class="title">Coming Soon !! </h4>
-                                    <p class="category">Coming Soon !! </p>
+                                    <h4 class="title">Bar/QR Code Generator </h4>
+                                    <p class="category">
+                                        <script>
+                                            var d = new Date();
+                                            var ampm = '';
+                                            var rhr=('0'+ d.getHours()).slice(-2);
+                                            var min = ('0'+d.getMinutes()).slice(-2);
+                                            if (rhr >= 12){
+                                                ampm ='PM';
+                                                rhr = Math.abs(rhr-12);
+                                            } else {
+                                                ampm ='AM';
+                                                rhr = rhr;
+                                            }
+                                            document.write(('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear()+" "+rhr+":"+min+" "+ampm);
+                                        </script>
+                                        Product Bar/QR Code Generator
+                                    </p>
                                 </div>
                                 <div class="card-content">
                                     <div id="typography">
                                         <div class="title">
-                                            <h2>Coming Soon !!</h2>
+                                            <h2>Bar/QR Code Generator</h2>
                                         </div>
                                         <div class="row">
                                             <div class="tim-typo">
                                                 <h1>
-                                                    <span class="tim-note">Header 1</span>Coming Soon !! </h1>
+                                                    <span class="tim-note">Header 1</span>Bar/QR Code Generator </h1>
                                             </div>
                                             <div class="tim-typo">
                                                 <h2>
-                                                    <span class="tim-note">Header 2</span>Coming Soon !! </h2>
+                                                    <span class="tim-note">Header 2</span>Bar/QR Code Generator </h2>
                                             </div>
                                             <div class="tim-typo">
                                                 <h3>
-                                                    <span class="tim-note">Header 3</span>Coming Soon !! </h3>
+                                                    <span class="tim-note">Header 3</span>Bar/QR Code Generator </h3>
                                             </div>
                                             <div class="tim-typo">
                                                 <h4>
-                                                    <span class="tim-note">Header 4</span>Coming Soon !! </h4>
+                                                    <span class="tim-note">Header 4</span>Bar/QR Code Generator </h4>
                                             </div>
                                             <div class="tim-typo">
                                                 <h5>
-                                                    <span class="tim-note">Header 5</span>Coming Soon !! </h5>
+                                                    <span class="tim-note">Header 5</span>Bar/QR Code Generator </h5>
                                             </div>
                                             <div class="tim-typo">
                                                 <h6>
-                                                    <span class="tim-note">Header 6</span>Coming Soon !! </h6>
+                                                    <span class="tim-note">Header 6</span>Bar/QR Code Generator </h6>
                                             </div>
                                             <div class="tim-typo">
                                                 <span class="tim-note">Muted Text</span>
                                                 <p class="text-muted">
-                                                    Coming Soon !!
+                                                    Bar/QR Code Generator
                                                 </p>
                                             </div>
                                             <div class="tim-typo">
                                                 <span class="tim-note">Primary Text</span>
                                                 <p class="text-primary">
-                                                    Coming Soon !! </p>
+                                                    Bar/QR Code Generator </p>
                                             </div>
                                             <div class="tim-typo">
                                                 <span class="tim-note">Info Text</span>
                                                 <p class="text-info">
-                                                    Coming Soon !! </p>
+                                                    Bar/QR Code Generator </p>
                                             </div>
                                             <div class="tim-typo">
                                                 <span class="tim-note">Success Text</span>
                                                 <p class="text-success">
-                                                    Coming Soon !! </p>
+                                                    Bar/QR Code Generator </p>
                                             </div>
                                             <div class="tim-typo">
                                                 <span class="tim-note">Warning Text</span>
                                                 <p class="text-warning">
-                                                    Coming Soon !!
+                                                    Bar/QR Code Generator
                                                 </p>
                                             </div>
                                             <div class="tim-typo">
                                                 <span class="tim-note">Danger Text</span>
                                                 <p class="text-danger">
-                                                    Coming Soon !! </p>
+                                                    Bar/QR Code Generator </p>
                                             </div>
                                         </div>
                                     </div>
@@ -285,5 +301,9 @@
 <script src="../js/material-dashboard.js?v=1.2.0"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../js/demo.js"></script>
+<!--  Angular JS  -->
+<!--<script src="../node_modules/angular/angular.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+<script src="../js/controllers/sales-invoice-controllers.js"></script>
 
 </html>
