@@ -3,12 +3,12 @@ const router = express.Router();
 const mysql = require('mysql');
 
 //Create Connection - Remote1
-//const db = mysql.createConnection({
-//	host : 'sql12.freemysqlhosting.net',
-//	user : 'sql12204407',
-//	password : 'EjFwjtcfUv',
-//	database : 'sql12204407'
-//});
+const db = mysql.createConnection({
+	host : 'sql12.freesqldatabase.com',
+	user : 'sql12207175',
+	password : 'g5aN9Qj4Zu',
+	database : 'sql12207175'
+});
 
 //Create Connection - Remote2
 //const db = mysql.createConnection({
@@ -19,12 +19,12 @@ const mysql = require('mysql');
 //});
 
 //Create Connection - Local1
-const db = mysql.createConnection({
-	host : '127.0.0.1',
-	user : 'root',
-	password : 'admin',
-	database : 'km_db_1117'
-});
+//const db = mysql.createConnection({
+//	host : '127.0.0.1',
+//	user : 'root',
+//	password : 'admin',
+//	database : 'km_db_1117'
+//});
 
 //DB Connect
 db.connect((err) =>{
