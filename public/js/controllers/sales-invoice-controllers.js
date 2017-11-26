@@ -36,6 +36,8 @@ angular.module('salesInvoiceApp', [])
         "payType" : null,
         "duePay" : null
     };
+
+
     $scope.productSearch = function (){
         $scope.productNameArray = [];
         $http.get('/skm/productSearch/').then(function(response) {
@@ -48,6 +50,7 @@ angular.module('salesInvoiceApp', [])
             }, function(response) {
         });        
     };
+
     $scope.productDetails = function(){
         var searchFlag = false;
         $scope.productDetail = [];
@@ -76,19 +79,21 @@ angular.module('salesInvoiceApp', [])
                     $scope.isAdd = true;                    
                     $scope.productDesc = $scope.productDetail[2];
                     $scope.productSkuno = $scope.productDetail[0];
-                    $scope.productPrice =  $scope.productDetail[3];
+                    $scope.productPrice = subGST($scope.productDetail[3],$scope.productDetail[4]);
                     $scope.productQTY = 1;
                     $scope.productDis = 0;
-                    $scope.productTax = 12;
+                    $scope.productTax = $scope.productDetail[4];
                 }
             }, function(response) {
             });   
         }  
     };
+
     $scope.changePrice = function(){
         $scope.productPrice = $scope.productPrice * $scope.productQTY;
 
     };
+
     $scope.addProductList = function(pSkuno,pName,pDesc,pQty,pPrice,pDis,pTax){
         tax = taxSplitCal(pTax);
         $scope.salesProductList.tItems = $scope.salesProductList.tItems + 1;
@@ -109,7 +114,11 @@ angular.module('salesInvoiceApp', [])
         $scope.salesProductList.CGST = gstCal(gstTax(pPrice,tax), $scope.salesProductList.CGST);
         $scope.salesProductList.SGST = gstCal(gstTax(pPrice,tax), $scope.salesProductList.SGST);
         $scope.salesProductList.Total = totalCal();
-        $scope.isAddProduct = true;
+        $scope.isAddProduct = true;       
+    };
+
+    function subGST(pPrice, pGST){
+        return (pPrice - (gstTax(pPrice, pGST)));
     }
 
     function subTotalCal(price){
@@ -121,7 +130,8 @@ angular.module('salesInvoiceApp', [])
     }
 
     function totalCal(){
-        return ($scope.salesProductList.subTotal + $scope.salesProductList.tDisc + $scope.salesProductList.roundOff+$scope.salesProductList.CGST+$scope.salesProductList.SGST);
+        return ($scope.salesProductList.subTotal + $scope.salesProductList.tDisc + 
+            $scope.salesProductList.roundOff+$scope.salesProductList.CGST+$scope.salesProductList.SGST);
     }
 
     function taxSplitCal(pTax){
@@ -129,6 +139,6 @@ angular.module('salesInvoiceApp', [])
     }
 
     function gstTax(price,tax){
-        return (price*(tax/100));
+        return Math.round(price*(tax/100));
     }
 }]);

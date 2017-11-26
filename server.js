@@ -2,20 +2,29 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 
-//Create Connection
-const db = mysql.createConnection({
-	host : 'sql12.freemysqlhosting.net',
-	user : 'sql12204407',
-	password : 'EjFwjtcfUv',
-	database : 'sql12204407'
-});
+//Create Connection - Remote1
+//const db = mysql.createConnection({
+//	host : 'sql12.freemysqlhosting.net',
+//	user : 'sql12204407',
+//	password : 'EjFwjtcfUv',
+//	database : 'sql12204407'
+//});
 
+//Create Connection - Remote2
 //const db = mysql.createConnection({
 //	host : 'db4free.net',
 //	user : 'km1117',
 //	password : 'mobicart',
 //	database : 'km_db_mysql_1117'
 //});
+
+//Create Connection - Local1
+const db = mysql.createConnection({
+	host : '127.0.0.1',
+	user : 'root',
+	password : 'admin',
+	database : 'km_db_1117'
+});
 
 //DB Connect
 db.connect((err) =>{
@@ -41,7 +50,7 @@ app.listen(port, function() {
 
 // get all product
 app.get('/skm/productSearch/', function(req, res) {
-	let sql = "select product_name from skm_product";
+	let sql = "select product_model from km_product_list";
 	let query = db.query(sql,(err,result) => {
 		if(err) throw err;
 		res.send(result);
@@ -50,7 +59,7 @@ app.get('/skm/productSearch/', function(req, res) {
 
 // get product details
 app.get('/skm/productDetails/:productName', function(req, res) {
-	let sql = "select * from skm_product where product_name = '"+req.params.productName+"'";
+	let sql = "select * from km_product_list where product_model = '"+req.params.productName+"'";
 	let query = db.query(sql,(err,result) => {
 		if(err) throw err;
 		res.send(result);
