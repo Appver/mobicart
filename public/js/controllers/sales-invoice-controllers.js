@@ -1,8 +1,11 @@
 angular.module('salesInvoiceApp', [])
 .controller('salesInvoiceCtrl', ['$scope', '$http', function ($scope,$http) {
+    $scope.isAddCust = false;
+    $scope.isSearchCust = false;
     $scope.isAdd = false;
     $scope.isValueLoad = false;
     $scope.isAddProduct = false;
+    $scope.customerName = '';
     $scope.salesProductList = {
         "cusDetails" : [{
             "name" : null,
@@ -49,6 +52,53 @@ angular.module('salesInvoiceApp', [])
             }
             }, function(response) {
         });        
+    };
+
+    $scope.isValidCustPhone = function (){
+        if($scope.customerName.length == 10){
+            $scope.isSearchCust = true;
+            $scope.isAddCust = false;
+        } else {
+            $scope.isSearchCust = false;
+            $scope.isAddCust = false;
+        }
+        
+    };
+
+    $scope.getCustomerDetails = function(){
+        $scope.customerNameArray = [];
+        $http.get('/skm/customerDetails/'+$scope.customerName).then(function(response) {
+            var res = response.data;
+            for (var i = 0, length = res.length; i < length; i++) {
+                for (obj in res[i]) {
+                    $scope.customerNameArray.push(res[i][obj]);
+                }
+            } 
+            if($scope.customerNameArray.length == 0 || $scope.customerNameArray == undefined){
+                $scope.isAddCust = true;
+                $scope.isSearchCust = false;
+                $scope.customerName = 'Customer Not Found';
+            }else {
+                $scope.isAddCust = false;
+                $scope.isSearchCust = true;
+                $scope.customerName = $scope.customerNameArray[0];
+            }
+        }, function(response) {
+        }); 
+    };
+
+    $scope.addCust = function(){
+        $scope.cusName
+        $scope.cusPhone
+        $scope.cusEmail
+        $scope.cusAddress
+        $scope.cusCity
+        $scope.cusState
+        $scope.cusPinCode
+        $http.get('/skm/addCustomerDetails/'+$scope.productName).then(function(response) {
+        
+        }, function(response) {
+        });       
     };
 
     $scope.productDetails = function(){
