@@ -374,7 +374,7 @@
                                                     <div class="row">
                                                         <div class="col-md-1">
                                                             <div class="checkbox">
-                                                                <label><input type="checkbox" name="optionsCheckboxes" checked></label>
+                                                                <label><input type="checkbox" checked></label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
@@ -386,7 +386,7 @@
                                                     <div class="row">
                                                         <div class="col-md-1">
                                                             <div class="checkbox">
-                                                                <label><input type="checkbox" name="optionsCheckboxes"></label>
+                                                                <label><input type="checkbox" ng-model="totDisData" ng-change="totDis()"></label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
@@ -394,11 +394,16 @@
                                                                 <label class="control-label">Total Discount</label>
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating" ng-show="isTotDis">
+                                                                <input type="text" class="form-control">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-1">
                                                             <div class="checkbox">
-                                                                <label><input type="checkbox" name="optionsCheckboxes"></label>
+                                                                <label><input type="checkbox"></label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
@@ -410,12 +415,17 @@
                                                     <div class="row">
                                                         <div class="col-md-1">
                                                             <div class="checkbox">
-                                                                <label><input type="checkbox" name="optionsCheckboxes"></label>
+                                                                <label><input type="checkbox" ng-model="dueAmntData" ng-change="dueAmnt()"></label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label">Due Amount</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating" ng-show="isDueAmnt">
+                                                                <input type="text" class="form-control">
                                                             </div>
                                                         </div>
                                                     </div>

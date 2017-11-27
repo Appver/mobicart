@@ -7,6 +7,8 @@ angular.module('salesInvoiceApp', [])
     $scope.isValueLoad = false;
     $scope.isAddProduct = false;
     $scope.customerName = '';
+    $scope.isTotDis = false;
+    $scope.isDueAmnt = false;
     $scope.salesProductList = {
         "cusDetails" : [{
             "name" : null,
@@ -227,4 +229,21 @@ angular.module('salesInvoiceApp', [])
     function gstTax(price,tax){
         return Math.round(price*(tax/100));
     }
+
+    $scope.totDis = function(){
+        if($scope.totDisData){
+            $scope.isTotDis = true;
+        } else {
+            $scope.isTotDis = false;
+        }
+    };
+
+    $scope.dueAmnt = function(){
+        if($scope.dueAmntData){
+            $scope.isDueAmnt = true;
+        } else{
+            $scope.isDueAmnt = false;
+        }
+    };
+
 }]);
