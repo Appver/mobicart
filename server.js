@@ -68,7 +68,7 @@ app.get('/skm/productDetails/:productName', function(req, res) {
 
 // get customer details
 app.get('/skm/customerDetails/:customerPhone', function(req, res) {
-	let sql = "select name from km_customer_details where phone = '"+req.params.customerPhone+"'";
+	let sql = "select * from km_customer_details where phone = '"+req.params.customerPhone+"'";
 	let query = db.query(sql,(err,result) => {
 		if(err) throw err;
 		res.send(result);

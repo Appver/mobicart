@@ -81,11 +81,23 @@ angular.module('salesInvoiceApp', [])
             }else {
                 $scope.isAddCust = false;
                 $scope.isSearchCust = true;
-                $scope.customerName = $scope.customerNameArray[0];
+                $scope.cusName  = $scope.customerNameArray[1];
+                $scope.cusPhone =  $scope.customerNameArray[2];
+                $scope.cusEmail =  $scope.customerNameArray[3];
+                $scope.cusAddress =  $scope.customerNameArray[4];
+                $scope.cusCity =  $scope.customerNameArray[5];
+                $scope.cusState =  $scope.customerNameArray[6];
+                $scope.cusPinCode =  $scope.customerNameArray[7];
+                $("#getCustomer").modal();
             }
         }, function(response) {
         }); 
     };
+
+    $scope.selectCust = function () {
+        $scope.customerName = $scope.cusName;
+        $("#getCustomer").modal('hide');
+    }
 
     $scope.addCust = function(){
         $scope.cusName
