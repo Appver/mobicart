@@ -368,127 +368,156 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="row">
-                                                <div class="col-md-8">
-                                                    <table class="table">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="checkbox">
-                                                                        <label>
-                                                                            <input type="checkbox" name="optionsCheckboxes" checked>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>Round Off</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="checkbox">
-                                                                        <label>
-                                                                            <input type="checkbox" name="optionsCheckboxes">
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>Total Discount</td>
-                                                                <td class="td-actions text-right">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="checkbox">
-                                                                        <label>
-                                                                            <input type="checkbox" name="optionsCheckboxes">
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>Add Payment</td>
-                                                                <td class="td-actions text-right">
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            <div class="checkbox">
+                                                                <label><input type="checkbox" name="optionsCheckboxes" checked></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">Round Off</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            <div class="checkbox">
+                                                                <label><input type="checkbox" name="optionsCheckboxes"></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">Total Discount</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            <div class="checkbox">
+                                                                <label><input type="checkbox" name="optionsCheckboxes"></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">Payment Type</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            <div class="checkbox">
+                                                                <label><input type="checkbox" name="optionsCheckboxes"></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">Due Amount</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-8"></div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-4">
                                                     <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Sub Total</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Discount</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">GST</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-1">
+                                                        <div class="col-md-3">
                                                             <div class="form-group label-floating">
-                                                                <label class="control-label">CGST</label>
+                                                                <label class="control-label">Sub Total</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.subTotal}}</label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-1">
+                                                        <div class="col-md-3">
                                                             <div class="form-group label-floating">
-                                                                <label class="control-label">SGST</label>
+                                                                <label class="control-label">Discount</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.tDisc}}</label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Round Off</label>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label">GST</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label" ng-show="isAddProduct">{{salesProductList.pList.pTax}}</label>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label">CGST</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label" ng-show="isAddProduct">{{salesProductList.CGST}}</label>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Total</label>
+                                                            <div class="col-md-3">
+                                                                <div class="col-md-1"></div>
+                                                                <div class="col-md-2">
+                                                                    <div class="form-group label-floating">
+                                                                        <label class="control-label">SGST</label>
+                                                                    </div>
+                                                                </div>                                                                        
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="col-md-1"></div>
+                                                                <div class="col-md-2">
+                                                                    <div class="form-group label-floating">
+                                                                        <label class="control-label" ng-show="isAddProduct">{{salesProductList.SGST}}</label>
+                                                                    </div>  
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
                                                     <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.subTotal}}</label>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">Round Off</label>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.tDisc}}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.pList.pTax}}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.CGST}}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.SGST}}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.roundOff}}</label>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.roundOff}}</label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.Total}}</label>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">Total</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.Total}}</label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
