@@ -159,7 +159,7 @@ angular.module('salesInvoiceApp', [])
                     $scope.isAdd = true;                    
                     $scope.productDesc = $scope.productDetail[2];
                     $scope.productSkuno = $scope.productDetail[0];
-                    $scope.productPrice = subGST($scope.productDetail[3],$scope.productDetail[4]);
+                    $scope.productPrice = $scope.productDetail[3];
                     $scope.productQTY = 1;
                     $scope.productDis = 0;
                     $scope.productTax = $scope.productDetail[4];
@@ -184,17 +184,23 @@ angular.module('salesInvoiceApp', [])
                 "pName" : pName,
                 "pDesc" : pDesc,
                 "pQty" : pQty,
-                "pPrice" : pPrice,
+                "pPrice" : subGST(pPrice,pTax),
                 "pDis" : pDis,
                 "pTax" : pTax,
                 "pCTax" : gstTax(pPrice,tax),
                 "pSTax" : gstTax(pPrice,tax)
         });
-        $scope.salesProductList.subTotal = subTotalCal(pPrice);
+        $scope.salesProductList.subTotal = subTotalCal(subGST(pPrice,pTax));
         $scope.salesProductList.CGST = gstCal(gstTax(pPrice,tax), $scope.salesProductList.CGST);
         $scope.salesProductList.SGST = gstCal(gstTax(pPrice,tax), $scope.salesProductList.SGST);
         $scope.salesProductList.Total = totalCal();
-        $scope.isAddProduct = true;       
+        $scope.isAddProduct = true;    
+        if($scope.salesProductList.tItems == 1){
+            if($scope.salesProductList.pList.length >=1){
+                $scope.salesProductList.pList.splice(0, 1);
+            }   
+        }
+            
     };
 
     function subGST(pPrice, pGST){
