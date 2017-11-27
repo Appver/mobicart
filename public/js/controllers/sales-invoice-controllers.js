@@ -1,6 +1,7 @@
 angular.module('salesInvoiceApp', [])
 .controller('salesInvoiceCtrl', ['$scope', '$http', function ($scope,$http) {
-    $scope.isAddCust = false;
+    $scope.custTitle = '';
+    $scope.custMessage = '';
     $scope.isSearchCust = false;
     $scope.isAdd = false;
     $scope.isValueLoad = false;
@@ -57,12 +58,9 @@ angular.module('salesInvoiceApp', [])
     $scope.isValidCustPhone = function (){
         if($scope.customerName.length == 10){
             $scope.isSearchCust = true;
-            $scope.isAddCust = false;
         } else {
             $scope.isSearchCust = false;
-            $scope.isAddCust = false;
         }
-        
     };
 
     $scope.getCustomerDetails = function(){
@@ -75,11 +73,19 @@ angular.module('salesInvoiceApp', [])
                 }
             } 
             if($scope.customerNameArray.length == 0 || $scope.customerNameArray == undefined){
-                $scope.isAddCust = true;
                 $scope.isSearchCust = false;
-                $scope.customerName = 'Customer Not Found';
+                $scope.custId = [];
+                $http.get('/skm/getCustomerId/').then(function(response) {
+                    var res = response.data;
+                    for (var i = 0, length = res.length; i < length; i++) {
+                        for (obj in res[i]) {
+                            $scope.custId.push(res[i][obj]);
+                        }
+                    }
+                }, function(response) {
+                });
+                $("#addCustomer").modal();
             }else {
-                $scope.isAddCust = false;
                 $scope.isSearchCust = true;
                 $scope.cusName  = $scope.customerNameArray[1];
                 $scope.cusPhone =  $scope.customerNameArray[2];
@@ -97,18 +103,30 @@ angular.module('salesInvoiceApp', [])
     $scope.selectCust = function () {
         $scope.customerName = $scope.cusName;
         $("#getCustomer").modal('hide');
+        $scope.isSearchCust = false;
     }
 
     $scope.addCust = function(){
-        $scope.cusName
-        $scope.cusPhone
-        $scope.cusEmail
-        $scope.cusAddress
-        $scope.cusCity
-        $scope.cusState
-        $scope.cusPinCode
-        $http.get('/skm/addCustomerDetails/'+$scope.productName).then(function(response) {
-        
+        $("#addCustomer").modal('hide');
+        $scope.custTitle = '';
+        $scope.custMessage = '';
+        var newCustId = 'KMCUS'+(parseInt($scope.custId[0].substring(5, 6))+1);
+        if(newCustId.length != 0){
+            $scope.custId = [];
+        }
+        var currentDate = '2017-11-27';
+        $http.get('/skm/addNewCustomer/'+newCustId+'/'+$scope.addCustName+'/'+$scope.addCustPhone+
+            '/'+$scope.addCustEmail+'/'+$scope.addCustAddress+'/'+$scope.addCustCity+
+            '/'+$scope.addCustState+'/'+$scope.addCustPinCode+'/'+currentDate+'/'+$scope.addCustPhone).then(function(response) {
+            $scope.customerName = $scope.addCustName;
+            if(response.data.affectedRows == 1){
+                $scope.custTitle = "Added";
+                $scope.custMessage = ", Added Successfully.";
+            }else{
+                $scope.custTitle = "Failed";
+                $scope.custMessage = ", Added Failed. Please try again.";
+            }
+            $("#addCustDBMessage").modal();
         }, function(response) {
         });       
     };

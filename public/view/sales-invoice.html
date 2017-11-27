@@ -195,12 +195,6 @@
                                                                 <i class="material-icons" rel="tooltip" title="Search Customer">search</i>
                                                             </a>
                                                         </div>
-                                                        <div class="form-group label-floating" ng-show="isAddCust">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#myModal">
-                                                                <i class="material-icons" rel="tooltip" title="Add Customer">person</i>
-                                                                <p class="hidden-lg hidden-md">Profile</p>
-                                                            </a>
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
@@ -548,12 +542,12 @@
     </div>
 
     <!-- Modal Core -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addCustomer" tabindex="-1" role="dialog" aria-labelledby="addCustomerLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Add New Customer Details</h4>
+                    <h4 class="modal-title" id="addCustomerLabel">Customer Not Found</h4>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
@@ -569,19 +563,19 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">Name</label>
-                                                        <input type="text" class="form-control" ng-model="cusName">
+                                                        <input type="text" class="form-control" ng-model="addCustName">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">Phone</label>
-                                                        <input type="text" class="form-control" ng-model="cusPhone">
+                                                        <input type="text" class="form-control" ng-model="addCustPhone">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">Email address</label>
-                                                        <input type="email" class="form-control" ng-model="cusEmail">
+                                                        <input type="email" class="form-control" ng-model="addCustEmail">
                                                     </div>
                                                 </div>
                                             </div>
@@ -589,7 +583,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">Adress</label>
-                                                        <input type="text" class="form-control" ng-model="cusAddress">
+                                                        <input type="text" class="form-control" ng-model="addCustAddress">
                                                     </div>
                                                 </div>
                                             </div>
@@ -597,19 +591,19 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">City</label>
-                                                        <input type="text" class="form-control" ng-model="cusCity">
+                                                        <input type="text" class="form-control" ng-model="addCustCity">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">State</label>
-                                                        <input type="text" class="form-control" ng-model="cusState">
+                                                        <input type="text" class="form-control" ng-model="addCustState">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">Postal Code</label>
-                                                        <input type="text" class="form-control" ng-model="cusPinCode">
+                                                        <input type="text" class="form-control" ng-model="addCustPinCode">
                                                     </div>
                                                 </div>
                                             </div>
@@ -709,6 +703,44 @@
     </div>
 
     <!-- Modal Core -->
+    <div class="modal fade" id="addCustDBMessage" tabindex="-1" role="dialog" aria-labelledby="addCustDBMessageLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header" data-background-color="purple">
+                                        <h4 class="title">{{customerName}} {{custTitle}}</h4>
+                                    </div>
+                                    <div class="card-content">
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">{{customerName}}{{custMessage}} !#!#</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Ok</button>
+                                            <div class="clearfix"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Core -->
     <div class="modal fade" id="editQTY" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -736,8 +768,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="form-group label-floating">
-                                                        <input type="text" class="form-control" ng-change="changePrice(productDetail[3])" 
-                                                        ng-model="productQTY">
+                                                        <input type="text" class="form-control" ng-change="changePrice(productDetail[3])" ng-model="productQTY">
                                                     </div>
                                                 </div>
                                             </div>

@@ -74,3 +74,22 @@ app.get('/skm/customerDetails/:customerPhone', function(req, res) {
 		res.send(result);
 	});
 });
+
+// get last customer id
+app.get('/skm/getCustomerId/', function(req, res) {
+	let sql = "SELECT km_cust_id FROM km_customer_details  ORDER BY km_cust_id desc LIMIT 1";
+	let query = db.query(sql,(err,result) => {
+		if(err) throw err;
+		res.send(result);
+	});
+});
+
+// Add new customer id
+app.get('/skm/addNewCustomer/:id/:name/:phone/:email/:address/:city/:state/:pincode/:created/:altphone', function(req, res) {
+	let sql = "INSERT INTO km_customer_details (km_cust_id, name, phone, email, address, city, state, pincode, created_date, alt_phone) VALUES ('"+req.params.id+"', '"+req.params.name+"', '"+req.params.phone+"', '"+req.params.email+"', '"+req.params.address+"', '"+req.params.city+"', '"+req.params.state+"', '"+req.params.pincode+"','"+req.params.created+"','"+req.params.altphone+"')";
+	let query = db.query(sql,(err,result) => {
+		if(err) throw err;
+		console.log("rows affected in km_customer_details : "+result.affectedRows);
+		res.send(result);
+	});
+});
