@@ -1,5 +1,23 @@
 angular.module('salesInvoiceApp', [])
 .controller('salesInvoiceCtrl', ['$scope', '$http', function ($scope,$http) {
+    var d = new Date();
+    var ampm = '';
+    var rhr = ('0' + d.getHours()).slice(-2);
+    var min = ('0' + d.getMinutes()).slice(-2);
+    if (rhr >= 12) {
+        ampm = 'PM';
+        rhr = Math.abs(rhr - 12);
+    } else {
+        ampm = 'AM';
+        rhr = rhr;
+    }
+    $scope.currDateTime = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear() + " " + rhr + ":" + min + " " + ampm;
+    var bno = Math.floor((Math.random() * 1000) + 1);
+    $scope.billNo = 'BNO-' + bno;
+    var d = new Date();
+    $scope.issueDate = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear();
+    $scope.currYear = new Date().getFullYear();
+
     $scope.custTitle = '';
     $scope.custMessage = '';
     $scope.isSearchCust = false;
