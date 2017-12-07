@@ -1,782 +1,773 @@
 <div class="wrapper">
-        <div class="sidebar" data-color="purple" data-image="../img/sidebar-1.jpg">
-            <!--
+    <div class="sidebar" data-color="purple" data-image="../img/sidebar-1.jpg">
+        <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
         Tip 2: you can also add an image using data-image tag
     -->
-            <div class="logo">
-                <a href="admin-dashboard.html" class="simple-text">
-                    Kaviya Mobiles
-                </a>
-            </div>
-            <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li class="active">
-                        <a href="admin-dashboard.html">
-                            <i class="material-icons">dashboard</i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="coming-soon.html">
-                            <i class="material-icons">person</i>
-                            <p>User Profile</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="coming-soon.html">
-                            <i class="material-icons">content_paste</i>
-                            <p>Sales Invoice</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="product-search.html">
-                            <i class="material-icons">search</i>
-                            <p>Product Search</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="product-bar-qr-code.html">
-                            <i class="material-icons">library_books</i>
-                            <p>Product Bar/QR Code</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="coming-soon.html">
-                            <i class="material-icons">bubble_chart</i>
-                            <p>In Stock</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="coming-soon.html">
-                            <i class="material-icons">location_on</i>
-                            <p>Store Sales</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="coming-soon.html">
-                            <i class="material-icons text-gray">notifications</i>
-                            <p>Notifications</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        <div class="logo">
+            <a href="#!dashboard" class="simple-text">
+            Kaviya Mobiles
+        </a>
         </div>
-        <div class="main-panel">
-            <nav class="navbar navbar-transparent navbar-absolute">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse">
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li class="active">
+                    <a href="#!dashboard">
+                    <i class="material-icons">dashboard</i>
+                    <p>Dashboard</p>
+                </a>
+                </li>
+                <li>
+                    <a href="#!addcustomer">
+                    <i class="material-icons">person</i>
+                    <p>Add Customer</p>
+                </a>
+                </li>
+                <li>
+                    <a href="#!salesinvoice">
+                    <i class="material-icons">content_paste</i>
+                    <p>Sales Invoice</p>
+                </a>
+                </li>
+                <li>
+                    <a href="#!productsearch">
+                    <i class="material-icons">search</i>
+                    <p>Product Search</p>
+                </a>
+                </li>
+                <li>
+                    <a href="#!productbarcode">
+                    <i class="material-icons">library_books</i>
+                    <p>Product Bar/QR Code</p>
+                </a>
+                </li>
+                <li>
+                    <a href="#!purchaseinvoice">
+                    <i class="material-icons">bubble_chart</i>
+                    <p>Purchase Invoice</p>
+                </a>
+                </li>
+                </li>
+                <li>
+                    <a href="#!notifications">
+                    <i class="material-icons text-gray">notifications</i>
+                    <p>Notifications</p>
+                </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-panel">
+        <nav class="navbar navbar-transparent navbar-absolute">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Sales Invoice Dashboard </a>
-                    </div>
-                    <div class="collapse navbar-collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+                    <a class="navbar-brand" href="#"> Sales Invoice Dashboard </a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">dashboard</i>
                                     <p class="hidden-lg hidden-md">Dashboard</p>
                                 </a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">notifications</i>
                                     <span class="notification">5</span>
                                     <p class="hidden-lg hidden-md">Notifications</p>
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">Mike John responded to your email</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">You have 5 new tasks</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">You're now friend with Andrew</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Another Notification</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Another One</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Mike John responded to your email</a>
+                                </li>
+                                <li>
+                                    <a href="#">You have 5 new tasks</a>
+                                </li>
+                                <li>
+                                    <a href="#">You're now friend with Andrew</a>
+                                </li>
+                                <li>
+                                    <a href="#">Another Notification</a>
+                                </li>
+                                <li>
+                                    <a href="#">Another One</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">person</i>
                                     <p class="hidden-lg hidden-md">Profile</p>
                                 </a>
-                            </li>
-                        </ul>
-                        <form class="navbar-form navbar-right" role="search">
-                            <div class="form-group  is-empty">
-                                <input type="text" class="form-control" placeholder="Search">
-                                <span class="material-input"></span>
-                            </div>
-                            <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-right" role="search">
+                        <div class="form-group  is-empty">
+                            <input type="text" class="form-control" placeholder="Search">
+                            <span class="material-input"></span>
+                        </div>
+                        <button type="submit" class="btn btn-white btn-round btn-just-icon">
                                 <i class="material-icons">search</i>
                                 <div class="ripple-container"></div>
                             </button>
-                        </form>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="purple">
+                                <h4 class="title">Sales Invoice </h4>
+                                <p class="category">{{currDateTime}} Sales Invoice</p>
+                            </div>
+                            <div class="card-content">
+                                <div id="typography">
+                                    <div class="title">
+                                        <h2>Sales Invoice</h2>
+                                    </div>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Customer Phone</label>
+                                                    <input type="text" class="form-control" ng-model="customerName" ng-change="isValidCustPhone()">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="form-group label-floating">
+                                                    <div class="form-group label-floating" ng-click="getCustomerDetails()" ng-disabled="isSearchCust !== true" ng-show="isSearchCust">
+                                                        <a href="#">
+                                                                <i class="material-icons" rel="tooltip" title="Search Customer">search</i>
+                                                            </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label" ng-model="pBillNo">Bill No : {{billNo}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Issue Date :{{issueDate}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group label-floating" ng-init="productSearch()">
+                                                    <label class="control-label">Product Name</label>
+                                                    <input type="text" class="form-control" ng-model="productName" list="productNameList" ng-change="productDetails()">
+                                                    <datalist id="productNameList">
+                                                        <option ng-repeat="productName in productNameArray track by $index" value="{{productName}}">
+                                                            {{productName}}
+                                                        </option>
+                                                    </datalist>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-2">
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Description</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row" ng-show="isValueLoad">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">{{productDesc}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">SKU No</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row" ng-show="isValueLoad">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">{{productSkuno}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Quantity</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label" ng-show="isValueLoad">{{productQTY}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="form-group label-floating" ng-show="isValueLoad">
+                                                    <button type="button" rel="tooltip" title="Eit Quantity" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#editQTY">
+                                                            <i class="material-icons">edit</i>
+                                                        </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">MRP</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label" ng-show="isValueLoad">{{productPrice}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Discount(%)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label" ng-show="isValueLoad">{{productDis}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Tax</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label" ng-show="isValueLoad">{{productTax}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="form-group label-floating">
+                                                    <button rel="tooltip" title="Add Product" class="btn btn-primary btn-fab btn-fab-mini btn-round" ng-disabled="isAdd !== true"
+                                                        ng-click="addProductList(productSkuno,productName, productDesc,
+                                                            productQTY, productPrice,productDis, productTax)">
+                                                            <i class="material-icons">add circle</i>
+                                                        </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-header" data-background-color="purple">
+                                                        <h4 class="title">Product List</h4>
+                                                        <p class="category">Addlist Product for Sales Invoice</p>
+                                                    </div>
+                                                    <div class="card-content table-responsive">
+                                                        <table class="table">
+                                                            <thead class="text-primary">
+                                                                <th>No</th>
+                                                                <th>Product/Service</th>
+                                                                <th>SKU No</th>
+                                                                <th>Description</th>
+                                                                <th>QTY</th>
+                                                                <th>Unit Price</th>
+                                                                <th>Discount</th>
+                                                                <th>CGST</th>
+                                                                <th>SGST</th>
+                                                                <th>Action</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="product in salesProductList.pList">
+                                                                    <td>{{product.SNo}}</td>
+                                                                    <td>{{product.pName}}</td>
+                                                                    <td>{{product.pSkuno}}</td>
+                                                                    <td>{{product.pDesc}}</td>
+                                                                    <td>{{product.pQty}}</td>
+                                                                    <td>{{product.pPrice}}</td>
+                                                                    <td>{{product.pDis}}</td>
+                                                                    <td>{{product.pCTax}}</td>
+                                                                    <td>{{product.pSTax}}</td>
+                                                                    <td class="text-primary td-actions text-right">
+                                                                        <button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
+                                                                                    <i class="material-icons">edit</i>
+                                                                                </button>
+                                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
+                                                                                    <i class="material-icons">close</i>
+                                                                                </button>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <div class="checkbox">
+                                                            <label><input type="checkbox" checked></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Round Off</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <div class="checkbox">
+                                                            <label><input type="checkbox" ng-model="totDisVal" ng-change="totDis()"></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Total Discount</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating" ng-show="isTotDis">
+                                                            <input type="text" ng-model="totDisData" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <div class="checkbox">
+                                                            <label><input type="checkbox"></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Payment Type</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <div class="checkbox">
+                                                            <label><input type="checkbox" ng-model="dueAmntVal" ng-change="dueAmnt()"></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Due Amount</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating" ng-show="isDueAmnt">
+                                                            <input type="text" ng-model="dueAmntData" class="form-control" ng-change="totalAmntAfterDue();">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8"></div>
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Sub Total</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.subTotal}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Discount</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.tDisc}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">GST</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.pList.pTax}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">CGST</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.CGST}}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">SGST</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.SGST}}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Round Off</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.roundOff}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Due Amount</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isAddProduct">{{dueAmntData}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Total</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label" ng-show="isAddProduct">{{salesProductList.Total}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary pull-right">Generate Bill</button>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </nav>
-            <div class="content">
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container-fluid">
+                <nav class="pull-left">
+                    <ul>
+                        <li>
+                            <a href="coming-soon.html">
+                                    Home
+                                </a>
+                        </li>
+                        <li>
+                            <a href="coming-soon.html">
+                                    Company
+                                </a>
+                        </li>
+                        <li>
+                            <a href="coming-soon.html">
+                                    About Us
+                                </a>
+                        </li>
+                        <li>
+                            <a href="coming-soon.html">
+                                    Contact Us
+                                </a>
+                        </li>
+                    </ul>
+                </nav>
+                <p class="copyright pull-right">
+                    &copy; {{currYear}} Innosols, made with love for a better web
+                </p>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- Modal Core -->
+<div class="modal fade" id="addCustomer" tabindex="-1" role="dialog" aria-labelledby="addCustomerLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="addCustomerLabel">Customer Not Found</h4>
+            </div>
+            <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header" data-background-color="purple">
-                                    <h4 class="title">Sales Invoice </h4>
-                                    <p class="category">{{currDateTime}} Sales Invoice</p>
+                                    <h4 class="title">Add New Customer</h4>
                                 </div>
                                 <div class="card-content">
-                                    <div id="typography">
-                                        <div class="title">
-                                            <h2>Sales Invoice</h2>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Name</label>
+                                                    <input type="text" class="form-control" ng-model="addCustName">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Phone</label>
+                                                    <input type="text" class="form-control" ng-model="addCustPhone">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Email address</label>
+                                                    <input type="email" class="form-control" ng-model="addCustEmail">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-md-7">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Customer Phone</label>
-                                                        <input type="text" class="form-control" ng-model="customerName" ng-change="isValidCustPhone()">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="form-group label-floating">
-                                                        <div class="form-group label-floating" ng-click="getCustomerDetails()" ng-disabled="isSearchCust !== true" ng-show="isSearchCust">
-                                                            <a href="#">
-                                                                <i class="material-icons" rel="tooltip" title="Search Customer">search</i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label" ng-model="pBillNo">Bill No : {{billNo}}</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Issue Date :{{issueDate}}</label>
-                                                    </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Adress</label>
+                                                    <input type="text" class="form-control" ng-model="addCustAddress">
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <div class="form-group label-floating" ng-init="productSearch()">
-                                                        <label class="control-label">Product Name</label>
-                                                        <input type="text" class="form-control" ng-model="productName" list="productNameList" ng-change="productDetails()">
-                                                        <datalist id="productNameList">
-                                                            <option ng-repeat="productName in productNameArray track by $index" value="{{productName}}">
-                                                                {{productName}}
-                                                            </option>
-                                                        </datalist>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-2">
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Description</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row" ng-show="isValueLoad">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">{{productDesc}}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">SKU No</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row" ng-show="isValueLoad">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">{{productSkuno}}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Quantity</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isValueLoad">{{productQTY}}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="form-group label-floating" ng-show="isValueLoad">
-                                                        <button type="button" rel="tooltip" title="Eit Quantity" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#editQTY">
-                                                            <i class="material-icons">edit</i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">MRP</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isValueLoad">{{productPrice}}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Discount(%)</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isValueLoad">{{productDis}}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Tax</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label" ng-show="isValueLoad">{{productTax}}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <div class="form-group label-floating">
-                                                        <button rel="tooltip" title="Add Product" class="btn btn-primary btn-fab btn-fab-mini btn-round" ng-disabled="isAdd !== true"
-                                                            ng-click="addProductList(productSkuno,productName, productDesc,
-                                                            productQTY, productPrice,productDis, productTax)">
-                                                            <i class="material-icons">add circle</i>
-                                                        </button>
-                                                    </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">City</label>
+                                                    <input type="text" class="form-control" ng-model="addCustCity">
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="card">
-                                                        <div class="card-header" data-background-color="purple">
-                                                            <h4 class="title">Product List</h4>
-                                                            <p class="category">Addlist Product for Sales Invoice</p>
-                                                        </div>
-                                                        <div class="card-content table-responsive">
-                                                            <table class="table">
-                                                                <thead class="text-primary">
-                                                                    <th>No</th>
-                                                                    <th>Product/Service</th>
-                                                                    <th>SKU No</th>
-                                                                    <th>Description</th>
-                                                                    <th>QTY</th>
-                                                                    <th>Unit Price</th>
-                                                                    <th>Discount</th>
-                                                                    <th>CGST</th>
-                                                                    <th>SGST</th>
-                                                                    <th>Action</th>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr ng-repeat="product in salesProductList.pList">
-                                                                        <td>{{product.SNo}}</td>
-                                                                        <td>{{product.pName}}</td>
-                                                                        <td>{{product.pSkuno}}</td>
-                                                                        <td>{{product.pDesc}}</td>
-                                                                        <td>{{product.pQty}}</td>
-                                                                        <td>{{product.pPrice}}</td>
-                                                                        <td>{{product.pDis}}</td>
-                                                                        <td>{{product.pCTax}}</td>
-                                                                        <td>{{product.pSTax}}</td>
-                                                                        <td class="text-primary td-actions text-right">
-                                                                            <button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
-                                                                                    <i class="material-icons">edit</i>
-                                                                                </button>
-                                                                            <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-                                                                                    <i class="material-icons">close</i>
-                                                                                </button>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">State</label>
+                                                    <input type="text" class="form-control" ng-model="addCustState">
                                                 </div>
                                             </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="row">
-                                                        <div class="col-md-1">
-                                                            <div class="checkbox">
-                                                                <label><input type="checkbox" checked></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Round Off</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-1">
-                                                            <div class="checkbox">
-                                                                <label><input type="checkbox" ng-model="totDisVal" ng-change="totDis()"></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Total Discount</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating" ng-show="isTotDis">
-                                                                <input type="text" ng-model="totDisData" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-1">
-                                                            <div class="checkbox">
-                                                                <label><input type="checkbox"></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Payment Type</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-1">
-                                                            <div class="checkbox">
-                                                                <label><input type="checkbox" ng-model="dueAmntVal" ng-change="dueAmnt()"></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Due Amount</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating" ng-show="isDueAmnt">
-                                                                <input type="text" ng-model="dueAmntData" class="form-control"
-                                                                ng-change="totalAmntAfterDue();">
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Postal Code</label>
+                                                    <input type="text" class="form-control" ng-model="addCustPinCode">
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-8"></div>
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Sub Total</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.subTotal}}</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Discount</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.tDisc}}</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                            <div class="col-md-3">
-                                                                <div class="form-group label-floating">
-                                                                    <label class="control-label">GST</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group label-floating">
-                                                                    <label class="control-label" ng-show="isAddProduct">{{salesProductList.pList.pTax}}</label>
-                                                                </div>
-                                                            </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <div class="col-md-1"></div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-group label-floating">
-                                                                    <label class="control-label">CGST</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="col-md-1"></div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-group label-floating">
-                                                                    <label class="control-label" ng-show="isAddProduct">{{salesProductList.CGST}}</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                            <div class="col-md-3">
-                                                                <div class="col-md-1"></div>
-                                                                <div class="col-md-2">
-                                                                    <div class="form-group label-floating">
-                                                                        <label class="control-label">SGST</label>
-                                                                    </div>
-                                                                </div>                                                                        
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="col-md-1"></div>
-                                                                <div class="col-md-2">
-                                                                    <div class="form-group label-floating">
-                                                                        <label class="control-label" ng-show="isAddProduct">{{salesProductList.SGST}}</label>
-                                                                    </div>  
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Round Off</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.roundOff}}</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Due Amount</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" ng-show="isAddProduct">{{dueAmntData}}</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Total</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" ng-show="isAddProduct">{{salesProductList.Total}}</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary pull-right">Generate Bill</button>
-                                            <div class="clearfix"></div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary pull-right" ng-click="addCust()">Add Customer</button>
+                                        <div class="clearfix"></div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <footer class="footer">
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Core -->
+<div class="modal fade" id="getCustomer" tabindex="-1" role="dialog" aria-labelledby="getCustomerLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="getCustomerLabel">Customer Found</h4>
+            </div>
+            <div class="modal-body">
                 <div class="container-fluid">
-                    <nav class="pull-left">
-                        <ul>
-                            <li>
-                                <a href="coming-soon.html">
-                                    Home
-                                </a>
-                            </li>
-                            <li>
-                                <a href="coming-soon.html">
-                                    Company
-                                </a>
-                            </li>
-                            <li>
-                                <a href="coming-soon.html">
-                                    About Us
-                                </a>
-                            </li>
-                            <li>
-                                <a href="coming-soon.html">
-                                    Contact Us
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <p class="copyright pull-right">
-                        &copy;
-                        {{currYear}}
-                        Innosols, made with love for a better web
-                    </p>
-                </div>
-            </footer>
-        </div>
-    </div>
-
-    <!-- Modal Core -->
-    <div class="modal fade" id="addCustomer" tabindex="-1" role="dialog" aria-labelledby="addCustomerLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="addCustomerLabel">Customer Not Found</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header" data-background-color="purple">
-                                        <h4 class="title">Add New Customer</h4>
-                                    </div>
-                                    <div class="card-content">
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Name</label>
-                                                        <input type="text" class="form-control" ng-model="addCustName">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Phone</label>
-                                                        <input type="text" class="form-control" ng-model="addCustPhone">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Email address</label>
-                                                        <input type="email" class="form-control" ng-model="addCustEmail">
-                                                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="purple">
+                                    <h4 class="title">{{cusName}}'s Details</h4>
+                                </div>
+                                <div class="card-content">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Name : </label>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Adress</label>
-                                                        <input type="text" class="form-control" ng-model="addCustAddress">
-                                                    </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{cusName}}</label>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">City</label>
-                                                        <input type="text" class="form-control" ng-model="addCustCity">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">State</label>
-                                                        <input type="text" class="form-control" ng-model="addCustState">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Postal Code</label>
-                                                        <input type="text" class="form-control" ng-model="addCustPinCode">
-                                                    </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Phone No : </label>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addCust()">Add Customer</button>
-                                            <div class="clearfix"></div>
-                                        </form>
-                                    </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{cusPhone}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Email : </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{cusEmail}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Address : </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{cusAddress}}, {{cusCity}}, {{cusState}}, {{cusPinCode}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary pull-right" ng-click="selectCust()">Select</button>
+                                        <div class="clearfix"></div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer"></div>
             </div>
+            <div class="modal-footer"></div>
         </div>
     </div>
+</div>
 
-
-    <!-- Modal Core -->
-    <div class="modal fade" id="getCustomer" tabindex="-1" role="dialog" aria-labelledby="getCustomerLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="getCustomerLabel">Customer Found</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header" data-background-color="purple">
-                                        <h4 class="title">{{cusName}}'s Details</h4>
-                                    </div>
-                                    <div class="card-content">
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Name : </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">{{cusName}}</label>
-                                                    </div>
+<!-- Modal Core -->
+<div class="modal fade" id="addCustDBMessage" tabindex="-1" role="dialog" aria-labelledby="addCustDBMessageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="purple">
+                                    <h4 class="title">{{customerName}} {{custTitle}}</h4>
+                                </div>
+                                <div class="card-content">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{customerName}}{{custMessage}} !#!#</label>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Phone No : </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">{{cusPhone}}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Email : </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">{{cusEmail}}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Address : </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">{{cusAddress}}, {{cusCity}}, {{cusState}}, {{cusPinCode}}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary pull-right" ng-click="selectCust()">Select</button>
-                                            <div class="clearfix"></div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Ok</button>
+                                        <div class="clearfix"></div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer"></div>
             </div>
+            <div class="modal-footer"></div>
         </div>
     </div>
+</div>
 
-    <!-- Modal Core -->
-    <div class="modal fade" id="addCustDBMessage" tabindex="-1" role="dialog" aria-labelledby="addCustDBMessageLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header" data-background-color="purple">
-                                        <h4 class="title">{{customerName}} {{custTitle}}</h4>
-                                    </div>
-                                    <div class="card-content">
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">{{customerName}}{{custMessage}} !#!#</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Ok</button>
-                                            <div class="clearfix"></div>
-                                        </form>
-                                    </div>
+<!-- Modal Core -->
+<div class="modal fade" id="editQTY" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Edit Quantity</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="purple">
+                                    <h4 class="title">Edit Quantity</h4>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Core -->
-    <div class="modal fade" id="editQTY" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Edit Quantity</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header" data-background-color="purple">
-                                        <h4 class="title">Edit Quantity</h4>
-                                    </div>
-                                    <div class="card-content">
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">No of QTY :</label>
-                                                    </div>
+                                <div class="card-content">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">No of QTY :</label>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                        <input type="text" class="form-control" ng-change="changePrice(productDetail[3])" ng-model="productQTY">
-                                                    </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <input type="text" class="form-control" ng-change="changePrice(productDetail[3])" ng-model="productQTY">
                                                 </div>
                                             </div>
-                                            <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Ok</button>
-                                            <div class="clearfix"></div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Ok</button>
+                                        <div class="clearfix"></div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -784,7 +775,8 @@
                 </div>
             </div>
         </div>
-        <div class="modal-footer"></div>
     </div>
-    </div>
-    </div>
+    <div class="modal-footer"></div>
+</div>
+</div>
+</div>

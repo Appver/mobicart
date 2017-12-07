@@ -10,11 +10,15 @@ app.config(function($routeProvider, $locationProvider) {
     templateUrl: '/view/admin-dashboard.html',
     controller: 'AdminDashboardCntlr'
   })
-  .when('/invoice', {
+  .when('/salesinvoice', {
     templateUrl: '/view/sales-invoice.html',
     controller: 'SalesInvoiceCntlr'
   })
-  .when('/purchase', {
+  .when('/productbarcode', {
+    templateUrl: '/view/product-bar-qr-code.html',
+    controller: 'ProductBarCodeCntlr'
+  })
+  .when('/purchaseinvoice', {
     templateUrl: '/view/purchase-invoice.html',
     controller: 'PurchaseInvoiceCntlr'
   })
@@ -320,15 +324,94 @@ app.controller('SigninPageCntlr', function($scope, $route, $routeParams, $locati
   $scope.$location = $location;
   $scope.$routeParams = $routeParams;
 })
-.controller('ProductSearchCntlr', function($scope, $route, $routeParams, $location) {
+.controller('ProductSearchCntlr', function($scope, $http, $route, $routeParams, $location) {
   $scope.$route = $route;
+  $scope.$http = $http;
   $scope.$location = $location;
   $scope.$routeParams = $routeParams;
+  $scope.isAddProd = false;
+  $scope.isSearchProd = false;
+  var d = new Date();
+  var ampm = '';
+  var rhr=('0'+ d.getHours()).slice(-2);
+  var min = ('0'+d.getMinutes()).slice(-2);
+  if (rhr >= 12){
+      ampm ='PM';
+      rhr = Math.abs(rhr-12);
+  } else {
+      ampm ='AM';
+      rhr = rhr;
+  }
+  $scope.currDateTime = ('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear()+" "+rhr+":"+min+" "+ampm;
+  $scope.isValidProductName = function (){
+      if($scope.productName.length >= 1){
+          $scope.isSearchProd = true;
+          $scope.isAddProd = false;
+      } else {
+          $scope.isSearchProd = false;
+          $scope.isAddProd = false;
+      }
+      
+  };
+
+  $scope.getProductDetails = function(){
+      $scope.productNameArray = [];
+      $http.get('/skm/productDetails/'+$scope.productName).then(function(response) {
+          var res = response.data;
+          for (var i = 0, length = res.length; i < length; i++) {
+              for (obj in res[i]) {
+                  $scope.productNameArray.push(res[i][obj]);
+              }
+          } 
+          if($scope.productNameArray.length == 0 || $scope.productNameArray == undefined){
+              $scope.isAddProd = true;
+              $scope.isSearchProd = false;
+              $scope.productName = 'Product Not Found';
+          }else {
+              $scope.isAddProd = false;
+              $scope.isSearchProd = true;
+              $scope.productName = $scope.productNameArray[2];
+          }
+      }, function(response) {
+      }); 
+  };
+
+  $scope.addCust = function(){
+      $scope.cusName
+      $scope.cusPhone
+      $scope.cusEmail
+      $scope.cusAddress
+      $scope.cusCity
+      $scope.cusState
+      $scope.cusPinCode
+      $http.get('/skm/addCustomerDetails/'+$scope.productName).then(function(response) {
+      
+      }, function(response) {
+      });       
+  };
+
 })
 .controller('NotificationCntlr', function($scope, $route, $routeParams, $location) {
+    $scope.$route = $route;
+    $scope.$location = $location;
+    $scope.$routeParams = $routeParams;
+})
+.controller('ProductBarCodeCntlr', function($scope, $route, $routeParams, $location) {
   $scope.$route = $route;
   $scope.$location = $location;
   $scope.$routeParams = $routeParams;
+  var d = new Date();
+  var ampm = '';
+  var rhr=('0'+ d.getHours()).slice(-2);
+  var min = ('0'+d.getMinutes()).slice(-2);
+  if (rhr >= 12){
+      ampm ='PM';
+      rhr = Math.abs(rhr-12);
+  } else {
+      ampm ='AM';
+      rhr = rhr;
+  }
+  $scope.currDateTime = ('0' + d.getDate()).slice(-2)+"-"+('0' + (d.getMonth() + 1)).slice(-2)+"-"+d.getFullYear()+" "+rhr+":"+min+" "+ampm;
 })
 .controller('AddCustomerCntlr', function($scope, $route, $routeParams, $location) {
   $scope.$route = $route;
