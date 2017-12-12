@@ -45,10 +45,6 @@ app.controller('SigninPageCntlr', function($scope, $route, $routeParams, $locati
   $scope.$route = $route;
   $scope.$location = $location;
   $scope.$routeParams = $routeParams;
-  $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      demo.initDashboardPageCharts();
-  });
 })
 .controller('SalesInvoiceCntlr', function($scope, $http, $route, $routeParams, $location) {
   $scope.$route = $route;
