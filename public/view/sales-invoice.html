@@ -5,7 +5,7 @@
 
         Tip 2: you can also add an image using data-image tag
     -->
-    <div class="logo">
+        <div class="logo">
             <a href="#!dashboard" class="simple-text">
         Kaviya Mobiles
     </a>
@@ -14,53 +14,53 @@
             <ul class="nav">
                 <li class="active" ng-show="isAdmin && !isUser">
                     <a href="#!dashboard">
-                <i class="material-icons">dashboard</i>
-                <p>Dashboard</p>
-            </a>
+                        <i class="material-icons">dashboard</i>
+                        <p>Dashboard</p>
+                    </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
                     <a href="#!addcustomer">
-                <i class="material-icons">person</i>
-                <p>Add Customer</p>
-            </a>
+                        <i class="material-icons">person</i>
+                        <p>Add Customer</p>
+                    </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
                     <a href="#!salesinvoice">
-                <i class="material-icons">content_paste</i>
-                <p>Sales Invoice</p>
-            </a>
+                        <i class="material-icons">content_paste</i>
+                        <p>Sales Invoice</p>
+                    </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
                     <a href="#!productsearch">
-                <i class="material-icons">search</i>
-                <p>Product Search</p>
-            </a>
+                        <i class="material-icons">search</i>
+                        <p>Product Search</p>
+                    </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
                     <a href="#!productbarcode">
-                <i class="material-icons">library_books</i>
-                <p>Product Bar/QR Code</p>
-            </a>
+                        <i class="material-icons">library_books</i>
+                        <p>Product Bar/QR Code</p>
+                    </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
                     <a href="#!purchaseinvoice">
-                <i class="material-icons">bubble_chart</i>
-                <p>Purchase Invoice</p>
-            </a>
+                        <i class="material-icons">bubble_chart</i>
+                        <p>Purchase Invoice</p>
+                    </a>
                 </li>
                 </li>
                 <li ng-show="isAdmin && !isUser">
                     <a href="#!notifications">
-                <i class="material-icons text-gray">notifications</i>
-                <p>Notifications</p>
-            </a>
+                        <i class="material-icons text-gray">notifications</i>
+                        <p>Notifications</p>
+                    </a>
                 </li>
                 <li ng-show="isAdmin && !isUser">
-                        <a href="#!notifications">
-                    <i class="material-icons text-gray">notifications</i>
-                    <p>Transcations</p>
-                </a>
-                    </li>
+                    <a href="#!notifications">
+                        <i class="material-icons text-gray">notifications</i>
+                        <p>Transcations</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -80,16 +80,16 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="material-icons">dashboard</i>
-                                    <p class="hidden-lg hidden-md">Dashboard</p>
-                                </a>
+                                <i class="material-icons">dashboard</i>
+                                <p class="hidden-lg hidden-md">Dashboard</p>
+                            </a>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="material-icons">notifications</i>
-                                    <span class="notification">5</span>
-                                    <p class="hidden-lg hidden-md">Notifications</p>
-                                </a>
+                                <i class="material-icons">notifications</i>
+                                <span class="notification">5</span>
+                                <p class="hidden-lg hidden-md">Notifications</p>
+                            </a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="#">Mike John responded to your email</a>
@@ -110,9 +110,9 @@
                         </li>
                         <li>
                             <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="material-icons">person</i>
-                                    <p class="hidden-lg hidden-md">Profile</p>
-                                </a>
+                                <i class="material-icons">person</i>
+                                <p class="hidden-lg hidden-md">Profile</p>
+                            </a>
                         </li>
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
@@ -154,8 +154,8 @@
                                                 <div class="form-group label-floating">
                                                     <div class="form-group label-floating" ng-click="getCustomerDetails()" ng-disabled="isSearchCust !== true" ng-show="isSearchCust">
                                                         <a href="#">
-                                                                <i class="material-icons" rel="tooltip" title="Search Customer">search</i>
-                                                            </a>
+                                                            <i class="material-icons" rel="tooltip" title="Search Customer">search</i>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -264,8 +264,7 @@
                                             </div>
                                             <div class="col-md-1">
                                                 <div class="form-group label-floating">
-                                                    <button rel="tooltip" title="Add Product" class="btn btn-primary btn-fab btn-fab-mini btn-round" ng-disabled="isAdd !== true"
-                                                        ng-click="addProductList(productSkuno,productName, productDesc,
+                                                    <button rel="tooltip" title="Add Product" class="btn btn-primary btn-fab btn-fab-mini btn-round" ng-disabled="isAdd !== true" ng-click="addProductList(productSkuno,productName, productDesc,
                                                             productQTY, productPrice,productDis, productTax)">
                                                             <i class="material-icons">add circle</i>
                                                         </button>
