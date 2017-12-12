@@ -1,11 +1,12 @@
 var app = angular.module('KaviyaMobiles', ['ngRoute']);
 
-app.run(function ($rootScope) {
+app.run(function($rootScope) {
     $rootScope.isAdmin = false;
     $rootScope.isUser = false;
+    $rootScope.currYear = new Date().getFullYear();
 });
 
-app.config(function ($routeProvider, $locationProvider) {
+app.config(function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', {
             templateUrl: '/view/signin-page.html',
@@ -45,24 +46,32 @@ app.config(function ($routeProvider, $locationProvider) {
         });
 });
 
-app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routeParams, $location) {
-    $scope.$rootScope = $rootScope;
-    $scope.$route = $route;
-    $scope.$location = $location;
-    $scope.$routeParams = $routeParams;
-    $scope.lUserName = '';
-    $scope.lPassword = '';
-    $scope.loginValidate = function () {
-        if ($scope.lUserName != null && $scope.lUserName != '' &&
-            $scope.lPassword != null && $scope.lPassword != '') {
-            if ($scope.lUserName == 'admin' && $scope.lPassword == 'admin') {
-                $rootScope.isAdmin = true;
-                $rootScope.isUser = false;
-                $location.path('/dashboard');
-            } else if ($scope.lUserName == 'user' && $scope.lPassword == 'user') {
-                $rootScope.isAdmin = false;
-                $rootScope.isUser = true;
-                $location.path('/addcustomer');
+app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routeParams, $location) {
+        $scope.$rootScope = $rootScope;
+        $scope.$route = $route;
+        $scope.$location = $location;
+        $scope.$routeParams = $routeParams;
+        $scope.lUserName = '';
+        $scope.lPassword = '';
+        $scope.loginValidate = function() {
+            if ($scope.lUserName != null && $scope.lUserName != '' &&
+                $scope.lPassword != null && $scope.lPassword != '') {
+                if ($scope.lUserName == 'admin' && $scope.lPassword == 'admin') {
+                    $rootScope.isAdmin = true;
+                    $rootScope.isUser = false;
+                    $location.path('/dashboard');
+                } else if ($scope.lUserName == 'user' && $scope.lPassword == 'user') {
+                    $rootScope.isAdmin = false;
+                    $rootScope.isUser = true;
+                    $location.path('/addcustomer');
+                } else {
+                    $rootScope.isAdmin = false;
+                    $rootScope.isUser = false;
+                    alert("No User Found!!");
+                    $location.path('/');
+                    $scope.lUserName = '';
+                    $scope.lPassword = '';
+                }
             } else {
                 $rootScope.isAdmin = false;
                 $rootScope.isUser = false;
@@ -71,26 +80,18 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
                 $scope.lUserName = '';
                 $scope.lPassword = '';
             }
-        } else {
-            $rootScope.isAdmin = false;
-            $rootScope.isUser = false;
-            alert("No User Found!!");
-            $location.path('/');
-            $scope.lUserName = '';
-            $scope.lPassword = '';
-        }
-    };
-})
-    .controller('AdminDashboardCntlr', function ($scope, $route, $routeParams, $location) {
+        };
+    })
+    .controller('AdminDashboardCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Javascript method's body can be found in assets/js/demos.js
             demo.initDashboardPageCharts();
         });
     })
-    .controller('SalesInvoiceCntlr', function ($scope, $http, $route, $routeParams, $location) {
+    .controller('SalesInvoiceCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
@@ -111,8 +112,6 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
         $scope.billNo = 'BNO-' + bno;
         var d = new Date();
         $scope.issueDate = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear();
-        $scope.currYear = new Date().getFullYear();
-
         $scope.custTitle = '';
         $scope.custMessage = '';
         $scope.isSearchCust = false;
@@ -157,20 +156,19 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
         };
 
 
-        $scope.productSearch = function () {
+        $scope.productSearch = function() {
             $scope.productNameArray = [];
-            $http.get('/skm/productSearch/').then(function (response) {
+            $http.get('/skm/productSearch/').then(function(response) {
                 var res = response.data;
                 for (var i = 0, length = res.length; i < length; i++) {
                     for (obj in res[i]) {
                         $scope.productNameArray.push(res[i][obj]);
                     }
                 }
-            }, function (response) {
-            });
+            }, function(response) {});
         };
 
-        $scope.isValidCustPhone = function () {
+        $scope.isValidCustPhone = function() {
             if ($scope.customerName.length == 10) {
                 $scope.isSearchCust = true;
             } else {
@@ -178,9 +176,9 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
             }
         };
 
-        $scope.getCustomerDetails = function () {
+        $scope.getCustomerDetails = function() {
             $scope.customerNameArray = [];
-            $http.get('/skm/customerDetails/' + $scope.customerName).then(function (response) {
+            $http.get('/skm/customerDetails/' + $scope.customerName).then(function(response) {
                 var res = response.data;
                 for (var i = 0, length = res.length; i < length; i++) {
                     for (obj in res[i]) {
@@ -190,15 +188,14 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
                 if ($scope.customerNameArray.length == 0 || $scope.customerNameArray == undefined) {
                     $scope.isSearchCust = false;
                     $scope.custId = [];
-                    $http.get('/skm/getCustomerId/').then(function (response) {
+                    $http.get('/skm/getCustomerId/').then(function(response) {
                         var res = response.data;
                         for (var i = 0, length = res.length; i < length; i++) {
                             for (obj in res[i]) {
                                 $scope.custId.push(res[i][obj]);
                             }
                         }
-                    }, function (response) {
-                    });
+                    }, function(response) {});
                     $("#addCustomer").modal();
                 } else {
                     $scope.isSearchCust = true;
@@ -211,17 +208,16 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
                     $scope.cusPinCode = $scope.customerNameArray[7];
                     $("#getCustomer").modal();
                 }
-            }, function (response) {
-            });
+            }, function(response) {});
         };
 
-        $scope.selectCust = function () {
+        $scope.selectCust = function() {
             $scope.customerName = $scope.cusName;
             $("#getCustomer").modal('hide');
             $scope.isSearchCust = false;
         }
 
-        $scope.addCust = function () {
+        $scope.addCust = function() {
             $("#addCustomer").modal('hide');
             $scope.custTitle = '';
             $scope.custMessage = '';
@@ -232,21 +228,20 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
             var currentDate = '2017-11-27';
             $http.get('/skm/addNewCustomer/' + newCustId + '/' + $scope.addCustName + '/' + $scope.addCustPhone +
                 '/' + $scope.addCustEmail + '/' + $scope.addCustAddress + '/' + $scope.addCustCity +
-                '/' + $scope.addCustState + '/' + $scope.addCustPinCode + '/' + currentDate + '/' + $scope.addCustPhone).then(function (response) {
-                    $scope.customerName = $scope.addCustName;
-                    if (response.data.affectedRows == 1) {
-                        $scope.custTitle = "Added";
-                        $scope.custMessage = ", Added Successfully.";
-                    } else {
-                        $scope.custTitle = "Failed";
-                        $scope.custMessage = ", Added Failed. Please try again.";
-                    }
-                    $("#addCustDBMessage").modal();
-                }, function (response) {
-                });
+                '/' + $scope.addCustState + '/' + $scope.addCustPinCode + '/' + currentDate + '/' + $scope.addCustPhone).then(function(response) {
+                $scope.customerName = $scope.addCustName;
+                if (response.data.affectedRows == 1) {
+                    $scope.custTitle = "Added";
+                    $scope.custMessage = ", Added Successfully.";
+                } else {
+                    $scope.custTitle = "Failed";
+                    $scope.custMessage = ", Added Failed. Please try again.";
+                }
+                $("#addCustDBMessage").modal();
+            }, function(response) {});
         };
 
-        $scope.productDetails = function () {
+        $scope.productDetails = function() {
             var searchFlag = false;
             $scope.productDetail = [];
             $scope.productDis = '';
@@ -262,7 +257,7 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
             }
             if (searchFlag) {
                 searchFlag = false;
-                $http.get('/skm/productDetails/' + $scope.productName).then(function (response) {
+                $http.get('/skm/productDetails/' + $scope.productName).then(function(response) {
                     var res = response.data;
                     for (var i = 0, length = res.length; i < length; i++) {
                         for (obj in res[i]) {
@@ -279,32 +274,30 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
                         $scope.productDis = 0;
                         $scope.productTax = $scope.productDetail[4];
                     }
-                }, function (response) {
-                });
+                }, function(response) {});
             }
         };
 
-        $scope.changePrice = function () {
+        $scope.changePrice = function() {
             $scope.productPrice = $scope.productPrice * $scope.productQTY;
 
         };
 
-        $scope.addProductList = function (pSkuno, pName, pDesc, pQty, pPrice, pDis, pTax) {
+        $scope.addProductList = function(pSkuno, pName, pDesc, pQty, pPrice, pDis, pTax) {
             tax = taxSplitCal(pTax);
             $scope.salesProductList.tItems = $scope.salesProductList.tItems + 1;
-            $scope.salesProductList['pList'].push(
-                {
-                    "SNo": $scope.salesProductList.tItems,
-                    "pSkuno": pSkuno,
-                    "pName": pName,
-                    "pDesc": pDesc,
-                    "pQty": pQty,
-                    "pPrice": subGST(pPrice, pTax),
-                    "pDis": pDis,
-                    "pTax": pTax,
-                    "pCTax": gstTax(pPrice, tax),
-                    "pSTax": gstTax(pPrice, tax)
-                });
+            $scope.salesProductList['pList'].push({
+                "SNo": $scope.salesProductList.tItems,
+                "pSkuno": pSkuno,
+                "pName": pName,
+                "pDesc": pDesc,
+                "pQty": pQty,
+                "pPrice": subGST(pPrice, pTax),
+                "pDis": pDis,
+                "pTax": pTax,
+                "pCTax": gstTax(pPrice, tax),
+                "pSTax": gstTax(pPrice, tax)
+            });
             $scope.salesProductList.subTotal = subTotalCal(subGST(pPrice, pTax));
             $scope.salesProductList.CGST = gstCal(gstTax(pPrice, tax), $scope.salesProductList.CGST);
             $scope.salesProductList.SGST = gstCal(gstTax(pPrice, tax), $scope.salesProductList.SGST);
@@ -343,7 +336,7 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
             return Math.round(price * (tax / 100));
         }
 
-        $scope.totDis = function () {
+        $scope.totDis = function() {
             if ($scope.totDisData) {
                 $scope.isTotDis = true;
             } else {
@@ -351,7 +344,7 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
             }
         };
 
-        $scope.dueAmnt = function () {
+        $scope.dueAmnt = function() {
             if ($scope.dueAmntData) {
                 $scope.isDueAmnt = true;
             } else {
@@ -359,12 +352,12 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
             }
         };
     })
-    .controller('PurchaseInvoiceCntlr', function ($scope, $route, $routeParams, $location) {
+    .controller('PurchaseInvoiceCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
     })
-    .controller('ProductSearchCntlr', function ($scope, $http, $route, $routeParams, $location) {
+    .controller('ProductSearchCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
@@ -383,7 +376,7 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
             rhr = rhr;
         }
         $scope.currDateTime = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear() + " " + rhr + ":" + min + " " + ampm;
-        $scope.isValidProductName = function () {
+        $scope.isValidProductName = function() {
             if ($scope.productName.length >= 1) {
                 $scope.isSearchProd = true;
                 $scope.isAddProd = false;
@@ -394,9 +387,9 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
 
         };
 
-        $scope.getProductDetails = function () {
+        $scope.getProductDetails = function() {
             $scope.productNameArray = [];
-            $http.get('/skm/productDetails/' + $scope.productName).then(function (response) {
+            $http.get('/skm/productDetails/' + $scope.productName).then(function(response) {
                 var res = response.data;
                 for (var i = 0, length = res.length; i < length; i++) {
                     for (obj in res[i]) {
@@ -412,11 +405,10 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
                     $scope.isSearchProd = true;
                     $scope.productName = $scope.productNameArray[2];
                 }
-            }, function (response) {
-            });
+            }, function(response) {});
         };
 
-        $scope.addCust = function () {
+        $scope.addCust = function() {
             $scope.cusName
             $scope.cusPhone
             $scope.cusEmail
@@ -424,24 +416,23 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
             $scope.cusCity
             $scope.cusState
             $scope.cusPinCode
-            $http.get('/skm/addCustomerDetails/' + $scope.productName).then(function (response) {
+            $http.get('/skm/addCustomerDetails/' + $scope.productName).then(function(response) {
 
-            }, function (response) {
-            });
+            }, function(response) {});
         };
 
     })
-    .controller('NotificationsCntlr', function ($scope, $route, $routeParams, $location) {
+    .controller('NotificationsCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
     })
-    .controller('TranscationsCntlr', function ($scope, $route, $routeParams, $location) {
+    .controller('TranscationsCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
     })
-    .controller('ProductBarCodeCntlr', function ($scope, $route, $routeParams, $location) {
+    .controller('ProductBarCodeCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
@@ -458,7 +449,7 @@ app.controller('SigninPageCntlr', function ($rootScope, $scope, $route, $routePa
         }
         $scope.currDateTime = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear() + " " + rhr + ":" + min + " " + ampm;
     })
-    .controller('AddCustomerCntlr', function ($scope, $route, $routeParams, $location) {
+    .controller('AddCustomerCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
