@@ -89,13 +89,32 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $(document).ready(function() {
             // Javascript method's body can be found in assets/js/demos.js
             demo.initDashboardPageCharts();
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
         });
+
     })
     .controller('SalesInvoiceCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
         var d = new Date();
         var ampm = '';
         var rhr = ('0' + d.getHours()).slice(-2);
@@ -356,12 +375,32 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
     })
     .controller('ProductSearchCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
         $scope.isAddProd = false;
         $scope.isSearchProd = false;
         var d = new Date();
@@ -426,16 +465,46 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
     })
     .controller('TranscationsCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
     })
     .controller('ProductBarCodeCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
         var d = new Date();
         var ampm = '';
         var rhr = ('0' + d.getHours()).slice(-2);
@@ -453,4 +522,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
     });
