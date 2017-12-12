@@ -48,7 +48,6 @@
                         <p>Purchase Invoice</p>
                     </a>
                 </li>
-                </li>
                 <li ng-show="isAdmin && !isUser">
                     <a href="#!notifications">
                         <i class="material-icons text-gray">notifications</i>
@@ -57,7 +56,7 @@
                 </li>
                 <li ng-show="isAdmin && !isUser">
                     <a href="#!notifications">
-                        <i class="material-icons text-gray">notifications</i>
+                        <i class="material-icons">content_paste</i>
                         <p>Transcations</p>
                     </a>
                 </li>
@@ -69,11 +68,11 @@
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                     <a class="navbar-brand" href="#"> Sales Invoice Dashboard </a>
                 </div>
                 <div class="collapse navbar-collapse">
@@ -121,9 +120,9 @@
                             <span class="material-input"></span>
                         </div>
                         <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                                <i class="material-icons">search</i>
-                                <div class="ripple-container"></div>
-                            </button>
+                            <i class="material-icons">search</i>
+                            <div class="ripple-container"></div>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -222,8 +221,8 @@
                                             <div class="col-md-1">
                                                 <div class="form-group label-floating" ng-show="isValueLoad">
                                                     <button type="button" rel="tooltip" title="Eit Quantity" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#editQTY">
-                                                            <i class="material-icons">edit</i>
-                                                        </button>
+                                                        <i class="material-icons">edit</i>
+                                                    </button>
                                                 </div>
                                             </div>
                                             <div class="col-md-1">
@@ -266,8 +265,8 @@
                                                 <div class="form-group label-floating">
                                                     <button rel="tooltip" title="Add Product" class="btn btn-primary btn-fab btn-fab-mini btn-round" ng-disabled="isAdd !== true" ng-click="addProductList(productSkuno,productName, productDesc,
                                                             productQTY, productPrice,productDis, productTax)">
-                                                            <i class="material-icons">add circle</i>
-                                                        </button>
+                                                        <i class="material-icons">add circle</i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -305,11 +304,11 @@
                                                                     <td>{{product.pSTax}}</td>
                                                                     <td class="text-primary td-actions text-right">
                                                                         <button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
-                                                                                    <i class="material-icons">edit</i>
-                                                                                </button>
+                                                                            <i class="material-icons">edit</i>
+                                                                        </button>
                                                                         <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-                                                                                    <i class="material-icons">close</i>
-                                                                                </button>
+                                                                            <i class="material-icons">close</i>
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
 
@@ -325,7 +324,9 @@
                                                 <div class="row">
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
-                                                            <label><input type="checkbox" checked></label>
+                                                            <label>
+                                                                <input type="checkbox" checked>
+                                                            </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
@@ -337,7 +338,9 @@
                                                 <div class="row">
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
-                                                            <label><input type="checkbox" ng-model="totDisVal" ng-change="totDis()"></label>
+                                                            <label>
+                                                                <input type="checkbox" ng-model="totDisVal" ng-change="totDis()">
+                                                            </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
@@ -354,7 +357,9 @@
                                                 <div class="row">
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
-                                                            <label><input type="checkbox"></label>
+                                                            <label>
+                                                                <input type="checkbox">
+                                                            </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
@@ -366,7 +371,9 @@
                                                 <div class="row">
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
-                                                            <label><input type="checkbox" ng-model="dueAmntVal" ng-change="dueAmnt()"></label>
+                                                            <label>
+                                                                <input type="checkbox" ng-model="dueAmntVal" ng-change="dueAmnt()">
+                                                            </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
@@ -782,6 +789,4 @@
         </div>
     </div>
     <div class="modal-footer"></div>
-</div>
-</div>
 </div>
