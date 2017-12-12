@@ -5,56 +5,62 @@
 
         Tip 2: you can also add an image using data-image tag
     -->
-        <div class="logo">
+    <div class="logo">
             <a href="#!dashboard" class="simple-text">
-            Kaviya Mobiles
-        </a>
+        Kaviya Mobiles
+    </a>
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li class="active">
+                <li class="active" ng-show="isAdmin && !isUser">
                     <a href="#!dashboard">
-                    <i class="material-icons">dashboard</i>
-                    <p>Dashboard</p>
-                </a>
+                <i class="material-icons">dashboard</i>
+                <p>Dashboard</p>
+            </a>
                 </li>
-                <li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!addcustomer">
-                    <i class="material-icons">person</i>
-                    <p>Add Customer</p>
-                </a>
+                <i class="material-icons">person</i>
+                <p>Add Customer</p>
+            </a>
                 </li>
-                <li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!salesinvoice">
-                    <i class="material-icons">content_paste</i>
-                    <p>Sales Invoice</p>
-                </a>
+                <i class="material-icons">content_paste</i>
+                <p>Sales Invoice</p>
+            </a>
                 </li>
-                <li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!productsearch">
-                    <i class="material-icons">search</i>
-                    <p>Product Search</p>
-                </a>
+                <i class="material-icons">search</i>
+                <p>Product Search</p>
+            </a>
                 </li>
-                <li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!productbarcode">
-                    <i class="material-icons">library_books</i>
-                    <p>Product Bar/QR Code</p>
-                </a>
+                <i class="material-icons">library_books</i>
+                <p>Product Bar/QR Code</p>
+            </a>
                 </li>
-                <li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!purchaseinvoice">
-                    <i class="material-icons">bubble_chart</i>
-                    <p>Purchase Invoice</p>
-                </a>
+                <i class="material-icons">bubble_chart</i>
+                <p>Purchase Invoice</p>
+            </a>
                 </li>
                 </li>
-                <li>
+                <li ng-show="isAdmin && !isUser">
                     <a href="#!notifications">
-                    <i class="material-icons text-gray">notifications</i>
-                    <p>Notifications</p>
-                </a>
+                <i class="material-icons text-gray">notifications</i>
+                <p>Notifications</p>
+            </a>
                 </li>
+                <li ng-show="isAdmin && !isUser">
+                        <a href="#!notifications">
+                    <i class="material-icons text-gray">notifications</i>
+                    <p>Transcations</p>
+                </a>
+                    </li>
             </ul>
         </div>
     </div>
