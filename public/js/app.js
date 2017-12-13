@@ -4,6 +4,18 @@ app.run(function($rootScope) {
     $rootScope.isAdmin = false;
     $rootScope.isUser = false;
     $rootScope.currYear = new Date().getFullYear();
+    var d = new Date();
+    var ampm = '';
+    var rhr = ('0' + d.getHours()).slice(-2);
+    var min = ('0' + d.getMinutes()).slice(-2);
+    if (rhr >= 12) {
+        ampm = 'PM';
+        rhr = Math.abs(rhr - 12);
+    } else {
+        ampm = 'AM';
+        rhr = rhr;
+    }
+    $rootScope.currDateTime = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear() + " " + rhr + ":" + min + " " + ampm;
 });
 
 app.config(function($routeProvider, $locationProvider) {
@@ -115,18 +127,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
-        var d = new Date();
-        var ampm = '';
-        var rhr = ('0' + d.getHours()).slice(-2);
-        var min = ('0' + d.getMinutes()).slice(-2);
-        if (rhr >= 12) {
-            ampm = 'PM';
-            rhr = Math.abs(rhr - 12);
-        } else {
-            ampm = 'AM';
-            rhr = rhr;
-        }
-        $scope.currDateTime = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear() + " " + rhr + ":" + min + " " + ampm;
         var bno = Math.floor((Math.random() * 1000) + 1);
         $scope.billNo = 'BNO-' + bno;
         var d = new Date();
@@ -403,29 +403,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         });
         $scope.isAddProd = false;
         $scope.isSearchProd = false;
-        var d = new Date();
-        var ampm = '';
-        var rhr = ('0' + d.getHours()).slice(-2);
-        var min = ('0' + d.getMinutes()).slice(-2);
-        if (rhr >= 12) {
-            ampm = 'PM';
-            rhr = Math.abs(rhr - 12);
-        } else {
-            ampm = 'AM';
-            rhr = rhr;
-        }
-        $scope.currDateTime = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear() + " " + rhr + ":" + min + " " + ampm;
-        $scope.isValidProductName = function() {
-            if ($scope.productName.length >= 1) {
-                $scope.isSearchProd = true;
-                $scope.isAddProd = false;
-            } else {
-                $scope.isSearchProd = false;
-                $scope.isAddProd = false;
-            }
-
-        };
-
         $scope.getProductDetails = function() {
             $scope.productNameArray = [];
             $http.get('/skm/productDetails/' + $scope.productName).then(function(response) {
@@ -505,18 +482,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
-        var d = new Date();
-        var ampm = '';
-        var rhr = ('0' + d.getHours()).slice(-2);
-        var min = ('0' + d.getMinutes()).slice(-2);
-        if (rhr >= 12) {
-            ampm = 'PM';
-            rhr = Math.abs(rhr - 12);
-        } else {
-            ampm = 'AM';
-            rhr = rhr;
-        }
-        $scope.currDateTime = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear() + " " + rhr + ":" + min + " " + ampm;
     })
     .controller('AddCustomerCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
