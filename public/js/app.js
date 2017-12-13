@@ -55,6 +55,10 @@ app.config(function($routeProvider, $locationProvider) {
         .when('/addcustomer', {
             templateUrl: '/view/add-customer.html',
             controller: 'AddCustomerCntlr'
+        })
+        .when('/logout', {
+            templateUrl: '/view/signin-page.html',
+            controller: 'LogoutCntlr'
         });
 });
 
@@ -487,6 +491,22 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
+    })
+    .controller('LogoutCntlr', function($scope, $route, $routeParams, $location) {
+        $scope.$route = $route;
+        $scope.$location = $location;
+        $scope.$routeParams = $routeParams;
+        $location.path('/');
         $(document).ready(function() {
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function

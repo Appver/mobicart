@@ -56,8 +56,14 @@
                 </li>
                 <li ng-show="isAdmin && !isUser">
                     <a href="#!notifications">
-                        <i class="material-icons">content_paste</i>
+                        <i class="material-icons">assessment</i>
                         <p>Transcations</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser">
+                    <a href="#!logout">
+                        <i class="material-icons">adjust</i>
+                        <p>Logout</p>
                     </a>
                 </li>
             </ul>
