@@ -4241,6 +4241,24 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
     padding: 3px 0 0 15px;
 }
 
+.notificationCount {
+    position: absolute;
+    top: 5px;
+    border: 1px solid #FFF;
+    right: 10px;
+    font-size: 9px;
+    background: #f44336;
+    color: #FFFFFF;
+    min-width: 20px;
+    padding: 0px 5px;
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 19px;
+    vertical-align: middle;
+    display: block;
+}
+
 .navbar .notification {
     position: absolute;
     top: 5px;
