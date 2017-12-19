@@ -12,13 +12,13 @@
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li class="active" ng-show="isAdmin && !isUser">
+                <li ng-show="isAdmin && !isUser">
                     <a href="#!dashboard">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li class="active" ng-show="isAdmin || isUser">
                     <a href="#!addcustomer">
                         <i class="material-icons">person</i>
                         <p>Add/Edit Customer</p>
