@@ -6906,6 +6906,6 @@ footer .btn {
 .navbar.navbar-transparent {
     background-color: transparent;
     box-shadow: none;
-    color: #fff;
+    color: #fff !important;
     padding-top: 25px;
 }
