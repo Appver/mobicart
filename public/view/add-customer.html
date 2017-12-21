@@ -127,19 +127,19 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Name</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" ng-model="addEditCustName">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Phone</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" ng-model="addEditCustPhone">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Email address</label>
-                                                <input type="email" class="form-control">
+                                                <input type="email" class="form-control" ng-model="addEditCustEmail">
                                             </div>
                                         </div>
                                     </div>
@@ -147,7 +147,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Adress</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" ng-model="addEditCustAddress">
                                             </div>
                                         </div>
                                     </div>
@@ -155,23 +155,23 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">City</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" ng-model="addEditCustCity">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">State</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" ng-model="addEditCustState">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Postal Code</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" ng-model="addEditCustPinCode">
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary pull-right">Add/Edit Customer</button>
+                                    <button type="submit" class="btn btn-primary pull-right" ng-click="addEditCust()">Add/Edit Customer</button>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>
@@ -211,5 +211,43 @@
                 </p>
             </div>
         </footer>
+    </div>
+</div>
+
+<!-- Modal Core -->
+<div class="modal fade" id="addEditCustDBMessage" tabindex="-1" role="dialog" aria-labelledby="addCustDBMessageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="purple">
+                                    <h4 class="title">{{addEditCustName}} {{addEditCustTitle}}</h4>
+                                </div>
+                                <div class="card-content">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{addEditCustName}}{{addEditCustMessage}} !#!#</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Ok</button>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
     </div>
 </div>

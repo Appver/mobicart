@@ -429,18 +429,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
 
-        $scope.addCust = function() {
-            $scope.cusName
-            $scope.cusPhone
-            $scope.cusEmail
-            $scope.cusAddress
-            $scope.cusCity
-            $scope.cusState
-            $scope.cusPinCode
-            $http.get('/skm/addCustomerDetails/' + $scope.productName).then(function(response) {
-
-            }, function(response) {});
-        };
 
     })
     .controller('NotificationsCntlr', function($scope, $route, $routeParams, $location) {
@@ -488,8 +476,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
     })
-    .controller('AddCustomerCntlr', function($scope, $route, $routeParams, $location) {
+    .controller('AddCustomerCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
+        $scope.$http = $http;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
         $(document).ready(function() {
@@ -502,6 +491,65 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
+        $scope.addEditCust = function() {
+            $scope.addEditCustNameArray = [];
+            $http.get('/skm/customerDetails/' + $scope.addEditCustPhone).then(function(response) {
+                var res = response.data;
+                for (var i = 0, length = res.length; i < length; i++) {
+                    for (obj in res[i]) {
+                        $scope.addEditCustNameArray.push(res[i][obj]);
+                    }
+                }
+                if ($scope.addEditCustNameArray.length == 0 || $scope.addEditCustNameArray == undefined) {
+                    $scope.addEditCustId = [];
+                    $http.get('/skm/getCustomerId/').then(function(response) {
+                        var res = response.data;
+                        console.log(res);
+                        for (var i = 0, length = res.length; i < length; i++) {
+                            for (obj in res[i]) {
+                                $scope.addEditCustId.push(res[i][obj]);
+                            }
+                        }
+                        if ($scope.addEditCustId.length != 0 && $scope.addEditCustNameArray != undefined) {
+                            var newAddEditCustId = 'KMCUS' + (parseInt($scope.addEditCustId[0].substring(5, 6)) + 1);
+                            if (newAddEditCustId.length != 0) {
+                                $scope.addEditCustId = [];
+                            }
+                            var currentDate = '2017-11-27';
+                            $http.get('/skm/addNewCustomer/' + newAddEditCustId + '/' + $scope.addEditCustName + '/' + $scope.addEditCustPhone +
+                                '/' + $scope.addEditCustEmail + '/' + $scope.addEditCustAddress + '/' + $scope.addEditCustCity +
+                                '/' + $scope.addEditCustState + '/' + $scope.addEditCustPinCode + '/' + currentDate + '/' + $scope.addEditCustPhone).then(function(response) {
+                                $scope.addEditCustomerName = $scope.addEditCustName;
+                                if (response.data.affectedRows == 1) {
+                                    $scope.addEditCustTitle = "Added";
+                                    $scope.addEditCustMessage = ", Added Successfully.";
+                                } else {
+                                    $scope.addEditCustTitle = "Failed";
+                                    $scope.addEditCustMessage = ", Added Failed. Please try again.";
+                                }
+                                $("#addEditCustDBMessage").modal();
+                            }, function(response) {});
+                        }
+                    }, function(response) {});
+                } else {
+                    var newAddEditCustId = $scope.addEditCustNameArray[0];
+                    var currentDate = '2017-11-27';
+                    $http.get('/skm/addEditCustomer/' + newAddEditCustId + '/' + $scope.addEditCustName + '/' + $scope.addEditCustPhone +
+                        '/' + $scope.addEditCustEmail + '/' + $scope.addEditCustAddress + '/' + $scope.addEditCustCity +
+                        '/' + $scope.addEditCustState + '/' + $scope.addEditCustPinCode + '/' + currentDate + '/' + $scope.addEditCustPhone).then(function(response) {
+                        $scope.addEditCustomerName = $scope.addEditCustName;
+                        if (response.data.affectedRows == 1) {
+                            $scope.addEditCustTitle = "Updated";
+                            $scope.addEditCustMessage = ", Updated Successfully.";
+                        } else {
+                            $scope.addEditCustTitle = "Updation Failed";
+                            $scope.addEditCustMessage = ", Updation Failed. Please try again.";
+                        }
+                        $("#addEditCustDBMessage").modal();
+                    }, function(response) {});
+                }
+            }, function(response) {});
+        };
     })
     .controller('LogoutCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
