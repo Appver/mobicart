@@ -487,7 +487,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary pull-right">Generate Bill</button>
+                                        <button type="submit" class="btn btn-primary pull-right" ng-click="generatePreviewBill();">Generate Bill</button>
                                         <div class="clearfix"></div>
                                     </form>
                                 </div>
@@ -767,6 +767,66 @@
                                     </form>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</div>
+
+
+<!-- Modal Core -->
+<div class="modal fade" id="previewBill" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">CASH/CERDIT BILL</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form>
+                                <div print-section>
+                                    <div class="row" style="border: 1px solid;">
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating"><label class="control-label" style="font-weight: bold;">KAVIYA Mobiles</label></div>
+                                            <div class="form-group label-floating"><label class="control-label">#324, SEKKAI ROAD,</label></div>
+                                            <div class="form-group label-floating"><label class="control-label">UDHAYAM LODGE(OPP),</label></div>
+                                            <div class="form-group label-floating"><label class="control-label">KARAIKUDI-630001.</label></div>
+                                            <div class="form-group label-floating"><label class="control-label" style="font-weight: bold;">Ph:9000123400, 90000012345</label></div>
+                                            <div class="form-group label-floating"><label class="control-label" style="font-weight: bold;">GSTIN: 33AKDPT2147GIZB</label></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">No of QTY :</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 1%;"></div>
+                                    <div class="row" style="border: 1px solid;">
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating"><label class="control-label" style="font-weight: bold;">KAVIYA Mobiles</label></div>
+                                            <div class="form-group label-floating"><label class="control-label">#324, SEKKAI ROAD,</label></div>
+                                            <div class="form-group label-floating"><label class="control-label">UDHAYAM LODGE(OPP),</label></div>
+                                            <div class="form-group label-floating"><label class="control-label">KARAIKUDI-630001.</label></div>
+                                            <div class="form-group label-floating"><label class="control-label" style="font-weight: bold;">Ph:9000123400, 90000012345</label></div>
+                                            <div class="form-group label-floating"><label class="control-label" style="font-weight: bold;">GSTIN: 33AKDPT2147GIZB</label></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">No of QTY :</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button print-btn type="button" class="btn btn-primary pull-right">Print</button>
+                                <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Back</button>
+                                <div class="clearfix"></div>
+                            </form>
                         </div>
                     </div>
                 </div>

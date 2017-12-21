@@ -1,4 +1,4 @@
-var app = angular.module('KaviyaMobiles', ['ngRoute']);
+var app = angular.module('KaviyaMobiles', ['ngRoute', 'AngularPrint']);
 
 app.run(function($rootScope) {
     $rootScope.isAdmin = false;
@@ -333,6 +333,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 }
             }
 
+        };
+
+        $scope.generatePreviewBill = function() {
+            $("#previewBill").modal();
         };
 
         function subGST(pPrice, pGST) {
