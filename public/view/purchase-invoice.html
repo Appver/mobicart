@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-image="../img/sidebar-1.jpg">
+    <div class="sidebar" data-color="purple" data-image="../assets/img/sidebar-1.jpg">
         <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -7,8 +7,8 @@
     -->
         <div class="logo">
             <a href="#!dashboard" class="simple-text">
-        Kaviya Mobiles
-    </a>
+            Kaviya Mobiles
+        </a>
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
@@ -45,7 +45,7 @@
                 </li>
                 <li class="active" ng-show="isAdmin || isUser">
                     <a href="#!purchaseinvoice">
-                        <i class="material-icons">bubble_chart</i>
+                        <i class=" material-icons">bubble_chart</i>
                         <p>Purchase Invoice</p>
                     </a>
                 </li>
@@ -57,7 +57,7 @@
                 </li>
                 <li ng-show="isAdmin && !isUser">
                     <a href="#!notifications">
-                        <i class="material-icons">assessment</i>
+                        <i c lass="material-icons">assessment</i>
                         <p>Transcations</p>
                     </a>
                 </li>
@@ -80,7 +80,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a style="color: #555555 !important;" class="navbar-brand" href="#">Product Bar/QR Code Generator </a>
+                    <a style="color: #555555 !important;" class="navbar-brand" href="#"> Add Product </a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -118,73 +118,54 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
-                                <h4 class="title">Bar/QR Code Generator </h4>
-                                <p class="category">{{currDateTime}} Product Bar/QR Code Generator</p>
+                                <h4 class="title">Add Product</h4>
+                                <p class="category">{{currDateTime}} Add Product</p>
                             </div>
                             <div class="card-content">
-                                <div id="typography">
-                                    <div class="title">
-                                        <h2>Bar/QR Code Generator</h2>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Item</label>
+                                                <input  type="text" list="items" class="form-control" ng-model="item">
+                                                 <datalist id="items">
+                                                       <option ng-repeat="p in products" value="{{p.item_id}}">item : {{p.brand}} {{p.model}}</option>
+                                                </datalist>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">IMEI Number</label>
+                                                <input type="text" class="form-control" ng-model="imeiNumber">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
-                                        <div class="tim-typo">
-                                            <h1>
-                                                <span class="tim-note">Header 1</span>Bar/QR Code Generator </h1>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Description</label>
+                                                <input type="text" class="form-control" ng-model="description">
+                                            </div>
                                         </div>
-                                        <div class="tim-typo">
-                                            <h2>
-                                                <span class="tim-note">Header 2</span>Bar/QR Code Generator </h2>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Price</label>
+                                                <input type="text" class="form-control" ng-model="price">
+                                            </div>
                                         </div>
-                                        <div class="tim-typo">
-                                            <h3>
-                                                <span class="tim-note">Header 3</span>Bar/QR Code Generator </h3>
-                                        </div>
-                                        <div class="tim-typo">
-                                            <h4>
-                                                <span class="tim-note">Header 4</span>Bar/QR Code Generator </h4>
-                                        </div>
-                                        <div class="tim-typo">
-                                            <h5>
-                                                <span class="tim-note">Header 5</span>Bar/QR Code Generator </h5>
-                                        </div>
-                                        <div class="tim-typo">
-                                            <h6>
-                                                <span class="tim-note">Header 6</span>Bar/QR Code Generator </h6>
-                                        </div>
-                                        <div class="tim-typo">
-                                            <span class="tim-note">Muted Text</span>
-                                            <p class="text-muted">
-                                                Bar/QR Code Generator
-                                            </p>
-                                        </div>
-                                        <div class="tim-typo">
-                                            <span class="tim-note">Primary Text</span>
-                                            <p class="text-primary">
-                                                Bar/QR Code Generator </p>
-                                        </div>
-                                        <div class="tim-typo">
-                                            <span class="tim-note">Info Text</span>
-                                            <p class="text-info">
-                                                Bar/QR Code Generator </p>
-                                        </div>
-                                        <div class="tim-typo">
-                                            <span class="tim-note">Success Text</span>
-                                            <p class="text-success">
-                                                Bar/QR Code Generator </p>
-                                        </div>
-                                        <div class="tim-typo">
-                                            <span class="tim-note">Warning Text</span>
-                                            <p class="text-warning">
-                                                Bar/QR Code Generator
-                                            </p>
-                                        </div>
-                                        <div class="tim-typo">
-                                            <span class="tim-note">Danger Text</span>
-                                            <p class="text-danger">
-                                                Bar/QR Code Generator </p>
+                                         <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Tax</label>
+                                                <input  type="text" list="taxgroup" class="form-control" ng-model="tax">
+                                                 <datalist id="taxgroup">
+                                                       <option ng-repeat="t in taxes" value="{{t.group_id}}">Tax : {{t.group_name}} {{t.taxes}}</option>
+                                                </datalist>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <button type="submit" class="btn btn-primary pull-right" ng-click="addProduct()">Add Product</button>
+                                    <div class="clearfix"></div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -196,23 +177,23 @@
                 <nav class="pull-left">
                     <ul>
                         <li>
-                            <a href="coming-soon.html">
+                            <a href="#">
                                     Home
                                 </a>
                         </li>
                         <li>
-                            <a href="coming-soon.html">
+                            <a href="#">
                                     Company
                                 </a>
                         </li>
                         <li>
-                            <a href="coming-soon.html">
-                                    About Us
+                            <a href="#">
+                                    Portfolio
                                 </a>
                         </li>
                         <li>
-                            <a href="coming-soon.html">
-                                    Contact Us
+                            <a href="#">
+                                    Blog
                                 </a>
                         </li>
                     </ul>

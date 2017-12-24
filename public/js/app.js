@@ -555,6 +555,68 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
     })
+    .controller('PurchaseInvoiceCntlr',function($scope, $http, $route, $routeParams, $location) {
+     $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
+    
+        $http.get('/skm/brands').then(function(response) { 
+          var res = response.data;
+          $scope.products = angular.fromJson(res);                
+            
+    },function(response) {});
+    
+    var taxlist = [];
+    var taxes = '';
+    $http.get('/skm/taxGroup/').then(function(response) { 
+      var res = response.data;      
+      for (i =0; i < res.length; i++) {
+        var group_id = res[i].group_id;
+          var group_name = res[i].group_name;
+        $http.get('/skm/tax/'+group_id+'/').then(function(response) { 
+            var tax = response.data;
+            taxes = '';
+            for (j =0; j < tax.length; j++) {
+                taxes += tax[j].tax_name + ' ' + tax[j].percentage + '%  ' ;
+            }
+        taxlist.push({group_id: group_id, group_name:group_name, taxes : taxes});
+        
+        },function(response) {});   
+      }
+    },function(response) {});
+    
+    $scope.taxes = taxlist;
+    
+    $scope.addProduct = function() {
+          var data = {
+                item_id: $scope.item,
+                imei_number: $scope.imeiNumber,
+                details:$scope.description,
+                price:$scope.price,
+                tax_group:$scope.tax,
+                bar_code:'NA',
+                in_time:'12345'
+            };
+        
+        $http.post('/skm/productInsert/',data).then(function(response) {
+        output = response.data;
+         
+          data.sku_no = output.insertId;  
+         
+            $http.post('/skm/stockInsert/',data).then(function(response) {
+        
+        },function(response) {});
+            
+        },function(response) {});
+    }
+})
     .controller('LogoutCntlr', function($scope, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
