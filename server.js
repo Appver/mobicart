@@ -164,3 +164,14 @@ app.post('/skm/stockInsert/',function(req,res){
         res.send(result);
     });
 });
+ 
+// login
+app.post('/skm/login/',function(req,res){
+     let sql = "select u.uid,ur.rid from users u inner join users_roles ur on u.uid = ur.uid and u.username = '" + req.body.name + "' and u.password = '" + req.body.pass + "'";
+    
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+         
+});

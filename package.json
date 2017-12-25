@@ -9,8 +9,13 @@
     "author": "InnoSols",
     "license": "ISC",
     "dependencies": {
+        "angular": "^1.6.8",
+        "angular-animate": "^1.6.8",
+        "angularjs-toaster": "^2.2.0",
         "body-parser": "^1.18.2",
         "express": "^4.16.2",
-        "mysql": "^2.15.0"
+        "mysql": "^2.15.0",
+        "ng-cookies": "^1.0.2",
+        "toaster": "^0.1.2"
     }
 }

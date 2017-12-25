@@ -1,8 +1,22 @@
-var app = angular.module('KaviyaMobiles', ['ngRoute', 'AngularPrint']);
+var app = angular.module('KaviyaMobiles', ['ngAnimate','ngRoute', 'AngularPrint','ngCookies','toaster']);
 
-app.run(function($rootScope) {
-    $rootScope.isAdmin = false;
-    $rootScope.isUser = false;
+app.run(function($rootScope,$location,$cookieStore) {
+    $rootScope.user = $cookieStore.get('user');
+    if($rootScope.user) {
+        if($rootScope.user.uid) {
+            $rootScope.isUser = true;
+            if($rootScope.user.rid == 1) 
+                $rootScope.isAdmin = true;
+        }
+        else {
+            $rootScope.isUser = false;
+            $rootScope.isAdmin = false;
+        }        
+    }
+    else {
+       $location.path('/');  
+    }    
+            
     $rootScope.currYear = new Date().getFullYear();
     var d = new Date();
     var ampm = '';
@@ -63,40 +77,52 @@ app.config(function($routeProvider, $locationProvider) {
         });
 });
 
-app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routeParams, $location) {
-        $scope.$rootScope = $rootScope;
+app.directive('bindUnsafeHtml', [function () {
+            return {
+                template: "<span style='color:orange'>Orange directive text!</span>"
+            };
+        }])
+// The directive that will be dynamically rendered
+.directive('bindName', [function () {
+      return {
+          template: "<span style='color:orange'>Hi {{directiveData.name}}!</span>"
+      };
+}]);
+
+app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routeParams,  $http, $location,$cookieStore,toaster) {
+        
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
-        $scope.lUserName = '';
-        $scope.lPassword = '';
+        
+        
         $scope.loginValidate = function() {
-            if ($scope.lUserName != null && $scope.lUserName != '' &&
-                $scope.lPassword != null && $scope.lPassword != '') {
-                if ($scope.lUserName == 'admin' && $scope.lPassword == 'admin') {
+        var data = {name: $scope.lUserName, pass: $scope.lPassword};
+            $http.post('/skm/login/',data).then(function(response) {
+             var output = response.data;
+             if(output.length) {
+                var user = output[0];
+                // Put cookie
+                $cookieStore.put('user',user);
+                $rootScope.user = user;
+                if(user.rid == 1) {
                     $rootScope.isAdmin = true;
-                    $rootScope.isUser = false;
                     $location.path('/dashboard');
-                } else if ($scope.lUserName == 'user' && $scope.lPassword == 'user') {
-                    $rootScope.isAdmin = false;
-                    $rootScope.isUser = true;
-                    $location.path('/addcustomer');
-                } else {
-                    $rootScope.isAdmin = false;
-                    $rootScope.isUser = false;
-                    alert("No User Found!!");
-                    $location.path('/');
-                    $scope.lUserName = '';
-                    $scope.lPassword = '';
                 }
-            } else {
+                else {
+                    $rootScope.isUser = true;
+                    $location.path('/addcustomer'); 
+                }
+            } 
+            else {
                 $rootScope.isAdmin = false;
                 $rootScope.isUser = false;
-                alert("No User Found!!");
+                toaster.pop('error',"error", "Invalid crdentials");
+                
                 $location.path('/');
-                $scope.lUserName = '';
-                $scope.lPassword = '';
             }
+        },function(response) {});
+            
         };
     })
     .controller('AdminDashboardCntlr', function($scope, $route, $routeParams, $location) {
@@ -380,21 +406,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         };
     })
-    .controller('PurchaseInvoiceCntlr', function($scope, $route, $routeParams, $location) {
-        $scope.$route = $route;
-        $scope.$location = $location;
-        $scope.$routeParams = $routeParams;
-        $(document).ready(function() {
-            if (isWindows) {
-                // if we are on windows OS we activate the perfectScrollbar function
-                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
-
-                $('html').addClass('perfect-scrollbar-on');
-            } else {
-                $('html').addClass('perfect-scrollbar-off');
-            }
-        });
-    })
+    
     .controller('ProductSearchCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
@@ -555,7 +567,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
     })
-    .controller('PurchaseInvoiceCntlr',function($scope, $http, $route, $routeParams, $location) {
+    .controller('PurchaseInvoiceCntlr',function($scope, $http, $route, $routeParams, $location,toaster) {
      $(document).ready(function() {
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function
@@ -611,16 +623,21 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
           data.sku_no = output.insertId;  
          
             $http.post('/skm/stockInsert/',data).then(function(response) {
-        
+        toaster.pop("success","success","Product Added Successfully");
+         $scope.item = '';
+         $scope.imeiNumber = '';
+         $scope.description = '';
+         $scope.price = '';
+         $scope.tax = '';
+         
         },function(response) {});
             
         },function(response) {});
     }
 })
-    .controller('LogoutCntlr', function($scope, $route, $routeParams, $location) {
-        $scope.$route = $route;
+    .controller('LogoutCntlr', function($scope, $route, $routeParams, $location,$cookieStore) {
         $scope.$location = $location;
-        $scope.$routeParams = $routeParams;
+        $cookieStore.remove('user');    
         $location.path('/');
         $(document).ready(function() {
             if (isWindows) {
