@@ -826,20 +826,20 @@
                                             <td>SGST</td>
                                             <td>AMOUNT</td>
                                         </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>XXX</td>
-                                            <td>8512348</td>
-                                            <td>4579</td>
-                                            <td>1</td>
-                                            <td>6</td>
-                                            <td>547</td>
-                                            <td>6</td>
-                                            <td>547</td>
-                                            <td>8000</td>
+                                        <tr ng-repeat="product in salesProductList.pList">
+                                            <td>{{product.SNo}}</td>
+                                            <td>{{product.pName}}</td>
+                                            <td>{{product.pSkuno}}</td>
+                                            <td>{{product.pPrice}}</td>
+                                            <td>{{product.pQty}}</td>
+                                            <td>{{product.pCTaxPer}}</td>
+                                            <td>{{product.pCTax}}</td>
+                                            <td>{{product.pSTaxPer}}</td>
+                                            <td>{{product.pSTax}}</td>
+                                            <td>{{product.pAmount}}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="1">1</td>
+                                            <td colspan="1">{{itemsCount}}</td>
                                             <td colspan="4">E&O.E</td>
                                             <td colspan="1"></td>
                                             <td colspan="1"></td>

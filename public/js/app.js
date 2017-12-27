@@ -191,8 +191,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pPrice": null,
                 "pDis": null,
                 "pTax": null,
+                "pCTaxPer": null,
+                "pSTaxPer": null,
                 "pCTax": null,
-                "pSTax": null
+                "pSTax": null,
+                "pAmount": null
             }],
             "tDisc": 0,
             "tItems": 0,
@@ -362,8 +365,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pPrice": subGST(pPrice, pTax),
                 "pDis": pDis,
                 "pTax": pTax,
+                "pCTaxPer": pTax,
+                "pSTaxPer": pTax,
                 "pCTax": gstTax(pPrice, tax),
-                "pSTax": gstTax(pPrice, tax)
+                "pSTax": gstTax(pPrice, tax),
+                "pAmount": pAmountCal(gstTax(pPrice, tax), gstTax(pPrice, tax), subGST(pPrice, pTax))
             });
             $scope.salesProductList.subTotal = subTotalCal(subGST(pPrice, pTax));
             $scope.salesProductList.CGST = gstCal(gstTax(pPrice, tax), $scope.salesProductList.CGST);
@@ -375,6 +381,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.salesProductList.pList.splice(0, 1);
                 }
             }
+            $scope.itemsCount = $scope.salesProductList.pList.length;
             $scope.totalCash = $scope.salesProductList.Total;
             $scope.totalCashWords = convertNumberToWords($scope.totalCash)
 
@@ -383,6 +390,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.generatePreviewBill = function() {
             $("#previewBill").modal();
         };
+
+        function pAmountCal(cgstTax, sgstTax, price) {
+            return (cgstTax + sgstTax + price);
+        }
 
         function subGST(pPrice, pGST) {
             return (pPrice - (gstTax(pPrice, pGST)));
@@ -504,7 +515,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 }
                 words_string = words_string.split("  ").join(" ");
             }
-            return words_string;
+            return words_string.toUpperCase();
         }
     })
 
