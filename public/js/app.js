@@ -365,8 +365,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pPrice": subGST(pPrice, pTax),
                 "pDis": pDis,
                 "pTax": pTax,
-                "pCTaxPer": pTax,
-                "pSTaxPer": pTax,
+                "pCTaxPer": tax,
+                "pSTaxPer": tax,
                 "pCTax": gstTax(pPrice, tax),
                 "pSTax": gstTax(pPrice, tax),
                 "pAmount": pAmountCal(gstTax(pPrice, tax), gstTax(pPrice, tax), subGST(pPrice, pTax))
