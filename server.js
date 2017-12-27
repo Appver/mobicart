@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-//Create Connection - Remote1
 
+//Create Connection - Remote1
 const db = mysql.createConnection({
-	host : 'sql12.freesqldatabase.com',
-	user : 'sql12207175',
-	password : 'g5aN9Qj4Zu',
-	database : 'sql12207175'
+    host: 'sql12.freesqldatabase.com',
+    user: 'sql12207175',
+    password: 'g5aN9Qj4Zu',
+    database: 'sql12207175'
 });
 
 /*const db = mysql.createConnection({
@@ -149,42 +149,42 @@ app.get('/skm/tax/:gid/', function(req, res) {
     });
 });
 
-app.post('/skm/productInsert/',function(req,res){
-    let sql = "INSERT INTO purchase (item_id,imei_number,details,price,tax_group,bar_code,in_time) VALUES (" + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group +",'"+req.body.bar_code+"','"+req.body.in_time +"')";
-     let query = db.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send(result);
-    });
-});
-
-app.post('/skm/stockInsert/',function(req,res){
-    let sql = "INSERT INTO stock (sku_no, item_id,imei_number,details,price,tax_group,bar_code,in_time) VALUES ("  + req.body.sku_no + "," + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group +",'"+ req.body.bar_code +"','"+req.body.in_time +"')";
-     let query = db.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send(result);
-    });
-});
-
-app.post('/skm/productUpdate/',function(req,res){
-    let sql = "UPDATE purchase SET imei_number = '"+ req.body.imei_number +"' ,details ='"+ req.body.details +"', price="+req.body.price+" WHERE sku_no = " + req.body.sku_no;
+app.post('/skm/productInsert/', function(req, res) {
+    let sql = "INSERT INTO purchase (item_id,imei_number,details,price,tax_group,bar_code,in_time) VALUES (" + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group + ",'" + req.body.bar_code + "','" + req.body.in_time + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
-        let sqll = "UPDATE stock SET imei_number = '"+ req.body.imei_number +"' ,details ='"+ req.body.details +"', price="+req.body.price+" WHERE sku_no = " + req.body.sku_no;
+        res.send(result);
+    });
+});
+
+app.post('/skm/stockInsert/', function(req, res) {
+    let sql = "INSERT INTO stock (sku_no, item_id,imei_number,details,price,tax_group,bar_code,in_time) VALUES (" + req.body.sku_no + "," + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group + ",'" + req.body.bar_code + "','" + req.body.in_time + "')";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+app.post('/skm/productUpdate/', function(req, res) {
+    let sql = "UPDATE purchase SET imei_number = '" + req.body.imei_number + "' ,details ='" + req.body.details + "', price=" + req.body.price + " WHERE sku_no = " + req.body.sku_no;
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        let sqll = "UPDATE stock SET imei_number = '" + req.body.imei_number + "' ,details ='" + req.body.details + "', price=" + req.body.price + " WHERE sku_no = " + req.body.sku_no;
         let query = db.query(sqll, (err, result) => {
             if (err) throw err;
-                res.send(result);
+            res.send(result);
         });
     });
 });
 
- 
+
 // login
-app.post('/skm/login/',function(req,res){
-     let sql = "select u.uid,ur.rid from users u inner join users_roles ur on u.uid = ur.uid and u.username = '" + req.body.name + "' and u.password = '" + req.body.pass + "'";
-    
+app.post('/skm/login/', function(req, res) {
+    let sql = "select u.uid,ur.rid from users u inner join users_roles ur on u.uid = ur.uid and u.username = '" + req.body.name + "' and u.password = '" + req.body.pass + "'";
+
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
     });
-         
+
 });

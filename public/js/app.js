@@ -1,22 +1,20 @@
-var app = angular.module('KaviyaMobiles', ['ngAnimate','ngRoute', 'AngularPrint','ngCookies','toaster']);
+var app = angular.module('KaviyaMobiles', ['ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster']);
 
-app.run(function($rootScope,$location,$cookieStore) {
+app.run(function($rootScope, $location, $cookieStore) {
     $rootScope.user = $cookieStore.get('user');
-    if($rootScope.user) {
-        if($rootScope.user.uid) {
+    if ($rootScope.user) {
+        if ($rootScope.user.uid) {
             $rootScope.isUser = true;
-            if($rootScope.user.rid == 1) 
+            if ($rootScope.user.rid == 1)
                 $rootScope.isAdmin = true;
-        }
-        else {
+        } else {
             $rootScope.isUser = false;
             $rootScope.isAdmin = false;
-        }        
+        }
+    } else {
+        $location.path('/');
     }
-    else {
-       $location.path('/');  
-    }    
-            
+
     $rootScope.currYear = new Date().getFullYear();
     var d = new Date();
     var ampm = '';
@@ -77,52 +75,50 @@ app.config(function($routeProvider, $locationProvider) {
         });
 });
 
-app.directive('bindUnsafeHtml', [function () {
-            return {
-                template: "<span style='color:orange'>Orange directive text!</span>"
-            };
-        }])
-// The directive that will be dynamically rendered
-.directive('bindName', [function () {
-      return {
-          template: "<span style='color:orange'>Hi {{directiveData.name}}!</span>"
-      };
-}]);
+app.directive('bindUnsafeHtml', [function() {
+        return {
+            template: "<span style='color:orange'>Orange directive text!</span>"
+        };
+    }])
+    // The directive that will be dynamically rendered
+    .directive('bindName', [function() {
+        return {
+            template: "<span style='color:orange'>Hi {{directiveData.name}}!</span>"
+        };
+    }]);
 
-app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routeParams,  $http, $location,$cookieStore,toaster) {
-        
+app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routeParams, $http, $location, $cookieStore, toaster) {
+
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
-        
-        
+
+
         $scope.loginValidate = function() {
-        var data = {name: $scope.lUserName, pass: $scope.lPassword};
-            $http.post('/skm/login/',data).then(function(response) {
-             var output = response.data;
-             if(output.length) {
-                var user = output[0];
-                // Put cookie
-                $cookieStore.put('user',user);
-                $rootScope.user = user;
-                if(user.rid == 1) {
-                    $rootScope.isAdmin = true;
-                    $location.path('/dashboard');
+            var data = { name: $scope.lUserName, pass: $scope.lPassword };
+            $http.post('/skm/login/', data).then(function(response) {
+                var output = response.data;
+                if (output.length) {
+                    var user = output[0];
+                    // Put cookie
+                    $cookieStore.put('user', user);
+                    $rootScope.user = user;
+                    if (user.rid == 1) {
+                        $rootScope.isAdmin = true;
+                        $location.path('/dashboard');
+                    } else {
+                        $rootScope.isUser = true;
+                        $location.path('/addcustomer');
+                    }
+                } else {
+                    $rootScope.isAdmin = false;
+                    $rootScope.isUser = false;
+                    toaster.pop('error', "error", "Invalid crdentials");
+
+                    $location.path('/');
                 }
-                else {
-                    $rootScope.isUser = true;
-                    $location.path('/addcustomer'); 
-                }
-            } 
-            else {
-                $rootScope.isAdmin = false;
-                $rootScope.isUser = false;
-                toaster.pop('error',"error", "Invalid crdentials");
-                
-                $location.path('/');
-            }
-        },function(response) {});
-            
+            }, function(response) {});
+
         };
     })
     .controller('AdminDashboardCntlr', function($scope, $route, $routeParams, $location) {
@@ -406,8 +402,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         };
     })
-    
-    .controller('ProductSearchCntlr', function($scope, $http, $route, $routeParams, $location) {
+
+.controller('ProductSearchCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
@@ -567,8 +563,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
     })
-    .controller('PurchaseInvoiceCntlr',function($scope, $http, $route, $routeParams, $location,toaster) {
-     $(document).ready(function() {
+    .controller('PurchaseInvoiceCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
+        $(document).ready(function() {
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function
                 $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
@@ -578,66 +574,66 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
-    
-        $http.get('/skm/brands').then(function(response) { 
-          var res = response.data;
-          $scope.products = angular.fromJson(res);                
-            
-    },function(response) {});
-    
-    var taxlist = [];
-    var taxes = '';
-    $http.get('/skm/taxGroup/').then(function(response) { 
-      var res = response.data;      
-      for (i =0; i < res.length; i++) {
-        var group_id = res[i].group_id;
-          var group_name = res[i].group_name;
-        $http.get('/skm/tax/'+group_id+'/').then(function(response) { 
-            var tax = response.data;
-            taxes = '';
-            for (j =0; j < tax.length; j++) {
-                taxes += tax[j].tax_name + ' ' + tax[j].percentage + '%  ' ;
+
+        $http.get('/skm/brands').then(function(response) {
+            var res = response.data;
+            $scope.products = angular.fromJson(res);
+
+        }, function(response) {});
+
+        var taxlist = [];
+        var taxes = '';
+        $http.get('/skm/taxGroup/').then(function(response) {
+            var res = response.data;
+            for (i = 0; i < res.length; i++) {
+                var group_id = res[i].group_id;
+                var group_name = res[i].group_name;
+                $http.get('/skm/tax/' + group_id + '/').then(function(response) {
+                    var tax = response.data;
+                    taxes = '';
+                    for (j = 0; j < tax.length; j++) {
+                        taxes += tax[j].tax_name + ' ' + tax[j].percentage + '%  ';
+                    }
+                    taxlist.push({ group_id: group_id, group_name: group_name, taxes: taxes });
+
+                }, function(response) {});
             }
-        taxlist.push({group_id: group_id, group_name:group_name, taxes : taxes});
-        
-        },function(response) {});   
-      }
-    },function(response) {});
-    
-    $scope.taxes = taxlist;
-    
-    $scope.addProduct = function() {
-          var data = {
+        }, function(response) {});
+
+        $scope.taxes = taxlist;
+
+        $scope.addProduct = function() {
+            var data = {
                 item_id: $scope.item,
                 imei_number: $scope.imeiNumber,
-                details:$scope.description,
-                price:$scope.price,
-                tax_group:$scope.tax,
-                bar_code:'NA',
-                in_time:'12345'
+                details: $scope.description,
+                price: $scope.price,
+                tax_group: $scope.tax,
+                bar_code: 'NA',
+                in_time: '12345'
             };
-        
-        $http.post('/skm/productInsert/',data).then(function(response) {
-        output = response.data;
-         
-          data.sku_no = output.insertId;  
-         
-            $http.post('/skm/stockInsert/',data).then(function(response) {
-        toaster.pop("success","success","Product Added Successfully");
-         $scope.item = '';
-         $scope.imeiNumber = '';
-         $scope.description = '';
-         $scope.price = '';
-         $scope.tax = '';
-         
-        },function(response) {});
-            
-        },function(response) {});
-    }
-})
-    .controller('LogoutCntlr', function($scope, $route, $routeParams, $location,$cookieStore) {
+
+            $http.post('/skm/productInsert/', data).then(function(response) {
+                output = response.data;
+
+                data.sku_no = output.insertId;
+
+                $http.post('/skm/stockInsert/', data).then(function(response) {
+                    toaster.pop("success", "success", "Product Added Successfully");
+                    $scope.item = '';
+                    $scope.imeiNumber = '';
+                    $scope.description = '';
+                    $scope.price = '';
+                    $scope.tax = '';
+
+                }, function(response) {});
+
+            }, function(response) {});
+        }
+    })
+    .controller('LogoutCntlr', function($scope, $route, $routeParams, $location, $cookieStore) {
         $scope.$location = $location;
-        $cookieStore.remove('user');    
+        $cookieStore.remove('user');
         $location.path('/');
         $(document).ready(function() {
             if (isWindows) {
