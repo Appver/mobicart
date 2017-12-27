@@ -186,7 +186,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Tax Group</label>
-                                                    <input  type="text" list="items" class="form-control" ng-model="taxGroup">
+                                                    <input  type="text" class="form-control" ng-model="taxGroup">
                                                 </div>
                                             </div>
                                             <div class="col-md-4 col-md-offset-2">
@@ -217,18 +217,18 @@
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Tax Group</label>
-                                                    <input  type="text" list="tgroup" class="form-control" ng-model="tgroup">
-                                                    <datalist id="tgroup">
-                                                       <option ng-repeat="t in tgroup" value="{{t.group_id}}">{{t.group_name}}</option>
+                                                    <input  type="text" list="tgroupList" class="form-control" ng-model="tgroup">
+                                                    <datalist id="tgroupList">
+                                                       <option ng-repeat="t in tgroupList" value="{{t.group_id}}">{{t.group_name}}</option>
                                                     </datalist>
                                                 </div>
                                             </div> 
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Tax</label>
-                                                    <input  type="text" list="ttax" class="form-control" ng-model="ttax">
-                                                    <datalist id="ttax">
-                                                       <option ng-repeat="tt in ttax" value="{{tt.tax_id}}">{{tt.tax_name}}</option>
+                                                    <input  type="text" list="ttaxList" class="form-control" ng-model="ttax">
+                                                    <datalist id="ttaxList">
+                                                       <option ng-repeat="tt in ttaxList" value="{{tt.tax_id}}">{{tt.tax_name}}   {{tt.percentage}}%</option>
                                                     </datalist>
                                                 </div>
                                             </div>

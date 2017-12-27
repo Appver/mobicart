@@ -173,6 +173,49 @@ app.get('/skm/brand/', function(req, res) {
     });
 });
 
+app.get('/skm/taxgroup/', function(req, res) {
+    let sql = "select * from tax_group";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+app.get('/skm/tax/', function(req, res) {
+    let sql = "select * from tax";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+app.post('/skm/taxgroupInsert/', function(req, res) {
+    let sql = "INSERT INTO tax_group (group_name) VALUES ('" + req.body.group_name + "')";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+            res.send(result);
+         
+    });
+});
+
+app.post('/skm/taxInsert/', function(req, res) {
+    let sql = "INSERT INTO tax (tax_name,percentage) VALUES ('" + req.body.tax_name + "',"+req.body.percentage+")";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+            res.send(result);
+         
+    });
+});
+
+app.post('/skm/taxdetailsInsert/', function(req, res) {
+    let sql = "INSERT INTO store_tax (group_id, tax_id) VALUES (" + req.body.group_id + ","+req.body.tax_id+")";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+            res.send(result);
+         
+    });
+});
+
 app.post('/skm/brandInsert/', function(req, res) {
     let sql = "INSERT INTO brand (brand) VALUES ('" + req.body.brand + "')";
     let query = db.query(sql, (err, result) => {
