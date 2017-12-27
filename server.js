@@ -164,6 +164,32 @@ app.post('/skm/stockInsert/', function(req, res) {
     });
 });
 
+// get all mobile brand
+app.get('/skm/brand/', function(req, res) {
+    let sql = "select * from brand";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+app.post('/skm/brandInsert/', function(req, res) {
+    let sql = "INSERT INTO brand (brand) VALUES ('" + req.body.brand + "')";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+            res.send(result);
+         
+    });
+});
+
+app.post('/skm/modelInsert/', function(req, res) {
+    let sql = "INSERT INTO model (bid, model) VALUES (" + req.body.bid + ",'" + req.body.model + "')";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 app.post('/skm/productUpdate/', function(req, res) {
     let sql = "UPDATE purchase SET imei_number = '" + req.body.imei_number + "' ,details ='" + req.body.details + "', price=" + req.body.price + " WHERE sku_no = " + req.body.sku_no;
     let query = db.query(sql, (err, result) => {

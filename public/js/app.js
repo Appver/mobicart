@@ -69,6 +69,10 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: '/view/add-customer.html',
             controller: 'AddCustomerCntlr'
         })
+        .when('/preference', {
+            templateUrl: '/view/preference.html',
+            controller: 'PreferenceCntlr'
+        })
         .when('/logout', {
             templateUrl: '/view/signin-page.html',
             controller: 'LogoutCntlr'
@@ -661,6 +665,51 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         }
     })
+ .controller('PreferenceCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
+    
+      $http.get('/skm/brand/').then(function(response) {
+            var res = response.data;
+            $scope.brandList = angular.fromJson(res);
+            console.log($scope.brandList);
+          }, function(response) {});
+
+    
+      $scope.addBrand = function() {
+            var data = {
+                brand: $scope.brand
+            };
+            $http.post('/skm/brandInsert/', data).then(function(response) {
+                toaster.pop("success", "success", "Brand Added Successfully");
+                $scope.brand = '';
+                $http.get('/skm/brand/').then(function(response) {
+                    var res = response.data;
+                    $scope.brandList = angular.fromJson(res);
+                }, function(response) {});
+            }, function(response) {});
+      }
+      
+      $scope.addModel = function() {
+            var data = {
+                bid: $scope.mbrand,
+                model: $scope.model
+            };
+            $http.post('/skm/modelInsert/', data).then(function(response) {
+                toaster.pop("success", "success", "Model Added Successfully");
+                $scope.mbrand = '';
+                $scope.model = '';
+            }, function(response) {});
+      }
+})
     .controller('LogoutCntlr', function($scope, $route, $routeParams, $location, $cookieStore) {
         $scope.$location = $location;
         $cookieStore.remove('user');
