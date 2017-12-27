@@ -272,9 +272,19 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.custId = [];
             }
             var currentDate = '2017-11-27';
-            $http.get('/skm/addNewCustomer/' + newCustId + '/' + $scope.addCustName + '/' + $scope.addCustPhone +
-                '/' + $scope.addCustEmail + '/' + $scope.addCustAddress + '/' + $scope.addCustCity +
-                '/' + $scope.addCustState + '/' + $scope.addCustPinCode + '/' + currentDate + '/' + $scope.addCustPhone).then(function(response) {
+            var addNewCustData = {
+                id: newCustId,
+                name: $scope.addCustName,
+                phone: $scope.addCustPhone,
+                email: $scope.addCustEmail,
+                address: $scope.addCustAddress,
+                city: $scope.addCustCity,
+                state: $scope.addCustState,
+                pincode: $scope.addCustPinCode,
+                created: currentDate,
+                altphone: $scope.addCustPhone
+            }
+            $http.post('/skm/addNewCustomer/', addNewCustData).then(function(response) {
                 $scope.customerName = $scope.addCustName;
                 if (response.data.affectedRows == 1) {
                     $scope.custTitle = "Added";
@@ -528,9 +538,19 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                                 $scope.addEditCustId = [];
                             }
                             var currentDate = '2017-11-27';
-                            $http.get('/skm/addNewCustomer/' + newAddEditCustId + '/' + $scope.addEditCustName + '/' + $scope.addEditCustPhone +
-                                '/' + $scope.addEditCustEmail + '/' + $scope.addEditCustAddress + '/' + $scope.addEditCustCity +
-                                '/' + $scope.addEditCustState + '/' + $scope.addEditCustPinCode + '/' + currentDate + '/' + $scope.addEditCustPhone).then(function(response) {
+                            var addEditCustData = {
+                                id: newAddEditCustId,
+                                name: $scope.addEditCustName,
+                                phone: $scope.addEditCustPhone,
+                                email: $scope.addEditCustEmail,
+                                address: $scope.addEditCustAddress,
+                                city: $scope.addEditCustCity,
+                                state: $scope.addEditCustState,
+                                pincode: $scope.addEditCustPinCode,
+                                created: currentDate,
+                                altphone: $scope.addEditCustPhone
+                            }
+                            $http.post('/skm/addNewCustomer/', addEditCustData).then(function(response) {
                                 $scope.addEditCustomerName = $scope.addEditCustName;
                                 if (response.data.affectedRows == 1) {
                                     $scope.addEditCustTitle = "Added";
@@ -546,9 +566,19 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 } else {
                     var newAddEditCustId = $scope.addEditCustNameArray[0];
                     var currentDate = '2017-11-27';
-                    $http.get('/skm/addEditCustomer/' + newAddEditCustId + '/' + $scope.addEditCustName + '/' + $scope.addEditCustPhone +
-                        '/' + $scope.addEditCustEmail + '/' + $scope.addEditCustAddress + '/' + $scope.addEditCustCity +
-                        '/' + $scope.addEditCustState + '/' + $scope.addEditCustPinCode + '/' + currentDate + '/' + $scope.addEditCustPhone).then(function(response) {
+                    var editCustData = {
+                        id: newAddEditCustId,
+                        name: $scope.addEditCustName,
+                        phone: $scope.addEditCustPhone,
+                        email: $scope.addEditCustEmail,
+                        address: $scope.addEditCustAddress,
+                        city: $scope.addEditCustCity,
+                        state: $scope.addEditCustState,
+                        pincode: $scope.addEditCustPinCode,
+                        created: currentDate,
+                        altphone: $scope.addEditCustPhone
+                    }
+                    $http.post('/skm/addEditCustomer/', editCustData).then(function(response) {
                         $scope.addEditCustomerName = $scope.addEditCustName;
                         if (response.data.affectedRows == 1) {
                             $scope.addEditCustTitle = "Updated";

@@ -102,8 +102,8 @@ app.get('/skm/getCustomerId/', function(req, res) {
 });
 
 // Add new customer id
-app.get('/skm/addNewCustomer/:id/:name/:phone/:email/:address/:city/:state/:pincode/:created/:altphone', function(req, res) {
-    let sql = "INSERT INTO km_customer_details (km_cust_id, name, phone, email, address, city, state, pincode, created_date, alt_phone) VALUES ('" + req.params.id + "', '" + req.params.name + "', '" + req.params.phone + "', '" + req.params.email + "', '" + req.params.address + "', '" + req.params.city + "', '" + req.params.state + "', '" + req.params.pincode + "','" + req.params.created + "','" + req.params.altphone + "')";
+app.post('/skm/addNewCustomer/', function(req, res) {
+    let sql = "INSERT INTO km_customer_details (km_cust_id, name, phone, email, address, city, state, pincode, created_date, alt_phone) VALUES ('" + req.body.id + "', '" + req.body.name + "', '" + req.body.phone + "', '" + req.body.email + "', '" + req.body.address + "', '" + req.body.city + "', '" + req.body.state + "', '" + req.body.pincode + "','" + req.body.created + "','" + req.body.altphone + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         console.log("rows affected in km_customer_details : " + result.affectedRows);
@@ -112,9 +112,8 @@ app.get('/skm/addNewCustomer/:id/:name/:phone/:email/:address/:city/:state/:pinc
 });
 
 // Edit new customer id
-app.get('/skm/addEditCustomer/:id/:name/:phone/:email/:address/:city/:state/:pincode/:created/:altphone', function(req, res) {
-    console.log("/skm/addEditCustomer/ : " + req.params.id);
-    let sql = "UPDATE km_customer_details SET km_cust_id = '" + req.params.id + "', name = '" + req.params.name + "', phone = '" + req.params.phone + "', email =  '" + req.params.email + "', address =  '" + req.params.address + "', city = '" + req.params.city + "', state = '" + req.params.state + "', pincode = '" + req.params.pincode + "', created_date = '" + req.params.created + "', alt_phone = '" + req.params.altphone + "' WHERE km_cust_id = '" + req.params.id + "'";
+app.post('/skm/addEditCustomer/', function(req, res) {
+    let sql = "UPDATE km_customer_details SET km_cust_id = '" + req.body.id + "', name = '" + req.body.name + "', phone = '" + req.body.phone + "', email =  '" + req.body.email + "', address =  '" + req.body.address + "', city = '" + req.body.city + "', state = '" + req.body.state + "', pincode = '" + req.body.pincode + "', created_date = '" + req.body.created + "', alt_phone = '" + req.body.altphone + "' WHERE km_cust_id = '" + req.body.id + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         console.log("rows affected in km_customer_details : " + result.affectedRows);
