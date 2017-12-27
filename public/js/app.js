@@ -293,6 +293,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 if (response.data.affectedRows == 1) {
                     $scope.custTitle = "Added";
                     $scope.custMessage = ", Added Successfully.";
+                    $scope.cusName = $scope.addCustName;
+                    $scope.cusPhone = $scope.addCustPhone;
+                    $scope.cusEmail = $scope.addCustEmail;
+                    $scope.cusAddress = $scope.addCustAddress;
+                    $scope.cusCity = $scope.addCustCity;
+                    $scope.cusState = $scope.addCustState;
+                    $scope.cusPinCode = $scope.addCustPinCode;
                 } else {
                     $scope.custTitle = "Failed";
                     $scope.custMessage = ", Added Failed. Please try again.";
@@ -665,7 +672,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         }
     })
- .controller('PreferenceCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
+    .controller('PreferenceCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
         $(document).ready(function() {
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function
@@ -676,27 +683,27 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
-    
-      $http.get('/skm/brand/').then(function(response) {
+
+        $http.get('/skm/brand/').then(function(response) {
             var res = response.data;
             $scope.brandList = angular.fromJson(res);
-            
-          }, function(response) {});
 
-    $http.get('/skm/taxgroup/').then(function(response) {
+        }, function(response) {});
+
+        $http.get('/skm/taxgroup/').then(function(response) {
             var res = response.data;
             $scope.tgroupList = angular.fromJson(res);
-            
-          }, function(response) {});
-    
-    $http.get('/skm/tax/').then(function(response) {
+
+        }, function(response) {});
+
+        $http.get('/skm/tax/').then(function(response) {
             var res = response.data;
             $scope.ttaxList = angular.fromJson(res);
-            
-          }, function(response) {});
-    
-    
-      $scope.addBrand = function() {
+
+        }, function(response) {});
+
+
+        $scope.addBrand = function() {
             var data = {
                 brand: $scope.brand
             };
@@ -708,9 +715,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.brandList = angular.fromJson(res);
                 }, function(response) {});
             }, function(response) {});
-      }
-      
-      $scope.addModel = function() {
+        }
+
+        $scope.addModel = function() {
             var data = {
                 bid: $scope.mbrand,
                 model: $scope.model
@@ -720,25 +727,25 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.mbrand = '';
                 $scope.model = '';
             }, function(response) {});
-      }
-      
-      $scope.addTaxGroup = function() {
-          var data = {
+        }
+
+        $scope.addTaxGroup = function() {
+            var data = {
                 group_name: $scope.taxGroup
             };
             $http.post('/skm/taxgroupInsert/', data).then(function(response) {
                 toaster.pop("success", "success", "Tax Group Added Successfully");
-                $scope.taxGroup = ''; 
+                $scope.taxGroup = '';
                 $http.get('/skm/taxgroup/').then(function(response) {
-            var res = response.data;
-            $scope.tgroupList = angular.fromJson(res);
-            
-          }, function(response) {});
-    
-      }, function(response) {});
-    }
-     $scope.addTax = function() {
-          var data = {
+                    var res = response.data;
+                    $scope.tgroupList = angular.fromJson(res);
+
+                }, function(response) {});
+
+            }, function(response) {});
+        }
+        $scope.addTax = function() {
+            var data = {
                 tax_name: $scope.tax,
                 percentage: $scope.percentage
             };
@@ -747,16 +754,16 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.tax = '';
                 $scope.percentage = '';
                 $http.get('/skm/tax/').then(function(response) {
-            var res = response.data;
-            $scope.ttaxList = angular.fromJson(res);
-            
-          }, function(response) {});
-    
-      }, function(response) {});
-    }
-     
-     $scope.addTg = function() {
-          var data = {
+                    var res = response.data;
+                    $scope.ttaxList = angular.fromJson(res);
+
+                }, function(response) {});
+
+            }, function(response) {});
+        }
+
+        $scope.addTg = function() {
+            var data = {
                 group_id: $scope.tgroup,
                 tax_id: $scope.ttax
             };
@@ -764,9 +771,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 toaster.pop("success", "success", "Tax Details Added Successfully");
                 $scope.tgroup = '';
                 $scope.ttax = '';
-      }, function(response) {});
-    }
-})
+            }, function(response) {});
+        }
+    })
     .controller('LogoutCntlr', function($scope, $route, $routeParams, $location, $cookieStore) {
         $scope.$location = $location;
         $cookieStore.remove('user');
