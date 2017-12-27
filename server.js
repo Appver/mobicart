@@ -164,6 +164,19 @@ app.post('/skm/stockInsert/',function(req,res){
         res.send(result);
     });
 });
+
+app.post('/skm/productUpdate/',function(req,res){
+    let sql = "UPDATE purchase SET imei_number = '"+ req.body.imei_number +"' ,details ='"+ req.body.details +"', price="+req.body.price+" WHERE sku_no = " + req.body.sku_no;
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        let sqll = "UPDATE stock SET imei_number = '"+ req.body.imei_number +"' ,details ='"+ req.body.details +"', price="+req.body.price+" WHERE sku_no = " + req.body.sku_no;
+        let query = db.query(sqll, (err, result) => {
+            if (err) throw err;
+                res.send(result);
+        });
+    });
+});
+
  
 // login
 app.post('/skm/login/',function(req,res){
