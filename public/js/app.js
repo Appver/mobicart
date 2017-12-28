@@ -167,6 +167,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.isSearchCust = false;
         $scope.isAdd = false;
         $scope.isValueLoad = false;
+        $scope.isModel = false;
+        $scope.isProduct = false;
+        $scope.isProductDetails = false;
         $scope.isAddProduct = false;
         $scope.customerName = '';
         $scope.isTotDis = false;
@@ -206,19 +209,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             "SGST": 0,
             "payType": null,
             "duePay": null
-        };
-
-
-        $scope.productSearch = function() {
-            $scope.productNameArray = [];
-            $http.get('/skm/productSearch/').then(function(response) {
-                var res = response.data;
-                for (var i = 0, length = res.length; i < length; i++) {
-                    for (obj in res[i]) {
-                        $scope.productNameArray.push(res[i][obj]);
-                    }
-                }
-            }, function(response) {});
         };
 
         $scope.isValidCustPhone = function() {
@@ -311,45 +301,103 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
 
-        $scope.productDetails = function() {
-            var searchFlag = false;
-            $scope.productDetail = [];
-            $scope.productDis = '';
-            $scope.productTax = '';
-            $scope.productQTY = '';
-            $scope.productPrice = '';
-            $scope.productSkuno = '';
-            $scope.productDesc = '';
-            for (var i = 0, length = $scope.productNameArray.length; i < length; i++) {
-                if ($scope.productName == $scope.productNameArray[i]) {
-                    searchFlag = true;
-                }
-            }
-            if (searchFlag) {
-                searchFlag = false;
-                $http.get('/skm/productDetails/' + $scope.productName).then(function(response) {
-                    var res = response.data;
-                    for (var i = 0, length = res.length; i < length; i++) {
-                        for (obj in res[i]) {
-                            $scope.productDetail.push(res[i][obj]);
-                        }
-                    }
-                    if ($scope.productDetail.length > 0) {
-                        $scope.isValueLoad = true;
-                        $scope.isAdd = true;
-                        $scope.productDesc = $scope.productDetail[2];
-                        $scope.productSkuno = $scope.productDetail[0];
-                        $scope.productPrice = $scope.productDetail[3];
-                        $scope.productQTY = 1;
-                        $scope.productDis = 0;
-                        $scope.productTax = $scope.productDetail[4];
-                    }
-                }, function(response) {});
-            }
+        $scope.brandSearch = function() {
+            $http.get('/skm/brandSearch/').then(function(response) {
+                var res = response.data;
+                $scope.brandNameArray = angular.fromJson(res);
+            }, function(response) {});
         };
 
-        $scope.changePrice = function() {
-            $scope.productPrice = $scope.productPrice * $scope.productQTY;
+        $scope.modelDetails = function() {
+            var brandId = {
+                id: $scope.brandId
+            }
+            $http.post('/skm/modelSearch/', brandId).then(function(response) {
+                var res = response.data;
+                $scope.modelDetailArray = angular.fromJson(res);
+                if ($scope.modelDetailArray.length >= 1) {
+                    $scope.isModel = true;
+                    $scope.isProduct = false;
+                    $scope.isValueLoad = false;
+                } else {
+                    $scope.isModel = false;
+                    $scope.isProduct = false;
+                    $scope.isValueLoad = false;
+                }
+            }, function(response) {});
+        };
+
+        $scope.productDetails = function() {
+            var modelId = {
+                id: $scope.modelId
+            }
+            $http.post('/skm/productSearch/', modelId).then(function(response) {
+                var res = response.data;
+                $scope.productArray = angular.fromJson(res);
+                if ($scope.productArray.length >= 1) {
+                    $scope.isModel = true;
+                    $scope.isProduct = true;
+                    $scope.isValueLoad = false;
+                } else {
+                    $scope.isModel = true;
+                    $scope.isProduct = false;
+                    $scope.isValueLoad = false;
+                }
+            }, function(response) {});
+        };
+
+        $scope.productSearch = function() {
+            $scope.productDetail = [];
+            $scope.productTaxDetail = [];
+            $scope.productSkuno = '';
+            $scope.productName = '';
+            $scope.productDis = '';
+            $scope.productTax = '';
+            $scope.productPrice = '';
+            var sId = {
+                id: $scope.sid
+            }
+            $http.post('/skm/productDetails/', sId).then(function(response) {
+                var res = response.data;
+                $scope.productDetailsArray = angular.fromJson(res);
+
+                for (var i = 0, length = res.length; i < length; i++) {
+                    for (obj in res[i]) {
+                        $scope.productDetail.push(res[i][obj]);
+                    }
+                }
+                console.log($scope.productDetail);
+                if ($scope.productDetail.length > 0) {
+                    $scope.productSkuno = $scope.productDetail[1];
+                    $scope.productName = '';
+                    $scope.productPrice = $scope.productDetail[5];
+                    $scope.productDis = $scope.productDetail[6];
+                    var taxGrp = {
+                        grpid: $scope.productDetail[7]
+                    }
+                    $http.post('/skm/productTaxDetails/', taxGrp).then(function(response) {
+                        var res = response.data;
+                        for (var i = 0, length = res.length; i < length; i++) {
+                            for (obj in res[i]) {
+                                $scope.productTaxDetail.push(res[i][obj]);
+                            }
+                        }
+                        $scope.productTax = $scope.productTaxDetail[2];
+                    }, function(response) {});
+
+                }
+                if ($scope.productDetailsArray != null || $scope.productDetailsArray != undefined || $scope.productDetailsArray != '') {
+                    $scope.isModel = true;
+                    $scope.isProduct = true;
+                    $scope.isValueLoad = true;
+                    $scope.isAdd = true;
+                } else {
+                    $scope.isModel = true;
+                    $scope.isProduct = true;
+                    $scope.isValueLoad = false;
+                    $scope.isAdd = false;
+                }
+            }, function(response) {});
 
         };
 
@@ -385,6 +433,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.totalCash = $scope.salesProductList.Total;
             $scope.totalCashWords = convertNumberToWords($scope.totalCash)
 
+        };
+
+        $scope.changePrice = function() {
+            $scope.productPrice = $scope.productPrice * $scope.productQTY;
         };
 
         $scope.generatePreviewBill = function() {
@@ -632,7 +684,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.addEditCustId = [];
                     $http.get('/skm/getCustomerId/').then(function(response) {
                         var res = response.data;
-                        console.log(res);
                         for (var i = 0, length = res.length; i < length; i++) {
                             for (obj in res[i]) {
                                 $scope.addEditCustId.push(res[i][obj]);

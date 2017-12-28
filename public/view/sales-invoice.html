@@ -156,60 +156,36 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <div class="form-group label-floating" ng-init="productSearch()">
-                                                    <label class="control-label">Product Name</label>
-                                                    <input type="text" class="form-control" ng-model="productName" list="productNameList" ng-change="productDetails()">
-                                                    <datalist id="productNameList">
-                                                        <option ng-repeat="productName in productNameArray track by $index" value="{{productName}}">
-                                                            {{productName}}
-                                                        </option>
-                                                    </datalist>
+                                                <div class="form-group label-floating" ng-init="brandSearch()">
+                                                    <label class="control-label">Brand</label>
+                                                    <div>
+                                                        <select class="form-control" ng-model="brandId" ng-change="modelDetails()">
+                                                            <option ng-repeat="brandName in brandNameArray track by $index" value="{{brandName.bid}}">{{brandName.brand}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Model</label>
+                                                    <div>
+                                                        <select ng-disabled="isModel !== true" class="form-control" ng-model="modelId" ng-change="productDetails()">
+                                                            <option ng-repeat="modelDetail in modelDetailArray track by $index" value="{{modelDetail.item_id}}">{{modelDetail.model}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Product IMEI</label>
+                                                    <div>
+                                                        <select ng-disabled="isProduct !== true" class="form-control" ng-model="sid" ng-change="productSearch()">
+                                                            <option ng-repeat="productDetails in productArray track by $index" value="{{productDetails.sid}}">{{productDetails.imei_number}}</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Description</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row" ng-show="isValueLoad">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">{{productDesc}}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">SKU No</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row" ng-show="isValueLoad">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">{{productSkuno}}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Quantity</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label" ng-show="isValueLoad">{{productQTY}}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-group label-floating" ng-show="isValueLoad">
-                                                    <button type="button" rel="tooltip" title="Eit Quantity" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#editQTY">
-                                                        <i class="material-icons">edit</i>
-                                                    </button>
-                                                </div>
-                                            </div>
                                             <div class="col-md-1">
                                                 <div class="row">
                                                     <div class="form-group label-floating">
@@ -246,10 +222,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-1"></div>
                                             <div class="col-md-1">
                                                 <div class="form-group label-floating">
-                                                    <button rel="tooltip" title="Add Product" class="btn btn-primary btn-fab btn-fab-mini btn-round" ng-disabled="isAdd !== true" ng-click="addProductList(productSkuno,productName, productDesc,
-                                                            productQTY, productPrice,productDis, productTax)">
+                                                    <button rel="tooltip" title="Add Product" class="btn btn-primary btn-fab 
+                                                    btn-fab-mini btn-round" ng-disabled="isAdd !== true" ng-click="addProductList()">
                                                         <i class="material-icons">add circle</i>
                                                     </button>
                                                 </div>
