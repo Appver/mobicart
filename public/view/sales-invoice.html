@@ -225,8 +225,9 @@
                                             <div class="col-md-1"></div>
                                             <div class="col-md-1">
                                                 <div class="form-group label-floating">
-                                                    <button rel="tooltip" title="Add Product" class="btn btn-primary btn-fab 
-                                                    btn-fab-mini btn-round" ng-disabled="isAdd !== true" ng-click="addProductList()">
+                                                    <button rel="tooltip" title="Add Product" class="btn btn-primary 
+                                                    btn-fab btn-fab-mini btn-round" ng-disabled="isAdd !== true" ng-click="addProductList(
+                                                        productSkuno, productName, productIMEI, productPrice, productDis, productTax)">
                                                         <i class="material-icons">add circle</i>
                                                     </button>
                                                 </div>
@@ -244,9 +245,7 @@
                                                             <thead class="text-primary">
                                                                 <th>No</th>
                                                                 <th>Product/Service</th>
-                                                                <th>SKU No</th>
-                                                                <th>Description</th>
-                                                                <th>QTY</th>
+                                                                <th>Product IMEI</th>
                                                                 <th>Unit Price</th>
                                                                 <th>Discount</th>
                                                                 <th>CGST</th>
@@ -257,23 +256,20 @@
                                                                 <tr ng-repeat="product in salesProductList.pList">
                                                                     <td>{{product.SNo}}</td>
                                                                     <td>{{product.pName}}</td>
-                                                                    <td>{{product.pSkuno}}</td>
-                                                                    <td>{{product.pDesc}}</td>
-                                                                    <td>{{product.pQty}}</td>
+                                                                    <td>{{product.pIMEI}}</td>
                                                                     <td>{{product.pPrice}}</td>
                                                                     <td>{{product.pDis}}</td>
                                                                     <td>{{product.pCTax}}</td>
                                                                     <td>{{product.pSTax}}</td>
                                                                     <td class="text-primary td-actions text-right">
-                                                                        <button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
+                                                                        <!--<button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
                                                                             <i class="material-icons">edit</i>
-                                                                        </button>
+                                                                        </button>-->
                                                                         <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
                                                                             <i class="material-icons">close</i>
                                                                         </button>
                                                                     </td>
                                                                 </tr>
-
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -283,6 +279,54 @@
 
                                         <div class="row">
                                             <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                        <input type="checkbox" checked>
+                                                                    </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group label-floating">
+                                                            <label class="control-label">Payment Type</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="radio">
+                                                            <label>
+                                                                    <input type="radio" name="optionsRadios" checked="true">
+                                                                    Cash
+                                                                </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="radio">
+                                                            <label>
+                                                                    <input type="radio" name="optionsRadios">
+                                                                    Cerdit
+                                                                </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="radio">
+                                                            <label>
+                                                                    <input type="radio" name="optionsRadios">
+                                                                    Cheque
+                                                                </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="radio">
+                                                            <label>
+                                                                    <input type="radio" name="optionsRadios">
+                                                                    Finace
+                                                                </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
@@ -297,7 +341,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row" ng-show="false">
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
                                                             <label>
@@ -316,21 +360,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-1">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox">
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Payment Type</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
+                                                <div class="row" ng-show="false">
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
                                                             <label>

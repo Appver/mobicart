@@ -189,6 +189,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "SNo": null,
                 "pSkuno": null,
                 "pName": null,
+                "pIMEI": null,
                 "pDesc": null,
                 "pQty": null,
                 "pPrice": null,
@@ -351,6 +352,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.productTaxDetail = [];
             $scope.productSkuno = '';
             $scope.productName = '';
+            $scope.productIMEI = '';
+            $scope.productDesc = '';
+            $scope.productQTY = '';
             $scope.productDis = '';
             $scope.productTax = '';
             $scope.productPrice = '';
@@ -370,6 +374,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 if ($scope.productDetail.length > 0) {
                     $scope.productSkuno = $scope.productDetail[1];
                     $scope.productName = '';
+                    $scope.productIMEI = $scope.productDetail[3];
                     $scope.productPrice = $scope.productDetail[5];
                     $scope.productDis = $scope.productDetail[6];
                     var taxGrp = {
@@ -401,15 +406,16 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         };
 
-        $scope.addProductList = function(pSkuno, pName, pDesc, pQty, pPrice, pDis, pTax) {
+        $scope.addProductList = function(pSkuno, pName, pIMEI, pPrice, pDis, pTax) {
             tax = taxSplitCal(pTax);
             $scope.salesProductList.tItems = $scope.salesProductList.tItems + 1;
             $scope.salesProductList['pList'].push({
                 "SNo": $scope.salesProductList.tItems,
                 "pSkuno": pSkuno,
                 "pName": pName,
-                "pDesc": pDesc,
-                "pQty": pQty,
+                "pIMEI": pIMEI,
+                "pDesc": '',
+                "pQty": '',
                 "pPrice": subGST(pPrice, pTax),
                 "pDis": pDis,
                 "pTax": pTax,
