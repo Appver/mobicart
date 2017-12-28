@@ -134,10 +134,15 @@
                                         <div class="col-md-6">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Item</label>
-                                                <input  type="text" list="items" class="form-control" ng-model="item">
+                                                <!--<input  type="text" list="items" class="form-control" ng-model="item">
                                                  <datalist id="items">
                                                        <option ng-repeat="p in products track by $index" value="{{p.item_id}}">item: {{p.brand}} {{p.model}}</option>
-                                                </datalist>
+                                                </datalist>-->
+                                                
+                                                <select class="form-control" ng-model="item">
+                                                <option ng-repeat="p in products track by $index" value="{{p.item_id}}">{{p.brand}} {{p.model}}</option>
+                                                </select>
+                                                
                                             </div>
                                         </div>
                                         <div class="col-md-6">
