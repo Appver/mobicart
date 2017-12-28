@@ -139,8 +139,8 @@
                                                        <option ng-repeat="p in products track by $index" value="{{p.item_id}}">item: {{p.brand}} {{p.model}}</option>
                                                 </datalist>-->
                                                 
-                                                <select class="form-control" ng-model="item">
-                                                <option ng-repeat="p in products track by $index" value="{{p.item_id}}">{{p.brand}} {{p.model}}</option>
+                                                <select class="form-control" ng-model="item" ng-change(alert(item);)>
+                                                <option ng-repeat="p in products" value="{{p.item_id}}">{{p.brand}} {{p.model}}</option>
                                                 </select>
                                                 
                                             </div>
