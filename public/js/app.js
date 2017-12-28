@@ -203,11 +203,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }],
             "tDisc": 0,
             "tItems": 0,
-            "subTotal": 0,
-            "Total": 0,
+            "subTotal": 0.00,
+            "Total": 0.00,
             "roundOff": 0,
-            "CGST": 0,
-            "SGST": 0,
+            "CGST": 0.00,
+            "SGST": 0.00,
             "payType": null,
             "duePay": null
         };
@@ -370,7 +370,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         $scope.productDetail.push(res[i][obj]);
                     }
                 }
-                console.log($scope.productDetail);
                 if ($scope.productDetail.length > 0) {
                     $scope.productSkuno = $scope.productDetail[1];
                     $scope.productName = '';
@@ -421,13 +420,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pTax": pTax,
                 "pCTaxPer": tax,
                 "pSTaxPer": tax,
-                "pCTax": gstTax(pPrice, tax),
-                "pSTax": gstTax(pPrice, tax),
-                "pAmount": pAmountCal(gstTax(pPrice, tax), gstTax(pPrice, tax), subGST(pPrice, pTax))
+                "pCTax": (gstTax(pPrice, pTax) / 2).toFixed(2),
+                "pSTax": (gstTax(pPrice, pTax) / 2).toFixed(2),
+                "pAmount": pAmountCal((gstTax(pPrice, pTax) / 2).toFixed(2), (gstTax(pPrice, pTax) / 2).toFixed(2), subGST(pPrice, pTax))
             });
-            $scope.salesProductList.subTotal = subTotalCal(subGST(pPrice, pTax));
-            $scope.salesProductList.CGST = gstCal(gstTax(pPrice, tax), $scope.salesProductList.CGST);
-            $scope.salesProductList.SGST = gstCal(gstTax(pPrice, tax), $scope.salesProductList.SGST);
+            var gstAmt = gstTax(pPrice, pTax);
+            var unitPrice = subGST(pPrice, pTax);
+            $scope.salesProductList.subTotal = subTotalCal(unitPrice);
+            $scope.salesProductList.CGST = gstCal((gstTax(pPrice, pTax) / 2).toFixed(2), $scope.salesProductList.CGST);
+            $scope.salesProductList.SGST = gstCal((gstTax(pPrice, pTax) / 2).toFixed(2), $scope.salesProductList.SGST);
             $scope.salesProductList.Total = totalCal();
             $scope.isAddProduct = true;
             if ($scope.salesProductList.tItems == 1) {
@@ -441,10 +442,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         };
 
-        $scope.changePrice = function() {
-            $scope.productPrice = $scope.productPrice * $scope.productQTY;
-        };
-
         $scope.generatePreviewBill = function() {
             $("#previewBill").modal();
         };
@@ -454,15 +451,17 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         }
 
         function subGST(pPrice, pGST) {
-            return (pPrice - (gstTax(pPrice, pGST)));
+            return (pPrice - (gstTax(pPrice, pGST))).toFixed(2);
         }
 
         function subTotalCal(price) {
-            return ($scope.salesProductList.subTotal + price);
+            var ret = $scope.salesProductList.subTotal + price;
+            return ret;
         }
 
         function gstCal(taxAmnt, gstAmnt) {
-            return (taxAmnt + gstAmnt);
+            var ret = taxAmnt + gstAmnt;
+            return ret;
         }
 
         function totalCal() {
@@ -475,7 +474,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         }
 
         function gstTax(price, tax) {
-            return Math.round(price * (tax / 100));
+            return (price / (100 + tax) * tax).toFixed(2);
         }
 
         $scope.totDis = function() {

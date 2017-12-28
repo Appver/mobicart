@@ -93,7 +93,7 @@ app.post('/skm/productSearch/', function(req, res) {
 
 // get all productDetails
 app.post('/skm/productDetails/', function(req, res) {
-    let sql = "SELECT * FROM stock  WHERE sid = '" + req.body.id + "'";
+    let sql = "SELECT * FROM stock  WHERE sid = '" + req.body.id + "' AND product_flag = 'Y'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
