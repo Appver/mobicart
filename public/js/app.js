@@ -186,6 +186,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             "pBillNo": null,
             "pList": [{
                 "SNo": null,
+                "custId": null,
                 "pSkuno": null,
                 "pName": null,
                 "pIMEI": null,
@@ -198,7 +199,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pSTaxPer": null,
                 "pCTax": null,
                 "pSTax": null,
-                "pAmount": null
+                "pAmount": null,
+                "soldPrice": null
             }],
             "tDisc": 0,
             "tItems": 0,
@@ -230,18 +232,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 }
                 if ($scope.customerNameArray.length == 0 || $scope.customerNameArray == undefined) {
                     $scope.isSearchCust = false;
-                    $scope.custId = [];
-                    $http.get('/skm/getCustomerId/').then(function(response) {
-                        var res = response.data;
-                        for (var i = 0, length = res.length; i < length; i++) {
-                            for (obj in res[i]) {
-                                $scope.custId.push(res[i][obj]);
-                            }
-                        }
-                    }, function(response) {});
                     $("#addCustomer").modal();
                 } else {
                     $scope.isSearchCust = true;
+                    $scope.cusID = $scope.customerNameArray[0]
                     $scope.cusName = $scope.customerNameArray[1];
                     $scope.cusPhone = $scope.customerNameArray[2];
                     $scope.cusEmail = $scope.customerNameArray[3];
@@ -264,13 +258,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $("#addCustomer").modal('hide');
             $scope.custTitle = '';
             $scope.custMessage = '';
-            var newCustId = 'KMCUS' + (parseInt($scope.custId[0].substring(5, 6)) + 1);
-            if (newCustId.length != 0) {
-                $scope.custId = [];
-            }
             var currentDate = '2017-11-27';
             var addNewCustData = {
-                id: newCustId,
                 name: $scope.addCustName,
                 phone: $scope.addCustPhone,
                 email: $scope.addCustEmail,
@@ -283,9 +272,12 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
             $http.post('/skm/addNewCustomer/', addNewCustData).then(function(response) {
                 $scope.customerName = $scope.addCustName;
+                output = response.data;
+                var newCustId = output.insertId;
                 if (response.data.affectedRows == 1) {
                     $scope.custTitle = "Added";
                     $scope.custMessage = ", Added Successfully.";
+                    $scope.cusID = newCustId;
                     $scope.cusName = $scope.addCustName;
                     $scope.cusPhone = $scope.addCustPhone;
                     $scope.cusEmail = $scope.addCustEmail;
@@ -409,6 +401,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.salesProductList.tItems = $scope.salesProductList.tItems + 1;
             $scope.salesProductList['pList'].push({
                 "SNo": $scope.salesProductList.tItems,
+                "custId": $scope.cusID,
                 "pSkuno": pSkuno,
                 "pName": pName,
                 "pIMEI": pIMEI,
@@ -421,7 +414,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pSTaxPer": tax,
                 "pCTax": round(((gstAmt(pPrice, pTax)) / 2), 2),
                 "pSTax": round(((gstAmt(pPrice, pTax)) / 2), 2),
-                "pAmount": pAmountCal(gstAmt(pPrice, pTax), netPrice(pPrice, gstAmt(pPrice, pTax)))
+                "pAmount": pAmountCal(gstAmt(pPrice, pTax), netPrice(pPrice, gstAmt(pPrice, pTax))),
+                "soldPrice": $scope.productPrice
             });
             $scope.salesProductList.subTotal = round(subTotalCal(netPrice(pPrice, gstAmt(pPrice, pTax))), 2);
             $scope.salesProductList.CGST = round(gstCal(round(((gstAmt(pPrice, pTax)) / 2), 2), $scope.salesProductList.CGST), 2);
@@ -435,33 +429,44 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
             $scope.itemsCount = $scope.salesProductList.pList.length;
             $scope.totalCash = $scope.salesProductList.Total;
-            $scope.totalCashWords = convertNumberToWords($scope.totalCash)
-
+            $scope.totalCashWords = convertNumberToWords($scope.totalCash);
         };
 
         $scope.generatePreviewBill = function() {
             $("#previewBill").modal();
-            $http.post('/skm/billNo/' + $scope.productName).then(function(response) {
+            $scope.billNo = '';
+            $http.post('/skm/billNo/').then(function(response) {
                 output = response.data;
                 $scope.billNo = output.insertId;
             }, function(response) {});
+        };
 
-            console.log("Product List Size : " + $scope.salesProductList.pList.length);
-
-            if ($scope.salesProductList.pList.length > 0) {
-                for (var i = 0; i < $scope.salesProductList.pList.length; i++) {
+        $scope.salesInvoice = function() {
+            console.log("Before Product List Size : " + $scope.salesProductList.pList.length);
+            if ($scope.billNo != '' || $scope.billNo != null || $scope.billNo != undefined || $scope.billNo != "") {
+                console.log("After Product List Size : " + $scope.salesProductList.pList.length);
+                $scope.amountDue = 0;
+                $scope.dueDate = '';
+                $scope.createdDate = '';
+                if ($scope.salesProductList.pList.length > 0) {
                     var salesData = {
                         billNo: $scope.billNo,
-                        custId: $scope.custId,
-                        skuNo: $scope.salesProductList.pList.sku_no,
-                        soldPrice: '',
+                        custId: $scope.cusID,
+                        item: $scope.salesProductList.pList,
                         payType: $scope.paymentType,
-                        amount: '',
-                        amountDue: '',
-                        dueDate: '',
-                        createdDate: '',
+                        amount: $scope.totalCash,
+                        amountDue: $scope.amountDue,
+                        dueDate: $scope.dueDate,
+                        createdDate: $scope.createdDate,
                     }
+                    console.log("salesData : ");
+                    console.log(salesData);
+                    $http.post('/skm/salesInvoice/', salesData).then(function(response) {
+                        console.log(response.data);
+                    }, function(response) {});
                 }
+            } else {
+                $scope.billNo = '';
             }
         };
 
@@ -717,44 +722,28 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     }
                 }
                 if ($scope.addEditCustNameArray.length == 0 || $scope.addEditCustNameArray == undefined) {
-                    $scope.addEditCustId = [];
-                    $http.get('/skm/getCustomerId/').then(function(response) {
-                        var res = response.data;
-                        for (var i = 0, length = res.length; i < length; i++) {
-                            for (obj in res[i]) {
-                                $scope.addEditCustId.push(res[i][obj]);
-                            }
+                    var currentDate = '2017-11-27';
+                    var addEditCustData = {
+                        name: $scope.addEditCustName,
+                        phone: $scope.addEditCustPhone,
+                        email: $scope.addEditCustEmail,
+                        address: $scope.addEditCustAddress,
+                        city: $scope.addEditCustCity,
+                        state: $scope.addEditCustState,
+                        pincode: $scope.addEditCustPinCode,
+                        created: currentDate,
+                        altphone: $scope.addEditCustPhone
+                    }
+                    $http.post('/skm/addNewCustomer/', addEditCustData).then(function(response) {
+                        $scope.addEditCustomerName = $scope.addEditCustName;
+                        if (response.data.affectedRows == 1) {
+                            $scope.addEditCustTitle = "Added";
+                            $scope.addEditCustMessage = ", Added Successfully.";
+                        } else {
+                            $scope.addEditCustTitle = "Failed";
+                            $scope.addEditCustMessage = ", Added Failed. Please try again.";
                         }
-                        if ($scope.addEditCustId.length != 0 && $scope.addEditCustNameArray != undefined) {
-                            var newAddEditCustId = 'KMCUS' + (parseInt($scope.addEditCustId[0].substring(5, 6)) + 1);
-                            if (newAddEditCustId.length != 0) {
-                                $scope.addEditCustId = [];
-                            }
-                            var currentDate = '2017-11-27';
-                            var addEditCustData = {
-                                id: newAddEditCustId,
-                                name: $scope.addEditCustName,
-                                phone: $scope.addEditCustPhone,
-                                email: $scope.addEditCustEmail,
-                                address: $scope.addEditCustAddress,
-                                city: $scope.addEditCustCity,
-                                state: $scope.addEditCustState,
-                                pincode: $scope.addEditCustPinCode,
-                                created: currentDate,
-                                altphone: $scope.addEditCustPhone
-                            }
-                            $http.post('/skm/addNewCustomer/', addEditCustData).then(function(response) {
-                                $scope.addEditCustomerName = $scope.addEditCustName;
-                                if (response.data.affectedRows == 1) {
-                                    $scope.addEditCustTitle = "Added";
-                                    $scope.addEditCustMessage = ", Added Successfully.";
-                                } else {
-                                    $scope.addEditCustTitle = "Failed";
-                                    $scope.addEditCustMessage = ", Added Failed. Please try again.";
-                                }
-                                $("#addEditCustDBMessage").modal();
-                            }, function(response) {});
-                        }
+                        $("#addEditCustDBMessage").modal();
                     }, function(response) {});
                 } else {
                     var newAddEditCustId = $scope.addEditCustNameArray[0];
