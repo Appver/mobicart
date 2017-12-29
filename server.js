@@ -124,15 +124,6 @@ app.post('/skm/salesInvoice/', function(req, res) {
     console.log(req.body.item);
 });
 
-// get product details
-app.get('/skm/productDetails/:productName', function(req, res) {
-    let sql = "SELECT * FROM km_product_list WHERE product_model = '" + req.params.productName + "'";
-    let query = db.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send(result);
-    });
-});
-
 // get customer details
 app.get('/skm/customerDetails/:customerPhone', function(req, res) {
     let sql = "SELECT * FROM customer_details WHERE cust_phone = '" + req.params.customerPhone + "'";

@@ -631,23 +631,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.isSearchProd = false;
         $scope.getProductDetails = function() {
             $scope.productNameArray = [];
-            $http.get('/skm/productDetails/' + $scope.productName).then(function(response) {
-                var res = response.data;
-                for (var i = 0, length = res.length; i < length; i++) {
-                    for (obj in res[i]) {
-                        $scope.productNameArray.push(res[i][obj]);
-                    }
-                }
-                if ($scope.productNameArray.length == 0 || $scope.productNameArray == undefined) {
-                    $scope.isAddProd = true;
-                    $scope.isSearchProd = false;
-                    $scope.productName = 'Product Not Found';
-                } else {
-                    $scope.isAddProd = false;
-                    $scope.isSearchProd = true;
-                    $scope.productName = $scope.productNameArray[2];
-                }
-            }, function(response) {});
+
         };
 
 
