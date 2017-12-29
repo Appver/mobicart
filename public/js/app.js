@@ -1,15 +1,14 @@
 var app = angular.module('KaviyaMobiles', ['ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster']);
 
 app.run(function($rootScope, $location, $cookieStore) {
+    $rootScope.isUser = false;
+    $rootScope.isAdmin = false;
     $rootScope.user = $cookieStore.get('user');
     if ($rootScope.user) {
         if ($rootScope.user.uid) {
             $rootScope.isUser = true;
             if ($rootScope.user.rid == 1)
                 $rootScope.isAdmin = true;
-        } else {
-            $rootScope.isUser = false;
-            $rootScope.isAdmin = false;
         }
     } else {
         $location.path('/');
