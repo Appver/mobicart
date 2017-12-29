@@ -30,7 +30,7 @@
                         <p>Sales Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <!--<li ng-show="isAdmin || isUser">
                     <a href="#!productsearch">
                         <i class="material-icons">search</i>
                         <p>Product Search</p>
@@ -42,14 +42,14 @@
                         <span class="notificationCount">5</span>
                         <p>Product Bar/QR Code</p>
                     </a>
-                </li>
+                </li>-->
                 <li class="active" ng-show="isAdmin || isUser">
                     <a href="#!purchaseinvoice">
                         <i class=" material-icons">bubble_chart</i>
                         <p>Purchase Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin">
+                <!--<li ng-show="isAdmin">
                     <a href="#!notifications">
                         <i class="material-icons text-gray">notifications</i>
                         <p>Notifications</p>
@@ -60,7 +60,7 @@
                         <i class="material-icons">assessment</i>
                         <p>Transcations</p>
                     </a>
-                </li>
+                </li>-->
                 <li ng-show="isAdmin">
                     <a href="#!preference">
                         <i class="material-icons">build</i>
@@ -134,8 +134,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Item</label>
-                                                <input  type="text" list="items" class="form-control" ng-model="item">
-                                                 <datalist id="items">
+                                                <input type="text" list="items" class="form-control" ng-model="item">
+                                                <datalist id="items">
                                                        <option ng-repeat="p in products track by $index" value="{{p.item_id}}">item: {{p.brand}} {{p.model}}</option>
                                                 </datalist>
                                             </div>
@@ -148,23 +148,31 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Purchase Price</label>
+                                                <input type="text" class="form-control" ng-model="pprice">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Selling Price</label>
+                                                <input type="text" class="form-control" ng-model="sprice">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Description</label>
                                                 <input type="text" class="form-control" ng-model="description">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Price</label>
-                                                <input type="text" class="form-control" ng-model="price">
-                                            </div>
-                                        </div>
-                                         <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Tax</label>
-                                                <input  type="text" list="taxgroup" class="form-control" ng-model="tax">
-                                                 <datalist id="taxgroup">
+                                                <input type="text" list="taxgroup" class="form-control" ng-model="tax">
+                                                <datalist id="taxgroup">
                                                        <option ng-repeat="t in taxes" value="{{t.group_id}}">Tax : {{t.group_name}} {{t.taxes}}</option>
                                                 </datalist>
                                             </div>

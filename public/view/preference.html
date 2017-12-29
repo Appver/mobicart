@@ -12,7 +12,7 @@
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li class="active" ng-show="isAdmin">
+                <li ng-show="isAdmin">
                     <a href="#!dashboard">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
@@ -30,7 +30,7 @@
                         <p>Sales Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <!--<li ng-show="isAdmin || isUser">
                     <a href="#!productsearch">
                         <i class="material-icons">search</i>
                         <p>Product Search</p>
@@ -42,14 +42,14 @@
                         <span class="notificationCount">5</span>
                         <p>Product Bar/QR Code</p>
                     </a>
-                </li>
+                </li>-->
                 <li ng-show="isAdmin || isUser">
                     <a href="#!purchaseinvoice">
                         <i class="material-icons">bubble_chart</i>
                         <p>Purchase Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin">
+                <!--<li ng-show="isAdmin">
                     <a href="#!notifications">
                         <i class="material-icons text-gray">notifications</i>
                         <p>Notifications</p>
@@ -60,8 +60,8 @@
                         <i class="material-icons">assessment</i>
                         <p>Transcations</p>
                     </a>
-                </li>
-                 <li ng-show="isAdmin">
+                </li>-->
+                <li class="active" ng-show="isAdmin">
                     <a href="#!preference">
                         <i class="material-icons">build</i>
                         <p>Preference</p>
@@ -76,7 +76,7 @@
             </ul>
         </div>
     </div>
-   <div class="main-panel">
+    <div class="main-panel">
         <nav class="navbar navbar-transparent navbar-absolute">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -127,7 +127,6 @@
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
                                 <h4 class="title">Brand & Model</h4>
-                              
                             </div>
                             <div class="card-content">
                                 <form>
@@ -136,33 +135,33 @@
                                             <div class="col-md-offset-1 col-md-6">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Brand</label>
-                                                    <input  type="text" class="form-control" ng-model="brand">
+                                                    <input type="text" class="form-control" ng-model="brand">
                                                 </div>
                                             </div>
                                             <div class="col-md-3 col-md-offset-2">
                                                 <button type="submit" class="btn btn-primary pull-right" ng-click="addBrand()">Add Brand</button>
-                                            </div>    
+                                            </div>
                                         </div>
-                                        
-                                         <div class="col-md-6">
+
+                                        <div class="col-md-6">
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Brand</label>
-                                                    <input  type="text" list="brandList" class="form-control" ng-model="mbrand">
+                                                    <input type="text" list="brandList" class="form-control" ng-model="mbrand">
                                                     <datalist id="brandList">
                                                        <option ng-repeat="b in brandList" value="{{b.bid}}">{{b.brand}}</option>
                                                     </datalist>
                                                 </div>
-                                            </div> 
+                                            </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Model</label>
-                                                    <input  type="text" list="items" class="form-control" ng-model="model">
+                                                    <input type="text" list="items" class="form-control" ng-model="model">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <button type="submit" class="btn btn-primary pull-right" ng-click="addModel()">Add Model</button>
-                                            </div>    
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -170,71 +169,31 @@
                         </div>
                     </div>
                 </div>
-                  
-                
+
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
-                                <h4 class="title">Tax & Tax group</h4>
-                               
+                                <h4 class="title">Tax group</h4>
                             </div>
                             <div class="card-content">
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="col-md-6">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Tax Group</label>
-                                                    <input  type="text" class="form-control" ng-model="taxGroup">
-                                                </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Tax Group</label>
+                                                <input type="text" class="form-control" ng-model="taxGroup">
                                             </div>
-                                            <div class="col-md-4 col-md-offset-2">
-                                                <button type="submit" class="btn btn-primary pull-right" ng-click="addTaxGroup()">Add Group </button>
-                                            </div>    
                                         </div>
-                                        
-                                        <div class="col-md-6">
-                                            <div class="col-md-4">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Tax</label>
-                                                    <input  type="text" list="items" class="form-control" ng-model="tax">
-                                                </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Tax Percentage</label>
+                                                <input type="text" class="form-control" ng-model="taxPercent">
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Percentage</label>
-                                                    <input  type="text" list="items" class="form-control" ng-model="percentage">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 col-md-offset-1">
-                                                <button type="submit" class="btn btn-primary pull-right" ng-click="addTax()">Add Tax </button>
-                                            </div>    
                                         </div>
-                                    </div>
-                                <div class="row">
-                                         <div class="col-md-9">
-                                            <div class="col-md-4">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Tax Group</label>
-                                                    <input  type="text" list="tgroupList" class="form-control" ng-model="tgroup">
-                                                    <datalist id="tgroupList">
-                                                       <option ng-repeat="t in tgroupList" value="{{t.group_id}}">{{t.group_name}}</option>
-                                                    </datalist>
-                                                </div>
-                                            </div> 
-                                            <div class="col-md-4">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Tax</label>
-                                                    <input  type="text" list="ttaxList" class="form-control" ng-model="ttax">
-                                                    <datalist id="ttaxList">
-                                                       <option ng-repeat="tt in ttaxList" value="{{tt.tax_id}}">{{tt.tax_name}}   {{tt.percentage}}%</option>
-                                                    </datalist>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <button type="submit" class="btn btn-primary pull-right" ng-click="addTg()">Add Tax Details</button>
-                                            </div>    
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addTaxGroup()">Add Group </button>
                                         </div>
                                     </div>
                                 </form>
@@ -242,7 +201,73 @@
                         </div>
                     </div>
                 </div>
-            
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="purple">
+                                <h4 class="title">Tax</h4>
+                            </div>
+                            <div class="card-content">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Tax</label>
+                                                <input type="text" list="items" class="form-control" ng-model="tax">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Percentage</label>
+                                                <input type="text" list="items" class="form-control" ng-model="percentage">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addTax()">Add Tax </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="purple">
+                                <h4 class="title">Store Tax</h4>
+                            </div>
+                            <div class="card-content">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Tax Group</label>
+                                                <input type="text" list="tgroupList" class="form-control" ng-model="tgroup">
+                                                <datalist id="tgroupList">
+                                                    <option ng-repeat="t in tgroupList" value="{{t.group_id}}">{{t.group_name}}</option>
+                                                </datalist>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Tax</label>
+                                                <input type="text" list="ttaxList" class="form-control" ng-model="ttax">
+                                                <datalist id="ttaxList">
+                                                    <option ng-repeat="tt in ttaxList" value="{{tt.tax_id}}">{{tt.tax_name}}   {{tt.percentage}}%</option>
+                                                </datalist>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addTg()">Add Tax Details</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <footer class="footer">
