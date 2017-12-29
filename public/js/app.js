@@ -415,7 +415,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pCTax": round(((gstAmt(pPrice, pTax)) / 2), 2),
                 "pSTax": round(((gstAmt(pPrice, pTax)) / 2), 2),
                 "pAmount": pAmountCal(gstAmt(pPrice, pTax), netPrice(pPrice, gstAmt(pPrice, pTax))),
-                "soldPrice": $scope.productPrice
+                "soldPrice": pPrice
             });
             $scope.salesProductList.subTotal = round(subTotalCal(netPrice(pPrice, gstAmt(pPrice, pTax))), 2);
             $scope.salesProductList.CGST = round(gstCal(round(((gstAmt(pPrice, pTax)) / 2), 2), $scope.salesProductList.CGST), 2);
@@ -442,9 +442,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.salesInvoice = function() {
-            console.log("Before Product List Size : " + $scope.salesProductList.pList.length);
             if ($scope.billNo != '' || $scope.billNo != null || $scope.billNo != undefined || $scope.billNo != "") {
-                console.log("After Product List Size : " + $scope.salesProductList.pList.length);
                 $scope.amountDue = 0;
                 $scope.dueDate = '';
                 $scope.createdDate = '';
@@ -459,8 +457,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         dueDate: $scope.dueDate,
                         createdDate: $scope.createdDate,
                     }
-                    console.log("salesData : ");
-                    console.log(salesData);
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
                         console.log(response.data);
                     }, function(response) {});

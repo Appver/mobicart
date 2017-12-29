@@ -120,8 +120,16 @@ app.post('/skm/billNo/', function(req, res) {
 
 // insert new sales-invoice
 app.post('/skm/salesInvoice/', function(req, res) {
-    console.log(req.body.billNo);
-    console.log(req.body.item);
+    if (req.body.item.length > 0) {
+        for (var i = 0; i < req.body.item.length; i++) {
+            let sql = "INSERT INTO sales_invoice (bill_no, cust_id, sku_no, sold_price, payment_type, amount, due_amount, due_date, created_date) VALUES ('" + req.body.billNo + "', '" + req.body.custId + "','" + req.body.item[i].pSkuno + "', '" + req.body.item[i].soldPrice + "','" + req.body.payType + "', '" + req.body.amount + "','" + req.body.amountDue + "', '" + req.body.dueDate + "','" + req.body.createdDate + "')";
+            let query = db.query(sql, (err, result) => {
+                if (err) throw err;
+                console.log("rows affected in sales_invoice : " + result.affectedRows);
+                res.send(result);
+            });
+        }
+    }
 });
 
 // get customer details
