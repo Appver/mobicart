@@ -442,6 +442,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.salesInvoice = function() {
+
             if ($scope.billNo != '' || $scope.billNo != null || $scope.billNo != undefined || $scope.billNo != "") {
                 $scope.amountDue = 0;
                 $scope.dueDate = '';
@@ -459,6 +460,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
                         console.log(response.data);
+                        //if (response.data == 'done') {
+                        //    console.log("inside");
+                        //    $("#previewBill").modal('hide');
+                        //    $location.path('/addcustomer');
+                        //}
                     }, function(response) {});
                 }
             } else {

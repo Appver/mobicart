@@ -1,14 +1,14 @@
 <div class="wrapper">
     <div class="sidebar" data-color="purple" data-image="../img/sidebar-1.jpg">
         <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
+            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+    
+            Tip 2: you can also add an image using data-image tag
+        -->
         <div class="logo">
             <a href="#!dashboard" class="simple-text">
-        Kaviya Mobiles
-    </a>
+            Kaviya Mobiles
+        </a>
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
@@ -31,18 +31,18 @@
                     </a>
                 </li>
                 <!--<li ng-show="isAdmin || isUser">
-                <a href="#!productsearch">
-                    <i class="material-icons">search</i>
-                    <p>Product Search</p>
-                </a>
-            </li>
-            <li ng-show="isAdmin || isUser">
-                <a href="#!productbarcode">
-                    <i class="material-icons">library_books</i>
-                    <span class="notificationCount">5</span>
-                    <p>Product Bar/QR Code</p>
-                </a>
-            </li>-->
+                    <a href="#!productsearch">
+                        <i class="material-icons">search</i>
+                        <p>Product Search</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser">
+                    <a href="#!productbarcode">
+                        <i class="material-icons">library_books</i>
+                        <span class="notificationCount">5</span>
+                        <p>Product Bar/QR Code</p>
+                    </a>
+                </li>-->
                 <li ng-show="isAdmin || isUser">
                     <a href="#!purchaseinvoice">
                         <i class=" material-icons">bubble_chart</i>
@@ -50,17 +50,17 @@
                     </a>
                 </li>
                 <!--<li ng-show="isAdmin">
-                <a href="#!notifications">
-                    <i class="material-icons text-gray">notifications</i>
-                    <p>Notifications</p>
-                </a>
-            </li>
-            <li ng-show="isAdmin">
-                <a href="#!notifications">
-                    <i class="material-icons">assessment</i>
-                    <p>Transcations</p>
-                </a>
-            </li>-->
+                    <a href="#!notifications">
+                        <i class="material-icons text-gray">notifications</i>
+                        <p>Notifications</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin">
+                    <a href="#!notifications">
+                        <i class="material-icons">assessment</i>
+                        <p>Transcations</p>
+                    </a>
+                </li>-->
                 <li ng-show="isAdmin">
                     <a href="#!preference">
                         <i class="material-icons">build</i>
@@ -81,11 +81,11 @@
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
                     <a style="color: #555555 !important;" class="navbar-brand" href="#"> Sales Invoice </a>
                 </div>
                 <div class="collapse navbar-collapse">
@@ -130,107 +130,161 @@
                             <div class="card-content">
                                 <div id="typography">
                                     <div class="title">
-                                        <h2>Sales Invoice</h2>
                                     </div>
                                     <form>
                                         <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Customer Phone</label>
-                                                    <input type="text" class="form-control" ng-model="customerName" ng-change="isValidCustPhone()">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group label-floating">
-                                                    <div class="form-group label-floating" ng-click="getCustomerDetails()" ng-disabled="isSearchCust !== true" ng-show="isSearchCust">
-                                                        <a href="">
-                                                            <i class="material-icons" rel="tooltip" title="Search Customer">search</i>
-                                                        </a>
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-header" data-background-color="purple">
+                                                        <h4 class="title">Customer Details</h4>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Issue Date :{{issueDate}}</label>
+                                                    <div class="card-content">
+                                                        <div class="col-md-8">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">Customer Phone</label>
+                                                                <input type="text" class="form-control" ng-model="customerName" ng-change="isValidCustPhone()">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group label-floating">
+                                                                <div class="form-group label-floating" ng-click="getCustomerDetails()" ng-disabled="isSearchCust !== true" ng-show="isSearchCust">
+                                                                    <a href="">
+                                                                        <i class="material-icons" rel="tooltip" title="Search Customer">search</i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">Issue Date :{{issueDate}}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="form-group label-floating" ng-init="brandSearch()">
-                                                    <label class="control-label">Brand</label>
-                                                    <div>
-                                                        <select class="form-control" ng-model="brandId" ng-change="modelDetails()">
-                                                            <option ng-repeat="brandName in brandNameArray track by $index" value="{{brandName.bid}}">{{brandName.brand}}</option>
-                                                        </select>
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-header" data-background-color="purple">
+                                                        <h4 class="title">Product Details</h4>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Model</label>
-                                                    <div>
-                                                        <select ng-disabled="isModel !== true" class="form-control" ng-model="modelId" ng-change="productDetails()">
-                                                            <option ng-repeat="modelDetail in modelDetailArray track by $index" value="{{modelDetail.item_id}}">{{modelDetail.model}}</option>
-                                                        </select>
+                                                    <div class="card-content">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group label-floating" ng-init="brandSearch()">
+                                                                    <label class="control-label">Brand</label>
+                                                                    <div>
+                                                                        <select class="form-control" ng-model="brandId" ng-change="modelDetails()">
+                                                                        <option ng-repeat="brandName in brandNameArray track by $index" value="{{brandName.bid}}">{{brandName.brand}}</option>
+                                                                    </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label">Model</label>
+                                                                    <div>
+                                                                        <select ng-disabled="isModel !== true" class="form-control" ng-model="modelId" ng-change="productDetails()">
+                                                                        <option ng-repeat="modelDetail in modelDetailArray track by $index" value="{{modelDetail.item_id}}">{{modelDetail.model}}</option>
+                                                                    </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label">Product IMEI</label>
+                                                                    <div>
+                                                                        <select ng-disabled="isProduct !== true" class="form-control" ng-model="sid" ng-change="productSearch()">
+                                                                        <option ng-repeat="productDetails in productArray track by $index" value="{{productDetails.sid}}">{{productDetails.imei_number}}</option>
+                                                                    </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-3">
+                                                                <div class="row">
+                                                                    <div class="form-group label-floating">
+                                                                        <label class="control-label">MRP</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="form-group label-floating">
+                                                                        <label class="control-label" ng-show="isValueLoad">{{productPrice}}</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="row">
+                                                                    <div class="form-group label-floating">
+                                                                        <label class="control-label">Discount(%)</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="form-group label-floating">
+                                                                        <label class="control-label" ng-show="isValueLoad">{{productDis}}</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="row">
+                                                                    <div class="form-group label-floating">
+                                                                        <label class="control-label">Tax</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="form-group label-floating">
+                                                                        <label class="control-label" ng-show="isValueLoad">{{productTax}}</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group label-floating">
+                                                                    <button rel="tooltip" title="Add Product" class="btn btn-primary 
+                                                                                                btn-fab btn-fab-mini btn-round" ng-disabled="isAdd !== true" ng-click="addProductList(
+                                                                                                    productSkuno, productName, productIMEI, productPrice, productDis, productTax)">
+                                                                        <i class="material-icons">add circle</i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label">Payment Type : </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="radio">
+                                                                    <label class="control-label">
+                                                                        <input type="radio" ng-model="paymentType" value="CASH">Cash
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="radio">
+                                                                    <label class="control-label">
+                                                                        <input type="radio" ng-model="paymentType" value="CREDIT">Credit
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="radio">
+                                                                    <label class="control-label">
+                                                                        <input type="radio" ng-model="paymentType" value="CHEQUE">Cheque
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="radio">
+                                                                    <label class="control-label">
+                                                                        <input type="radio" ng-model="paymentType" value="FINACE">Finace
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Product IMEI</label>
-                                                    <div>
-                                                        <select ng-disabled="isProduct !== true" class="form-control" ng-model="sid" ng-change="productSearch()">
-                                                            <option ng-repeat="productDetails in productArray track by $index" value="{{productDetails.sid}}">{{productDetails.imei_number}}</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1">
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">MRP</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label" ng-show="isValueLoad">{{productPrice}}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Discount(%)</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label" ng-show="isValueLoad">{{productDis}}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label">Tax</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group label-floating">
-                                                        <label class="control-label" ng-show="isValueLoad">{{productTax}}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1">
-                                                <div class="form-group label-floating">
-                                                    <button rel="tooltip" title="Add Product" class="btn btn-primary 
-                                                    btn-fab btn-fab-mini btn-round" ng-disabled="isAdd !== true" ng-click="addProductList(
-                                                        productSkuno, productName, productIMEI, productPrice, productDis, productTax)">
-                                                        <i class="material-icons">add circle</i>
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -264,11 +318,11 @@
                                                                     <td>{{product.pSTax}}</td>
                                                                     <td class="text-primary td-actions text-right">
                                                                         <!--<button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
-                                                                            <i class="material-icons">edit</i>
-                                                                        </button>-->
+                                                                                <i class="material-icons">edit</i>
+                                                                            </button>-->
                                                                         <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-                                                                            <i class="material-icons">close</i>
-                                                                        </button>
+                                                                                <i class="material-icons">close</i>
+                                                                            </button>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -284,56 +338,8 @@
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
                                                             <label>
-                                                                        <input type="checkbox" checked>
-                                                                    </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group label-floating">
-                                                            <label class="control-label">Payment Type</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <div class="radio">
-                                                            <label class="control-label">
-                                                                    <input type="radio"  ng-model="paymentType" value="CASH">
-                                                                    Cash
+                                                                    <input type="checkbox" checked>
                                                                 </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="radio">
-                                                            <label class="control-label">
-                                                                    <input type="radio"  ng-model="paymentType" value="CREDIT">
-                                                                    Credit
-                                                                </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="radio">
-                                                            <label class="control-label">
-                                                                    <input type="radio"  ng-model="paymentType" value="CHEQUE">
-                                                                    Cheque
-                                                                </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="radio">
-                                                            <label class="control-label">
-                                                                    <input type="radio"  ng-model="paymentType" value="FINACE">
-                                                                    Finace
-                                                                </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-1">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" checked>
-                                                            </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
@@ -346,8 +352,8 @@
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
                                                             <label>
-                                                                <input type="checkbox" ng-model="totDisVal" ng-change="totDis()">
-                                                            </label>
+                                                                    <input type="checkbox" ng-model="totDisVal" ng-change="totDis()">
+                                                                </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
@@ -365,8 +371,8 @@
                                                     <div class="col-md-1">
                                                         <div class="checkbox">
                                                             <label>
-                                                                <input type="checkbox" ng-model="dueAmntVal" ng-change="dueAmnt()">
-                                                            </label>
+                                                                    <input type="checkbox" ng-model="dueAmntVal" ng-change="dueAmnt()">
+                                                                </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
@@ -511,23 +517,23 @@
                     <ul>
                         <li>
                             <a href="coming-soon.html">
-                                    Home
-                                </a>
+                                        Home
+                                    </a>
                         </li>
                         <li>
                             <a href="coming-soon.html">
-                                    Company
-                                </a>
+                                        Company
+                                    </a>
                         </li>
                         <li>
                             <a href="coming-soon.html">
-                                    About Us
-                                </a>
+                                        About Us
+                                    </a>
                         </li>
                         <li>
                             <a href="coming-soon.html">
-                                    Contact Us
-                                </a>
+                                        Contact Us
+                                    </a>
                         </li>
                     </ul>
                 </nav>
@@ -618,7 +624,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal Core -->
 <div class="modal fade" id="getCustomer" tabindex="-1" role="dialog" aria-labelledby="getCustomerLabel" aria-hidden="true">
@@ -759,7 +764,12 @@
                                         </tr>
                                         <tr>
                                             <td colspan="5" rowspan="2">
-                                                <p style="font-weight: bold;">KAVIYA Mobiles</p> <br>#324, SEKKAI ROAD, <br> UDHAYAM LODG E(OPP),<br> KARAIKUDI-630001. <br> Ph:9000123400, 90000012345 <br> GSTIN: 33AKDPT2147GIZB</td>
+                                                <p style="font-weight: bold;">KAVIYA Mobiles</p>
+                                                <br>#324, SEKKAI ROAD,
+                                                <br> UDHAYAM LODG E(OPP),
+                                                <br> KARAIKUDI-630001.
+                                                <br> Ph:9000123400, 90000012345
+                                                <br> GSTIN: 33AKDPT2147GIZB</td>
                                             <td colspan="3" align="center" valign="middle">Date : {{issueDate}}</td>
                                             <td colspan="2" align="center" valign="middle">Bill no : {{billNo}}</td>
                                         </tr>
@@ -769,10 +779,13 @@
                                         </tr>
                                         <tr>
                                             <td colspan="5">
-                                                <p style="font-weight: bold;">Buyer <br> {{cusName}}</p>,
+                                                <p style="font-weight: bold;">Buyer
+                                                    <br> {{cusName}}</p>,
                                                 <br>{{cusCity}},
                                                 <br> Ph:{{cusPhone}}.</td>
-                                            <td colspan="5" align="center" valign="middle"> Mobile Warrenty : One Year <br> Battery : 6 Months <br> Charger : 6 Months</td>
+                                            <td colspan="5" align="center" valign="middle"> Mobile Warrenty : One Year
+                                                <br> Battery : 6 Months
+                                                <br> Charger : 6 Months</td>
 
                                         </tr>
                                         <tr>
@@ -825,7 +838,16 @@
                                             <td align="center" valign="middle">{{product.pAmount}}</td>
                                         </tr>
                                         <tr>
-                                            <td><br><br><br><br><br><br><br><br></td>
+                                            <td>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                            </td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -876,11 +898,16 @@
                                         <tr>
                                             <td colspan="9">I HAVE READ THE WARRENTY AND TERMS & CONDITIONS AND
                                                 <br>RECEIVED THE GOODS IN GOOD CONDITION
-                                                <br><br><br> Buyer's Singatory
+                                                <br>
+                                                <br>
+                                                <br> Buyer's Singatory
                                             </td>
                                             <td colspan="1">
                                                 <p style="font-weight: bold;">for Kaviya Mobiles</p>
-                                                <br><br><br><br>Authorided Singatory
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>Authorided Singatory
                                             </td>
                                         </tr>
                                     </table>
