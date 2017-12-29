@@ -12,7 +12,7 @@
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li ng-show="isAdmin && !isUser">
+                <li ng-show="isAdmin">
                     <a href="#!dashboard">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
@@ -30,35 +30,41 @@
                         <p>Sales Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
-                    <a href="#!productsearch">
-                        <i class="material-icons">search</i>
-                        <p>Product Search</p>
-                    </a>
-                </li>
-                <li ng-show="isAdmin || isUser">
-                    <a href="#!productbarcode">
-                        <i class="material-icons">library_books</i>
-                        <span class="notificationCount">5</span>
-                        <p>Product Bar/QR Code</p>
-                    </a>
-                </li>
+                <!--<li ng-show="isAdmin || isUser">
+                <a href="#!productsearch">
+                    <i class="material-icons">search</i>
+                    <p>Product Search</p>
+                </a>
+            </li>
+            <li ng-show="isAdmin || isUser">
+                <a href="#!productbarcode">
+                    <i class="material-icons">library_books</i>
+                    <span class="notificationCount">5</span>
+                    <p>Product Bar/QR Code</p>
+                </a>
+            </li>-->
                 <li ng-show="isAdmin || isUser">
                     <a href="#!purchaseinvoice">
-                        <i class="material-icons">bubble_chart</i>
+                        <i class=" material-icons">bubble_chart</i>
                         <p>Purchase Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin && !isUser">
-                    <a href="#!notifications">
-                        <i class="material-icons text-gray">notifications</i>
-                        <p>Notifications</p>
-                    </a>
-                </li>
-                <li ng-show="isAdmin && !isUser">
-                    <a href="#!notifications">
-                        <i class="material-icons">assessment</i>
-                        <p>Transcations</p>
+                <!--<li ng-show="isAdmin">
+                <a href="#!notifications">
+                    <i class="material-icons text-gray">notifications</i>
+                    <p>Notifications</p>
+                </a>
+            </li>
+            <li ng-show="isAdmin">
+                <a href="#!notifications">
+                    <i class="material-icons">assessment</i>
+                    <p>Transcations</p>
+                </a>
+            </li>-->
+                <li ng-show="isAdmin">
+                    <a href="#!preference">
+                        <i class="material-icons">build</i>
+                        <p>Preference</p>
                     </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
@@ -128,24 +134,19 @@
                                     </div>
                                     <form>
                                         <div class="row">
-                                            <div class="col-md-7">
+                                            <div class="col-md-8">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Customer Phone</label>
                                                     <input type="text" class="form-control" ng-model="customerName" ng-change="isValidCustPhone()">
                                                 </div>
                                             </div>
-                                            <div class="col-md-1">
+                                            <div class="col-md-2">
                                                 <div class="form-group label-floating">
                                                     <div class="form-group label-floating" ng-click="getCustomerDetails()" ng-disabled="isSearchCust !== true" ng-show="isSearchCust">
                                                         <a href="">
                                                             <i class="material-icons" rel="tooltip" title="Search Customer">search</i>
                                                         </a>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label" ng-model="pBillNo">Bill No : {{billNo}}</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
@@ -297,7 +298,7 @@
                                                     <div class="col-md-3">
                                                         <div class="radio">
                                                             <label class="control-label">
-                                                                    <input type="radio" name="optionsRadios" checked="true">
+                                                                    <input type="radio"  ng-model="paymentType" value="CASH">
                                                                     Cash
                                                                 </label>
                                                         </div>
@@ -305,15 +306,15 @@
                                                     <div class="col-md-3">
                                                         <div class="radio">
                                                             <label class="control-label">
-                                                                    <input type="radio" name="optionsRadios">
-                                                                    Cerdit
+                                                                    <input type="radio"  ng-model="paymentType" value="CREDIT">
+                                                                    Credit
                                                                 </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="radio">
                                                             <label class="control-label">
-                                                                    <input type="radio" name="optionsRadios">
+                                                                    <input type="radio"  ng-model="paymentType" value="CHEQUE">
                                                                     Cheque
                                                                 </label>
                                                         </div>
@@ -321,7 +322,7 @@
                                                     <div class="col-md-3">
                                                         <div class="radio">
                                                             <label class="control-label">
-                                                                    <input type="radio" name="optionsRadios">
+                                                                    <input type="radio"  ng-model="paymentType" value="FINACE">
                                                                     Finace
                                                                 </label>
                                                         </div>
@@ -763,7 +764,7 @@
                                             <td colspan="2" align="center" valign="middle">Bill no : {{billNo}}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3" align="center" valign="middle">CASH</td>
+                                            <td colspan="3" align="center" valign="middle">{{paymentType}}</td>
                                             <td colspan="2" align="center" valign="middle">{{totalCash}}</td>
                                         </tr>
                                         <tr>

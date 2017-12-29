@@ -109,6 +109,15 @@ app.post('/skm/productTaxDetails/', function(req, res) {
     });
 });
 
+// insert new billNo
+app.post('/skm/billNo/', function(req, res) {
+    let sql = "INSERT INTO bill (created_date) VALUES ('" + req.body.createdDate + "')";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 // get product details
 app.get('/skm/productDetails/:productName', function(req, res) {
     let sql = "SELECT * FROM km_product_list WHERE product_model = '" + req.params.productName + "'";

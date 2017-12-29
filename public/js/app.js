@@ -159,7 +159,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
         var bno = Math.floor((Math.random() * 1000) + 1);
-        $scope.billNo = 'BNO-' + bno;
         var d = new Date();
         $scope.issueDate = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear();
         $scope.custTitle = '';
@@ -174,6 +173,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.customerName = '';
         $scope.isTotDis = false;
         $scope.isDueAmnt = false;
+        $scope.paymentType = 'CASH';
         $scope.salesProductList = {
             "cusDetails": [{
                 "name": null,
@@ -442,6 +442,28 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.generatePreviewBill = function() {
             $("#previewBill").modal();
+            $http.post('/skm/billNo/' + $scope.productName).then(function(response) {
+                output = response.data;
+                $scope.billNo = output.insertId;
+            }, function(response) {});
+
+            console.log("Product List Size : " + $scope.salesProductList.pList.length);
+
+            if ($scope.salesProductList.pList.length > 0) {
+                for (var i = 0; i < $scope.salesProductList.pList.length; i++) {
+                    var salesData = {
+                        billNo: $scope.billNo,
+                        custId: $scope.custId,
+                        skuNo: $scope.salesProductList.pList.sku_no,
+                        soldPrice: '',
+                        payType: $scope.paymentType,
+                        amount: '',
+                        amountDue: '',
+                        dueDate: '',
+                        createdDate: '',
+                    }
+                }
+            }
         };
 
         function gstAmt(MRP, GSTPer) {
