@@ -125,11 +125,14 @@ app.post('/skm/salesInvoice/', function(req, res) {
             let sql = "INSERT INTO sales_invoice (bill_no, cust_id, sku_no, sold_price, payment_type, amount, due_amount, due_date, created_date) VALUES ('" + req.body.billNo + "', '" + req.body.custId + "','" + req.body.item[i].pSkuno + "', '" + req.body.item[i].soldPrice + "','" + req.body.payType + "', '" + req.body.amount + "','" + req.body.amountDue + "', '" + req.body.dueDate + "','" + req.body.createdDate + "')";
             let query = db.query(sql, (err, result) => {
                 if (err) throw err;
-                console.log("rows affected in sales_invoice : " + result.affectedRows);
-                res.send(result);
+            });
+            let sql2 = "DELETE FROM stock WHERE sku_no = '" + req.body.item[i].pSkuno + "'";
+            let query2 = db.query(sql2, (err, result2) => {
+                if (err) throw err;
             });
         }
     }
+    res.send("done");
 });
 
 // get customer details
