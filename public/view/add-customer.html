@@ -128,18 +128,18 @@
                                 <p class="category">{{currDateTime}} Add/Edit Customer</p>
                             </div>
                             <div class="card-content">
-                                <form>
+                                <form ng-submit="submit()">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Name</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustName">
+                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addEditCustName" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Phone</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustPhone">
+                                                <input type="number" class="form-control" ng-model="addEditCustPhone" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -153,7 +153,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Adress</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustAddress">
+                                                <input type="text" class="form-control" ng-model="addEditCustAddress" required>
                                             </div>
                                         </div>
                                     </div>
@@ -161,23 +161,23 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">City</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustCity">
+                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addEditCustCity" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">State</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustState">
+                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addEditCustState">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Postal Code</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustPinCode">
+                                                <input type="number" class="form-control" ng-model="addEditCustPinCode">
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary pull-right" ng-click="addEditCust()">Add/Edit Customer</button>
+                                    <button type="submit" class="btn btn-primary pull-right" id="submit">Add/Edit Customer</button>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>

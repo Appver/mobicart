@@ -714,7 +714,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
-        $scope.addEditCust = function() {
+        $scope.submit = function() {
             $scope.addEditCustNameArray = [];
             $http.get('/skm/customerDetails/' + $scope.addEditCustPhone).then(function(response) {
                 var res = response.data;
