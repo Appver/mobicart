@@ -294,9 +294,16 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.brandSearch = function() {
+            $scope.mobileBrands = [];
+            $scope.nmobileBrands = [];
             $http.get('/skm/brandSearch/').then(function(response) {
                 var res = response.data;
                 $scope.brandNameArray = angular.fromJson(res);
+                $scope.mobileBrands = res;
+                for (fba in $scope.mobileBrands) {
+                    var bid = $scope.mobileBrands[fba].bid;
+                    $scope.nmobileBrands[bid] = $scope.mobileBrands[fba];
+                }
             }, function(response) {});
         };
 
@@ -306,7 +313,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
             $http.post('/skm/modelSearch/', brandId).then(function(response) {
                 var res = response.data;
+                $scope.mobileModels = [];
+                $scope.nmobileModels = [];
                 $scope.modelDetailArray = angular.fromJson(res);
+                $scope.mobileModels = res;
+                for (fbm in $scope.mobileModels) {
+                    var mid = $scope.mobileModels[fbm].item_id;
+                    $scope.nmobileModels[mid] = $scope.mobileModels[fbm];
+                }
                 if ($scope.modelDetailArray.length >= 1) {
                     $scope.isModel = true;
                     $scope.isProduct = false;
@@ -362,8 +376,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     }
                 }
                 if ($scope.productDetail.length > 0) {
+                    var nbid = $scope.brandId;
+                    var nmid = $scope.modelId;
                     $scope.productSkuno = $scope.productDetail[1];
-                    $scope.productName = '';
+                    $scope.productName = $scope.nmobileBrands[nbid].brand + ' ' + $scope.nmobileModels[nmid].model;
                     $scope.productIMEI = $scope.productDetail[3];
                     $scope.productPrice = $scope.productDetail[5];
                     $scope.productDis = $scope.productDetail[6];
