@@ -12,10 +12,10 @@ const db = mysql.createConnection({
 });
 
 /*const db = mysql.createConnection({
-	host : '127.0.0.1',
-	user : 'root',
-	password : '',
-	database : 'sql12207175'
+    host: '127.0.0.1',
+    user: 'root',
+    password: '',
+    database: 'sql12207175'
 });*/
 
 //Create Connection - Remote2
