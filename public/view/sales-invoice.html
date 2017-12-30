@@ -154,11 +154,11 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <!--<div class="col-md-2">
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label">Issue Date :{{issueDate}}</label>
                                                             </div>
-                                                        </div>
+                                                        </div>-->
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,46 +204,33 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-3">
-                                                                <div class="row">
-                                                                    <div class="form-group label-floating">
-                                                                        <label class="control-label">MRP</label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="form-group label-floating">
-                                                                        <label class="control-label" ng-show="isValueLoad">{{productPrice}}</label>
-                                                                    </div>
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label">MRP</label><br/>
+                                                                    <input type="text" class="form-control" ng-show="isValueLoad" ng-model="productDetail.price">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <div class="row">
-                                                                    <div class="form-group label-floating">
-                                                                        <label class="control-label">Discount(%)</label>
-                                                                    </div>
+                                                            <div class="col-md-3 col-mf-offset-1">
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label">Discount(%)</label>
                                                                 </div>
-                                                                <div class="row">
-                                                                    <div class="form-group label-floating">
-                                                                        <label class="control-label" ng-show="isValueLoad">{{productDis}}</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="row">
-                                                                    <div class="form-group label-floating">
-                                                                        <label class="control-label">Tax</label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="form-group label-floating">
-                                                                        <label class="control-label" ng-show="isValueLoad">{{productTax}}</label>
-                                                                    </div>
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label" ng-show="isValueLoad">{{productDetail.discount}}</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group label-floating">
+                                                                    <label class="control-label">Tax</label>
+                                                                </div>
+
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label" ng-show="isValueLoad">{{productDetail.tax_percentage}}</label>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group label-floating">
                                                                     <button rel="tooltip" title="Add Product" class="btn btn-primary 
-                                                                            btn-fab btn-fab-mini btn-round" ng-disabled="isAdd" ng-click="addProductList(
-                                                                            productSkuno, productName, productIMEI, productPrice, productDis, productTax)">
+                                                                            btn-fab btn-fab-mini btn-round" ng-disabled="isAdd" ng-click="addProductList(productDetail)">
                                                                         <i class="material-icons">add circle</i>
                                                                     </button>
                                                                 </div>
@@ -320,13 +307,14 @@
                                                                         <!--<button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
                                                                                 <i class="material-icons">edit</i>
                                                                             </button>-->
-                                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
+                                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs" ng-click="removeItem(product)">
                                                                                 <i class="material-icons">close</i>
                                                                             </button>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -559,27 +547,28 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header" data-background-color="purple">
-                                    <h4 class="title">Add New Customer</h4>
+                                    <h4 class="title">Add/Edit Customer</h4>
+                                    <p class="category">{{currDateTime}} Add/Edit Customer</p>
                                 </div>
                                 <div class="card-content">
-                                    <form>
+                                    <form ng-submit="addCust()">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Name</label>
-                                                    <input type="text" class="form-control" ng-model="addCustName">
+                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.name" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Phone</label>
-                                                    <input type="text" class="form-control" ng-model="addCustPhone">
+                                                    <input type="number" class="form-control" ng-model="addCustomer.phone" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Email address</label>
-                                                    <input type="email" class="form-control" ng-model="addCustEmail">
+                                                    <input type="email" class="form-control" ng-model="addCustomer.email">
                                                 </div>
                                             </div>
                                         </div>
@@ -587,7 +576,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Adress</label>
-                                                    <input type="text" class="form-control" ng-model="addCustAddress">
+                                                    <input type="text" class="form-control" ng-model="addCustomer.address" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -595,23 +584,23 @@
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">City</label>
-                                                    <input type="text" class="form-control" ng-model="addCustCity">
+                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.city" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">State</label>
-                                                    <input type="text" class="form-control" ng-model="addCustState">
+                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.state">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Postal Code</label>
-                                                    <input type="text" class="form-control" ng-model="addCustPinCode">
+                                                    <input type="number" class="form-control" ng-model="addCustomer.pincode">
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary pull-right" ng-click="addCust()">Add Customer</button>
+                                        <button type="submit" class="btn btn-primary pull-right" id="submit">Add Customer</button>
                                         <div class="clearfix"></div>
                                     </form>
                                 </div>
@@ -639,7 +628,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header" data-background-color="purple">
-                                    <h4 class="title">{{cusName}}'s Details</h4>
+                                    <h4 class="title">{{customerDetails.cust_name}}'s Details</h4>
                                 </div>
                                 <div class="card-content">
                                     <form>
@@ -651,7 +640,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
-                                                    <label class="control-label">{{cusName}}</label>
+                                                    <label class="control-label">{{customerDetails.cust_name}}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -663,7 +652,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
-                                                    <label class="control-label">{{cusPhone}}</label>
+                                                    <label class="control-label">{{customerDetails.cust_phone}}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -675,7 +664,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
-                                                    <label class="control-label">{{cusEmail}}</label>
+                                                    <label class="control-label">{{customerDetails.cust_email}}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -687,7 +676,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
-                                                    <label class="control-label">{{cusAddress}}, {{cusCity}}, {{cusState}}, {{cusPinCode}}</label>
+                                                    <label class="control-label">{{customerDetails.cust_address}}, {{customerDetails.cust_city}}, {{customerDetails.cust_state}}, {{customerDetails.cust_pinCode}}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -764,12 +753,12 @@
                                         </tr>
                                         <tr>
                                             <td colspan="5" rowspan="2">
-                                                <p style="font-weight: bold;">KAVIYA Mobiles</p>
-                                                <br>#324, SEKKAI ROAD,
-                                                <br> UDHAYAM LODG E(OPP),
-                                                <br> KARAIKUDI-630001.
-                                                <br> Ph:9000123400, 90000012345
-                                                <br> GSTIN: 33AKDPT2147GIZB</td>
+                                                <p style="font-weight: bold;">{{shopDetail.name}}</p>
+                                                <br>#{{shopDetail.address}}
+                                                <br> {{shopDetail.city}}-{{shopDetail.pincode}}.
+                                                <br> Ph: {{shopDetail.phone}}
+                                                <br> Ph: {{shopDetail.email}}
+                                                <br> GSTIN: {{shopDetail.gstin}}</td>
                                             <td colspan="3" align="center" valign="middle">Date : {{issueDate}}</td>
                                             <td colspan="2" align="center" valign="middle">Bill no : {{billNo}}</td>
                                         </tr>
@@ -780,9 +769,9 @@
                                         <tr>
                                             <td colspan="5">
                                                 <p style="font-weight: bold;">Buyer
-                                                    <br> {{cusName}}</p>,
-                                                <br>{{cusCity}},
-                                                <br> Ph:{{cusPhone}}.</td>
+                                                    <br> {{customerDetails.cust_name}}</p>,
+                                                <br>{{customerDetails.cust_city}},
+                                                <br> Ph:{{customerDetails.cust_phone}}.</td>
                                             <td colspan="5" align="center" valign="middle"> Mobile Warrenty : One Year
                                                 <br> Battery : 6 Months
                                                 <br> Charger : 6 Months</td>

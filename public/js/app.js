@@ -157,6 +157,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
+
         var bno = Math.floor((Math.random() * 1000) + 1);
         var d = new Date();
         $scope.issueDate = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear();
@@ -214,79 +215,57 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
         $scope.isProductAdded = false;
         $scope.isGenerateBill = true;
-
         $scope.isValidCustPhone = function() {
+            $scope.isSearchCust = false;
             if ($scope.customerName.length == 10) {
                 $scope.isSearchCust = true;
-            } else {
-                $scope.isSearchCust = false;
             }
         };
+        $scope.shopDetail = {};
+        $scope.cusID = '';
+        $http.get('/skm/storeDetails/').then(function(response) {
+            var res = response.data;
+            $scope.shopDetail = res[0];
+        }, function(response) {});
 
+        $scope.customerDetails = {};
         $scope.getCustomerDetails = function() {
-            $scope.customerNameArray = [];
             $http.get('/skm/customerDetails/' + $scope.customerName).then(function(response) {
                 var res = response.data;
-                for (var i = 0, length = res.length; i < length; i++) {
-                    for (obj in res[i]) {
-                        $scope.customerNameArray.push(res[i][obj]);
-                    }
-                }
-                if ($scope.customerNameArray.length == 0 || $scope.customerNameArray == undefined) {
+                if (res.length == 0) {
                     $scope.isSearchCust = false;
                     $("#addCustomer").modal();
                 } else {
                     $scope.isSearchCust = true;
-                    $scope.cusID = $scope.customerNameArray[0]
-                    $scope.cusName = $scope.customerNameArray[1];
-                    $scope.cusPhone = $scope.customerNameArray[2];
-                    $scope.cusEmail = $scope.customerNameArray[3];
-                    $scope.cusAddress = $scope.customerNameArray[4];
-                    $scope.cusCity = $scope.customerNameArray[5];
-                    $scope.cusState = $scope.customerNameArray[6];
-                    $scope.cusPinCode = $scope.customerNameArray[7];
+                    $scope.customerDetails = res[0];
                     $("#getCustomer").modal();
                 }
             }, function(response) {});
         };
 
         $scope.selectCust = function() {
-            $scope.customerName = $scope.cusName;
+            $scope.cusID = $scope.customerDetails.cust_id;
+            $scope.customerName = $scope.customerDetails.cust_name;
             $("#getCustomer").modal('hide');
             $scope.isSearchCust = false;
         }
-
+        $scope.addCustomer = {};
         $scope.addCust = function() {
             $("#addCustomer").modal('hide');
             $scope.custTitle = '';
             $scope.custMessage = '';
             var currentDate = '2017-11-27';
-            var addNewCustData = {
-                name: $scope.addCustName,
-                phone: $scope.addCustPhone,
-                email: $scope.addCustEmail,
-                address: $scope.addCustAddress,
-                city: $scope.addCustCity,
-                state: $scope.addCustState,
-                pincode: $scope.addCustPinCode,
-                created: currentDate,
-                altphone: $scope.addCustPhone
-            }
-            $http.post('/skm/addNewCustomer/', addNewCustData).then(function(response) {
-                $scope.customerName = $scope.addCustName;
+            $scope.addCustomer.altphone = $scope.addCustomer.phone;
+
+            $http.post('/skm/addNewCustomer/', $scope.addCustomer).then(function(response) {
                 output = response.data;
                 var newCustId = output.insertId;
                 if (response.data.affectedRows == 1) {
                     $scope.custTitle = "Added";
                     $scope.custMessage = ", Added Successfully.";
                     $scope.cusID = newCustId;
-                    $scope.cusName = $scope.addCustName;
-                    $scope.cusPhone = $scope.addCustPhone;
-                    $scope.cusEmail = $scope.addCustEmail;
-                    $scope.cusAddress = $scope.addCustAddress;
-                    $scope.cusCity = $scope.addCustCity;
-                    $scope.cusState = $scope.addCustState;
-                    $scope.cusPinCode = $scope.addCustPinCode;
+                    $scope.addCustomer.cusID = newCustId;
+                    $scope.customerName = $scope.addCustomer.name;
                 } else {
                     $scope.custTitle = "Failed";
                     $scope.custMessage = ", Added Failed. Please try again.";
@@ -296,16 +275,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.brandSearch = function() {
-            $scope.mobileBrands = [];
-            $scope.nmobileBrands = [];
             $http.get('/skm/brandSearch/').then(function(response) {
                 var res = response.data;
                 $scope.brandNameArray = angular.fromJson(res);
-                $scope.mobileBrands = res;
-                for (fba in $scope.mobileBrands) {
-                    var bid = $scope.mobileBrands[fba].bid;
-                    $scope.nmobileBrands[bid] = $scope.mobileBrands[fba];
-                }
             }, function(response) {});
         };
 
@@ -313,16 +285,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var brandId = {
                 id: $scope.brandId
             }
-            $http.post('/skm/modelSearch/', brandId).then(function(response) {
+            $http.post('/skm/amodelSearch/', brandId).then(function(response) {
                 var res = response.data;
-                $scope.mobileModels = [];
-                $scope.nmobileModels = [];
                 $scope.modelDetailArray = angular.fromJson(res);
-                $scope.mobileModels = res;
-                for (fbm in $scope.mobileModels) {
-                    var mid = $scope.mobileModels[fbm].item_id;
-                    $scope.nmobileModels[mid] = $scope.mobileModels[fbm];
-                }
                 if ($scope.modelDetailArray.length >= 1) {
                     $scope.isModel = true;
                     $scope.isProduct = false;
@@ -357,51 +322,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.productSearch = function() {
-            $scope.productDetail = [];
-            $scope.productTaxDetail = [];
-            $scope.productSkuno = '';
-            $scope.productName = '';
-            $scope.productIMEI = '';
-            $scope.productDesc = '';
-            $scope.productQTY = '';
-            $scope.productDis = '';
-            $scope.productTax = '';
-            $scope.productPrice = '';
+            $scope.productDetail = {};
             var sId = {
                 id: $scope.sid
             }
             $http.post('/skm/productDetails/', sId).then(function(response) {
                 var res = response.data;
-                $scope.productDetailsArray = angular.fromJson(res);
-
-                for (var i = 0, length = res.length; i < length; i++) {
-                    for (obj in res[i]) {
-                        $scope.productDetail.push(res[i][obj]);
-                    }
-                }
-                if ($scope.productDetail.length > 0) {
-                    var nbid = $scope.brandId;
-                    var nmid = $scope.modelId;
-                    $scope.productSkuno = $scope.productDetail[1];
-                    $scope.productName = $scope.nmobileBrands[nbid].brand + ' ' + $scope.nmobileModels[nmid].model;
-                    $scope.productIMEI = $scope.productDetail[3];
-                    $scope.productPrice = $scope.productDetail[5];
-                    $scope.productDis = $scope.productDetail[6];
-                    var taxGrp = {
-                        grpid: $scope.productDetail[7]
-                    }
-                    $http.post('/skm/productTaxDetails/', taxGrp).then(function(response) {
-                        var res = response.data;
-                        for (var i = 0, length = res.length; i < length; i++) {
-                            for (obj in res[i]) {
-                                $scope.productTaxDetail.push(res[i][obj]);
-                            }
-                        }
-                        $scope.productTax = $scope.productTaxDetail[2];
-                    }, function(response) {});
-
-                }
-                if ($scope.productDetailsArray != null || $scope.productDetailsArray != undefined || $scope.productDetailsArray != '') {
+                if (res.length) {
+                    $scope.productDetail = res[0];
                     $scope.isModel = true;
                     $scope.isProduct = true;
                     $scope.isValueLoad = true;
@@ -419,19 +347,21 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         };
 
-        $scope.addProductList = function(pSkuno, pName, pIMEI, pPrice, pDis, pTax) {
+        $scope.addProductList = function(selproduct) {
+            var pTax = selproduct.tax_percentage;
+            var pPrice = selproduct.price;
             tax = taxSplitCal(pTax);
             $scope.salesProductList.tItems = $scope.salesProductList.tItems + 1;
             $scope.salesProductList['pList'].push({
                 "SNo": $scope.salesProductList.tItems,
                 "custId": $scope.cusID,
-                "pSkuno": pSkuno,
-                "pName": pName,
-                "pIMEI": pIMEI,
+                "pSkuno": selproduct.sku_no,
+                "pName": selproduct.brand + ' ' + selproduct.model,
+                "pIMEI": selproduct.imei_number,
                 "pDesc": '',
                 "pQty": '',
                 "pPrice": netPrice(pPrice, gstAmt(pPrice, pTax)),
-                "pDis": pDis,
+                "pDis": selproduct.discount,
                 "pTax": pTax,
                 "pCTaxPer": tax,
                 "pSTaxPer": tax,
@@ -466,16 +396,30 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.isValueLoad = false;
                 $scope.brandId = '';
                 var stockAddedData = {
-                    skuno: pSkuno
+                    skuno: selproduct.sku_no,
+                    value: 'N',
                 }
                 $http.post('/skm/stockUpdate', stockAddedData).then(function(response) {
-                    var res = response.data;
-                    $scope.mobBrands = angular.fromJson(res);
+
                 }, function(response) {});
-                if ($scope.cusID != null || $scope.cusID != '' || $scope.cusID != undefined || $scope.cusID != "") {
+
+                if ($scope.cusID) {
                     $scope.isGenerateBill = false;
                 }
             }
+        };
+        $scope.removeItem = function(product) {
+            var ritems = $scope.salesProductList.pList;
+            var removeId = product.SNo - 1;
+            ritems.splice(removeId, 1);
+            $scope.salesProductList.pList = ritems;
+            var stockRemovedData = {
+                skuno: product.pSkuno,
+                value: 'Y',
+            }
+            $http.post('/skm/stockUpdate', stockRemovedData).then(function(response) {
+
+            }, function(response) {});
         };
 
         $scope.generatePreviewBill = function() {
@@ -934,7 +878,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.addTaxGroup = function() {
             var data = {
-                group_name: $scope.taxGroup
+                group_name: $scope.taxGroup,
+                tax_percentage: $scope.taxPercent
             };
             $http.post('/skm/taxgroupInsert/', data).then(function(response) {
                 toaster.pop("success", "success", "Tax Group Added Successfully");

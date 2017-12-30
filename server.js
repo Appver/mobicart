@@ -82,6 +82,24 @@ app.post('/skm/modelSearch/', function(req, res) {
     });
 });
 
+// get available models
+app.post('/skm/amodelSearch/', function(req, res) {
+    let sql = "SELECT DISTINCT(m.model), m.item_id FROM stock s inner join model m on s.item_id = m.item_id and m.bid = '" + req.body.id + "'";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// get store details
+app.get('/skm/storeDetails/', function(req, res) {
+    let sql = "SELECT * FROM store_details";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 // get all product
 app.post('/skm/productSearch/', function(req, res) {
     let sql = "SELECT * FROM stock  WHERE item_id = '" + req.body.id + "' AND product_flag = 'Y'";
@@ -93,7 +111,7 @@ app.post('/skm/productSearch/', function(req, res) {
 
 // get all productDetails
 app.post('/skm/productDetails/', function(req, res) {
-    let sql = "SELECT * FROM stock  WHERE sid = '" + req.body.id + "'";
+    let sql = "SELECT s.*,m.model,b.brand,tg.tax_percentage FROM stock s inner join tax_group tg on s.tax_group = tg.group_id inner join model m on s.item_id = m.item_id inner join brand b on m.bid = b.bid WHERE sid = '" + req.body.id + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -120,7 +138,7 @@ app.post('/skm/billNo/', function(req, res) {
 
 // update stock
 app.post('/skm/stockUpdate/', function(req, res) {
-    let sql = "UPDATE stock SET product_flag = 'N' WHERE sku_no = '" + req.body.skuno + "'";
+    let sql = "UPDATE stock SET product_flag = '" + req.body.value + "' WHERE sku_no = '" + req.body.skuno + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -242,7 +260,7 @@ app.get('/skm/tax/', function(req, res) {
 });
 
 app.post('/skm/taxgroupInsert/', function(req, res) {
-    let sql = "INSERT INTO tax_group (group_name) VALUES ('" + req.body.group_name + "')";
+    let sql = "INSERT INTO tax_group (group_name,tax_percentage) VALUES ('" + req.body.group_name + "'," + req.body.tax_percentage + ")";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
