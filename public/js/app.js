@@ -213,6 +213,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             "duePay": null
         };
         $scope.isProductAdded = false;
+        $scope.isGenerateBill = true;
 
         $scope.isValidCustPhone = function() {
             if ($scope.customerName.length == 10) {
@@ -471,6 +472,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     var res = response.data;
                     $scope.mobBrands = angular.fromJson(res);
                 }, function(response) {});
+                if ($scope.cusID != null || $scope.cusID != '' || $scope.cusID != undefined || $scope.cusID != "") {
+                    $scope.isGenerateBill = false;
+                }
             }
         };
 
