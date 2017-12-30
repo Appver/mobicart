@@ -163,7 +163,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.custTitle = '';
         $scope.custMessage = '';
         $scope.isSearchCust = false;
-        $scope.isAdd = false;
+        $scope.isAdd = true;
         $scope.isValueLoad = false;
         $scope.isModel = false;
         $scope.isProduct = false;
@@ -212,6 +212,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             "payType": null,
             "duePay": null
         };
+        $scope.isProductAdded = false;
 
         $scope.isValidCustPhone = function() {
             if ($scope.customerName.length == 10) {
@@ -325,10 +326,12 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.isModel = true;
                     $scope.isProduct = false;
                     $scope.isValueLoad = false;
+                    $scope.isProductAdded = false;
                 } else {
                     $scope.isModel = false;
                     $scope.isProduct = false;
                     $scope.isValueLoad = false;
+                    $scope.isProductAdded = true;
                 }
             }, function(response) {});
         };
@@ -401,12 +404,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.isModel = true;
                     $scope.isProduct = true;
                     $scope.isValueLoad = true;
-                    $scope.isAdd = true;
+                    $scope.isAdd = false;
                 } else {
                     $scope.isModel = true;
                     $scope.isProduct = true;
                     $scope.isValueLoad = false;
-                    $scope.isAdd = false;
+                    $scope.isAdd = true;
+                }
+                if ($scope.isProductAdded == true) {
+                    $scope.isAdd = true;
                 }
             }, function(response) {});
 
@@ -446,6 +452,19 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.itemsCount = $scope.salesProductList.pList.length;
             $scope.totalCash = $scope.salesProductList.Total;
             $scope.totalCashWords = convertNumberToWords($scope.totalCash);
+            if ($scope.salesProductList.pList.length >= 1) {
+                $scope.isProductAdded = true;
+                $scope.modelDetailArray = [];
+                $scope.productArray = [];
+                $scope.productPrice = '';
+                $scope.productDis = '';
+                $scope.productTax = '';
+                $scope.isAdd = true;
+                $scope.isModel = false;
+                $scope.isProduct = false;
+                $scope.isValueLoad = false;
+                $scope.brandId = '';
+            }
         };
 
         $scope.generatePreviewBill = function() {
@@ -530,22 +549,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         function taxSplitCal(pTax) {
             return tax = pTax / 2;
         }
-
-        $scope.totDis = function() {
-            if ($scope.totDisData) {
-                $scope.isTotDis = true;
-            } else {
-                $scope.isTotDis = false;
-            }
-        };
-
-        $scope.dueAmnt = function() {
-            if ($scope.dueAmntData) {
-                $scope.isDueAmnt = true;
-            } else {
-                $scope.isDueAmnt = false;
-            }
-        };
 
         function convertNumberToWords(amount) {
             var words = new Array();
@@ -795,7 +798,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         }, function(response) {});
 
         $scope.getMobmodel = function() {
-            console.log($scope.brandId);
             var brandId = {
                 id: $scope.brandId
             }
