@@ -118,27 +118,26 @@ app.post('/skm/billNo/', function(req, res) {
     });
 });
 
-// get product details
-app.get('/skm/productDetails/:productName', function(req, res) {
-    let sql = "SELECT * FROM km_product_list WHERE product_model = '" + req.params.productName + "'";
-    let query = db.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send(result);
-    });
+// insert new sales-invoice
+app.post('/skm/salesInvoice/', function(req, res) {
+    if (req.body.item.length > 0) {
+        for (var i = 0; i < req.body.item.length; i++) {
+            let sql = "INSERT INTO sales_invoice (bill_no, cust_id, sku_no, sold_price, payment_type, amount, due_amount, due_date, created_date) VALUES ('" + req.body.billNo + "', '" + req.body.custId + "','" + req.body.item[i].pSkuno + "', '" + req.body.item[i].soldPrice + "','" + req.body.payType + "', '" + req.body.amount + "','" + req.body.amountDue + "', '" + req.body.dueDate + "','" + req.body.createdDate + "')";
+            let query = db.query(sql, (err, result) => {
+                if (err) throw err;
+            });
+            let sql2 = "DELETE FROM stock WHERE sku_no = '" + req.body.item[i].pSkuno + "'";
+            let query2 = db.query(sql2, (err, result2) => {
+                if (err) throw err;
+            });
+        }
+    }
+    res.send("done");
 });
 
 // get customer details
 app.get('/skm/customerDetails/:customerPhone', function(req, res) {
-    let sql = "SELECT * FROM km_customer_details WHERE phone = '" + req.params.customerPhone + "'";
-    let query = db.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send(result);
-    });
-});
-
-// get last customer id
-app.get('/skm/getCustomerId/', function(req, res) {
-    let sql = "SELECT km_cust_id FROM km_customer_details  ORDER BY km_cust_id desc LIMIT 1";
+    let sql = "SELECT * FROM customer_details WHERE cust_phone = '" + req.params.customerPhone + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -147,20 +146,20 @@ app.get('/skm/getCustomerId/', function(req, res) {
 
 // Add new customer id
 app.post('/skm/addNewCustomer/', function(req, res) {
-    let sql = "INSERT INTO km_customer_details (km_cust_id, name, phone, email, address, city, state, pincode, created_date, alt_phone) VALUES ('" + req.body.id + "', '" + req.body.name + "', '" + req.body.phone + "', '" + req.body.email + "', '" + req.body.address + "', '" + req.body.city + "', '" + req.body.state + "', '" + req.body.pincode + "','" + req.body.created + "','" + req.body.altphone + "')";
+    let sql = "INSERT INTO customer_details (cust_name, cust_phone, cust_email, cust_address, cust_city, cust_state, cust_pincode, created_date, cust_alt_phone) VALUES ('" + req.body.name + "', '" + req.body.phone + "', '" + req.body.email + "', '" + req.body.address + "', '" + req.body.city + "', '" + req.body.state + "', '" + req.body.pincode + "','" + req.body.created + "','" + req.body.altphone + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
-        console.log("rows affected in km_customer_details : " + result.affectedRows);
+        console.log("rows affected in customer_details : " + result.affectedRows);
         res.send(result);
     });
 });
 
 // Edit new customer id
 app.post('/skm/addEditCustomer/', function(req, res) {
-    let sql = "UPDATE km_customer_details SET km_cust_id = '" + req.body.id + "', name = '" + req.body.name + "', phone = '" + req.body.phone + "', email =  '" + req.body.email + "', address =  '" + req.body.address + "', city = '" + req.body.city + "', state = '" + req.body.state + "', pincode = '" + req.body.pincode + "', created_date = '" + req.body.created + "', alt_phone = '" + req.body.altphone + "' WHERE km_cust_id = '" + req.body.id + "'";
+    let sql = "UPDATE customer_details SET cust_name = '" + req.body.name + "', cust_phone = '" + req.body.phone + "', cust_email =  '" + req.body.email + "', cust_address =  '" + req.body.address + "', cust_city = '" + req.body.city + "', cust_state = '" + req.body.state + "', cust_pincode = '" + req.body.pincode + "', created_date = '" + req.body.created + "', cust_alt_phone = '" + req.body.altphone + "' WHERE cust_id = '" + req.body.id + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
-        console.log("rows affected in km_customer_details : " + result.affectedRows);
+        console.log("rows affected in customer_details : " + result.affectedRows);
         res.send(result);
     });
 });
