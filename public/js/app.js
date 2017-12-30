@@ -464,6 +464,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.isProduct = false;
                 $scope.isValueLoad = false;
                 $scope.brandId = '';
+                var stockAddedData = {
+                    skuno: pSkuno
+                }
+                $http.post('/skm/stockUpdate', stockAddedData).then(function(response) {
+                    var res = response.data;
+                    $scope.mobBrands = angular.fromJson(res);
+                }, function(response) {});
             }
         };
 

@@ -84,7 +84,7 @@ app.post('/skm/modelSearch/', function(req, res) {
 
 // get all product
 app.post('/skm/productSearch/', function(req, res) {
-    let sql = "SELECT * FROM stock  WHERE item_id = '" + req.body.id + "'";
+    let sql = "SELECT * FROM stock  WHERE item_id = '" + req.body.id + "' AND product_flag = 'Y'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -93,7 +93,7 @@ app.post('/skm/productSearch/', function(req, res) {
 
 // get all productDetails
 app.post('/skm/productDetails/', function(req, res) {
-    let sql = "SELECT * FROM stock  WHERE sid = '" + req.body.id + "' AND product_flag = 'Y'";
+    let sql = "SELECT * FROM stock  WHERE sid = '" + req.body.id + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -112,6 +112,15 @@ app.post('/skm/productTaxDetails/', function(req, res) {
 // insert new billNo
 app.post('/skm/billNo/', function(req, res) {
     let sql = "INSERT INTO bill (created_date) VALUES ('" + req.body.createdDate + "')";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// update stock
+app.post('/skm/stockUpdate/', function(req, res) {
+    let sql = "UPDATE stock SET product_flag = 'N' WHERE sku_no = '" + req.body.skuno + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
