@@ -131,16 +131,23 @@
                             <div class="card-content">
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Item</label>
-                                                <input type="text" list="items" class="form-control" ng-model="item">
-                                                <datalist id="items">
-                                                       <option ng-repeat="p in products track by $index" value="{{p.item_id}}">item: {{p.brand}} {{p.model}}</option>
-                                                </datalist>
+                                                <label class="control-label">Brand</label>
+                                                <select class="form-control" ng-model="brandId" ng-change="getMobmodel()">
+                                                    <option ng-repeat="b in mobBrands" value="{{b.bid}}">{{b.brand}}</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Model</label>
+                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="item">
+                                                    <option ng-repeat="m in mobModels" value="{{m.item_id}}">{{m.model}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">IMEI Number</label>
                                                 <input type="text" class="form-control" ng-model="imeiNumber">

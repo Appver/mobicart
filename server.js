@@ -192,7 +192,7 @@ app.get('/skm/tax/:gid/', function(req, res) {
 });
 
 app.post('/skm/productInsert/', function(req, res) {
-    let sql = "INSERT INTO purchase (item_id,imei_number,details,price,tax_group,bar_code,in_time) VALUES (" + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group + ",'" + req.body.bar_code + "','" + req.body.in_time + "')";
+    let sql = "INSERT INTO purchase (item_id,imei_number,details,purchase_price,selling_price,tax_group,bar_code,in_time) VALUES (" + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.purchase_price + "," + req.body.selling_price + "," + req.body.tax_group + ",'" + req.body.bar_code + "','" + req.body.in_time + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -200,7 +200,7 @@ app.post('/skm/productInsert/', function(req, res) {
 });
 
 app.post('/skm/stockInsert/', function(req, res) {
-    let sql = "INSERT INTO stock (sku_no, item_id,imei_number,details,price,tax_group,bar_code,in_time) VALUES (" + req.body.sku_no + "," + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group + ",'" + req.body.bar_code + "','" + req.body.in_time + "')";
+    let sql = "INSERT INTO stock (sku_no, item_id,imei_number,details,price,tax_group,bar_code,in_time,product_flag) VALUES (" + req.body.sku_no + "," + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group + ",'" + req.body.bar_code + "','" + req.body.in_time + "','" + req.body.product_flag + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

@@ -789,11 +789,25 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
 
-        $http.get('/skm/brands').then(function(response) {
+        $http.get('/skm/brand').then(function(response) {
             var res = response.data;
-            $scope.products = angular.fromJson(res);
-
+            $scope.mobBrands = angular.fromJson(res);
         }, function(response) {});
+
+        $scope.getMobmodel = function() {
+            console.log($scope.brandId);
+            var brandId = {
+                id: $scope.brandId
+            }
+            $scope.isModel = false;
+            $http.post('/skm/modelSearch/', brandId).then(function(response) {
+                var res = response.data;
+                $scope.mobModels = angular.fromJson(res);
+                if ($scope.mobModels.length >= 1) {
+                    $scope.isModel = true;
+                }
+            }, function(response) {});
+        };
 
         var taxlist = [];
         var taxes = '';
@@ -821,7 +835,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 item_id: $scope.item,
                 imei_number: $scope.imeiNumber,
                 details: $scope.description,
-                price: $scope.price,
+                purchase_price: $scope.pprice,
+                selling_price: $scope.sprice,
+                price: $scope.sprice,
                 tax_group: $scope.tax,
                 bar_code: 'NA',
                 in_time: '12345'
@@ -829,15 +845,16 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
             $http.post('/skm/productInsert/', data).then(function(response) {
                 output = response.data;
-
                 data.sku_no = output.insertId;
+                data.product_flag = 'Y';
 
                 $http.post('/skm/stockInsert/', data).then(function(response) {
                     toaster.pop("success", "success", "Product Added Successfully");
                     $scope.item = '';
                     $scope.imeiNumber = '';
                     $scope.description = '';
-                    $scope.price = '';
+                    $scope.pprice = '';
+                    $scope.sprice = '';
                     $scope.tax = '';
 
                 }, function(response) {});
