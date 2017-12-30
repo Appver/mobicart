@@ -126,6 +126,76 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
+                                <h4 class="title">Shop Details</h4>
+                            </div>
+                            <div class="card-content">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Name</label>
+                                                <input type="text" class="form-control" ng-model="shopName" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">GSTIN</label>
+                                                <input type="text" class="form-control" ng-model="gstin" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Phone</label>
+                                                <input type="number" class="form-control" ng-model="shopPhone" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Email address</label>
+                                                <input type="email" class="form-control" ng-model="shopEmail" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Address</label>
+                                                <input type="text" class="form-control" ng-model="shopAddress" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">City</label>
+                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="shopCity" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">State</label>
+                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="shopState">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Postal Code</label>
+                                                <input type="number" class="form-control" ng-model="shopPinCode">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary pull-right" ng-click="saveShop()">SAVE</button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="purple">
                                 <h4 class="title">Brand & Model</h4>
                             </div>
                             <div class="card-content">
