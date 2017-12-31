@@ -421,40 +421,31 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
             }, function(response) {});
         };
-
-        $scope.generatePreviewBill = function() {
+        $scope.billNo = '';
+        $scope.generatePreviewBill = function(salesProductList) {
             $("#previewBill").modal();
-            $scope.billNo = '';
-            $http.post('/skm/billNo/').then(function(response) {
+            salesProductList.paymentType = $scope.paymentType;
+            salesProductList.custId = $scope.cusID;
+            console.log(salesProductList.CGST);
+            console.log(salesProductList);
+            $http.post('/skm/billNo/', salesProductList).then(function(response) {
                 output = response.data;
                 $scope.billNo = output.insertId;
             }, function(response) {});
         };
 
         $scope.salesInvoice = function() {
-
-            if ($scope.billNo != '' || $scope.billNo != null || $scope.billNo != undefined || $scope.billNo != "") {
+            if ($scope.billNo != '') {
                 $scope.amountDue = 0;
                 $scope.dueDate = '';
                 $scope.createdDate = '';
                 if ($scope.salesProductList.pList.length > 0) {
                     var salesData = {
                         billNo: $scope.billNo,
-                        custId: $scope.cusID,
                         item: $scope.salesProductList.pList,
-                        payType: $scope.paymentType,
-                        amount: $scope.totalCash,
-                        amountDue: $scope.amountDue,
-                        dueDate: $scope.dueDate,
-                        createdDate: $scope.createdDate,
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
                         console.log(response.data);
-                        //if (response.data == 'done') {
-                        //    console.log("inside");
-                        //    $("#previewBill").modal('hide');
-                        //    $location.path('/addcustomer');
-                        //}
                     }, function(response) {});
                 }
             } else {

@@ -129,7 +129,7 @@ app.post('/skm/productTaxDetails/', function(req, res) {
 
 // insert new billNo
 app.post('/skm/billNo/', function(req, res) {
-    let sql = "INSERT INTO bill (created_date) VALUES ('" + req.body.createdDate + "')";
+    let sql = "INSERT INTO bill (cust_id, sub_total,cgst_amnt,sgst_amnt,payment_type,amount) VALUES (" + req.body.custId + "," + req.body.subTotal + "," + req.body.CGST + "," + req.body.SGST + ",'" + req.body.paymentType + "'," + req.body.Total + ")";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -149,7 +149,7 @@ app.post('/skm/stockUpdate/', function(req, res) {
 app.post('/skm/salesInvoice/', function(req, res) {
     if (req.body.item.length > 0) {
         for (var i = 0; i < req.body.item.length; i++) {
-            let sql = "INSERT INTO sales_invoice (bill_no, cust_id, sku_no, sold_price, payment_type, amount, due_amount, due_date, created_date) VALUES ('" + req.body.billNo + "', '" + req.body.custId + "','" + req.body.item[i].pSkuno + "', '" + req.body.item[i].soldPrice + "','" + req.body.payType + "', '" + req.body.amount + "','" + req.body.amountDue + "', '" + req.body.dueDate + "','" + req.body.createdDate + "')";
+            let sql = "INSERT INTO sales_invoice (bill_no, sku_no, sold_price, unit_price, tax, cgst_amnt, sgst_amnt) VALUES (" + req.body.billNo + "," + req.body.item[i].pSkuno + "," + req.body.item[i].soldPrice + "," + req.body.item[i].pPrice + "," + req.body.item[i].pTax + "," + req.body.item[i].pCTax + "," + req.body.item[i].pSTax + ")";
             let query = db.query(sql, (err, result) => {
                 if (err) throw err;
             });
