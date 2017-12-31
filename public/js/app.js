@@ -787,8 +787,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 selling_price: $scope.sprice,
                 price: $scope.sprice,
                 tax_group: $scope.tax,
-                bar_code: 'NA',
-                in_time: '12345'
+                bar_code: 'NA'
             };
 
             $http.post('/skm/productInsert/', data).then(function(response) {
