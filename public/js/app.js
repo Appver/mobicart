@@ -215,6 +215,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
         $scope.isProductAdded = false;
         $scope.isGenerateBill = true;
+        $scope.isResetBill = true;
+
         $scope.isValidCustPhone = function() {
             $scope.isSearchCust = false;
             if ($scope.customerName.length == 10) {
@@ -408,6 +410,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 }
             }
         };
+
         $scope.removeItem = function(product) {
             var ritems = $scope.salesProductList.pList;
             var removeId = product.SNo - 1;
@@ -421,13 +424,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
             }, function(response) {});
         };
+
         $scope.billNo = '';
+
         $scope.generatePreviewBill = function(salesProductList) {
             $("#previewBill").modal();
             salesProductList.paymentType = $scope.paymentType;
             salesProductList.custId = $scope.cusID;
-            console.log(salesProductList.CGST);
-            console.log(salesProductList);
             $http.post('/skm/billNo/', salesProductList).then(function(response) {
                 output = response.data;
                 $scope.billNo = output.insertId;
@@ -451,6 +454,37 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             } else {
                 $scope.billNo = '';
             }
+        };
+
+        $scope.backToSalesInvoice = function() {
+            var salesData = {
+                billNo: $scope.billNo,
+            }
+            $http.post('/skm/backToSalesInvoice/', salesData).then(function(response) {
+                console.log(response.data);
+                $scope.isResetBill = false;
+            }, function(response) {});
+        };
+
+        $scope.resetSalesInvoice = function() {
+            $scope.isProductAdded = false;
+            $scope.modelDetailArray = [];
+            $scope.productArray = [];
+            $scope.productPrice = '';
+            $scope.productDis = '';
+            $scope.productTax = '';
+            $scope.isAdd = true;
+            $scope.isModel = false;
+            $scope.isProduct = false;
+            $scope.isValueLoad = false;
+            $scope.brandId = '';
+            $scope.salesProductList.pList = '';
+            $scope.salesProductList.subTotal = '';
+            $scope.salesProductList.CGST = '';
+            $scope.salesProductList.SGST = '';
+            $scope.salesProductList.Total = '';
+            $scope.salesProductList.tItems = '';
+            $scope.paymentType = 'CASH';
         };
 
         function gstAmt(MRP, GSTPer) {

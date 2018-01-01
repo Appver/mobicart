@@ -136,6 +136,15 @@ app.post('/skm/billNo/', function(req, res) {
     });
 });
 
+// insert Delete billNo
+app.post('/skm/backToSalesInvoice/', function(req, res) {
+    let sql = "DELETE FROM bill WHERE bill_no = '" + req.body.billNo + "'";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 // update stock
 app.post('/skm/stockUpdate/', function(req, res) {
     let sql = "UPDATE stock SET product_flag = '" + req.body.value + "' WHERE sku_no = '" + req.body.skuno + "'";

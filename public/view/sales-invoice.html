@@ -489,6 +489,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <button type="submit" class="btn btn-primary" ng-disabled="isResetBill" ng-click="resetSalesInvoice();">Reset</button>
                                         <button type="submit" class="btn btn-primary pull-right" ng-disabled="isGenerateBill" ng-click="generatePreviewBill(salesProductList);">Generate Bill</button>
                                         <div class="clearfix"></div>
                                     </form>
@@ -902,7 +903,7 @@
                                     </table>
                                 </div>
                                 <button print-btn type="button" class="btn btn-primary pull-right" ng-click="salesInvoice();">Print</button>
-                                <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Back</button>
+                                <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" ng-click="backToSalesInvoice();">Back</button>
                                 <div class="clearfix"></div>
                             </form>
                         </div>
