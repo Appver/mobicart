@@ -216,6 +216,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.isProductAdded = false;
         $scope.isGenerateBill = true;
         $scope.isResetBill = true;
+        $scope.isCustomerSelected = false;
 
         $scope.isValidCustPhone = function() {
             $scope.isSearchCust = false;
@@ -250,6 +251,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.customerName = $scope.customerDetails.cust_name;
             $("#getCustomer").modal('hide');
             $scope.isSearchCust = false;
+            $scope.isCustomerSelected = true;
         }
         $scope.addCustomer = {};
         $scope.addCust = function() {
@@ -268,9 +270,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.cusID = newCustId;
                     $scope.addCustomer.cusID = newCustId;
                     $scope.customerName = $scope.addCustomer.name;
+                    $scope.isCustomerSelected = true;
                 } else {
                     $scope.custTitle = "Failed";
                     $scope.custMessage = ", Added Failed. Please try again.";
+                    $scope.isCustomerSelected = false;
                 }
                 $("#addCustDBMessage").modal();
             }, function(response) {});
@@ -405,8 +409,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
                 }, function(response) {});
 
-                if ($scope.cusID) {
+                if ($scope.isCustomerSelected) {
                     $scope.isGenerateBill = false;
+                    //$scope.isCustomerSelected = false;
                 }
             }
         };
@@ -466,6 +471,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.resetSalesInvoice = function() {
+            $scope.isCustomerSelected = false;
+            $scope.cusID = '';
+            $scope.customerName = '';
             $scope.isProductAdded = false;
             $scope.modelDetailArray = [];
             $scope.productArray = [];
@@ -485,12 +493,45 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 console.log(response.data)
 
             }, function(response) {});
-            $scope.salesProductList.pList = '';
-            $scope.salesProductList.subTotal = '';
-            $scope.salesProductList.CGST = '';
-            $scope.salesProductList.SGST = '';
-            $scope.salesProductList.Total = '';
-            $scope.salesProductList.tItems = '';
+            $scope.salesProductList = {
+                "cusDetails": [{
+                    "name": null,
+                    "phone": null,
+                    "email": null,
+                    "street": null,
+                    "city": null,
+                    "state": null,
+                    "postalCode": null
+                }],
+                "pBillNo": null,
+                "pList": [{
+                    "SNo": null,
+                    "custId": null,
+                    "pSkuno": null,
+                    "pName": null,
+                    "pIMEI": null,
+                    "pDesc": null,
+                    "pQty": null,
+                    "pPrice": null,
+                    "pDis": null,
+                    "pTax": null,
+                    "pCTaxPer": null,
+                    "pSTaxPer": null,
+                    "pCTax": null,
+                    "pSTax": null,
+                    "pAmount": null,
+                    "soldPrice": null
+                }],
+                "tDisc": 0,
+                "tItems": 0,
+                "subTotal": 0.00,
+                "Total": 0.00,
+                "roundOff": 0,
+                "CGST": 0.00,
+                "SGST": 0.00,
+                "payType": null,
+                "duePay": null
+            };
             $scope.paymentType = 'CASH';
             console.log("After Lenght : " + $scope.salesProductList.pList.length);
         };
