@@ -448,7 +448,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         item: $scope.salesProductList.pList,
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-                        console.log(response.data);
+
                     }, function(response) {});
                 }
             } else {
@@ -458,10 +458,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.backToSalesInvoice = function() {
             var salesData = {
-                billNo: $scope.billNo,
+                billNo: $scope.billNo
             }
             $http.post('/skm/backToSalesInvoice/', salesData).then(function(response) {
-                console.log(response.data);
                 $scope.isResetBill = false;
             }, function(response) {});
         };
@@ -478,6 +477,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.isProduct = false;
             $scope.isValueLoad = false;
             $scope.brandId = '';
+            console.log("Lenght : " + $scope.salesProductList.pList.length);
+            var stockRemovedDataList = {
+                item: $scope.salesProductList.pList
+            }
+            $http.post('/skm/stockProductUpdate', stockRemovedDataList).then(function(response) {
+                console.log(response.data)
+
+            }, function(response) {});
             $scope.salesProductList.pList = '';
             $scope.salesProductList.subTotal = '';
             $scope.salesProductList.CGST = '';
@@ -485,6 +492,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.salesProductList.Total = '';
             $scope.salesProductList.tItems = '';
             $scope.paymentType = 'CASH';
+            console.log("After Lenght : " + $scope.salesProductList.pList.length);
         };
 
         function gstAmt(MRP, GSTPer) {

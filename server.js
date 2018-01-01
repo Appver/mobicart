@@ -145,6 +145,19 @@ app.post('/skm/backToSalesInvoice/', function(req, res) {
     });
 });
 
+// insert delete sales-invoice
+app.post('/skm/stockProductUpdate', function(req, res) {
+    if (req.body.item.length > 0) {
+        for (var i = 0; i < req.body.item.length; i++) {
+            let sql = "UPDATE stock SET product_flag = 'Y' WHERE sku_no = '" + req.body.item[i].pSkuno + "'";
+            let query = db.query(sql, (err, result) => {
+                if (err) throw err;
+                res.send(result);
+            });
+        }
+    }
+});
+
 // update stock
 app.post('/skm/stockUpdate/', function(req, res) {
     let sql = "UPDATE stock SET product_flag = '" + req.body.value + "' WHERE sku_no = '" + req.body.skuno + "'";
