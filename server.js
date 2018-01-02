@@ -339,10 +339,18 @@ app.post('/skm/productUpdate/', function(req, res) {
 // login
 app.post('/skm/login/', function(req, res) {
     let sql = "select u.uid,ur.rid from users u inner join users_roles ur on u.uid = ur.uid and u.username = '" + req.body.name + "' and u.password = '" + req.body.pass + "'";
-
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
     });
 
+});
+
+//admin-dashboard stock data
+app.get('/skm/adminStockData/', function(req, res) {
+    let sql = "SELECT model.model as Model, COUNT(stock.item_id) as Count FROM model LEFT JOIN stock ON model.item_id = stock.item_id GROUP BY model.item_id ORDER BY COUNT(stock.item_id) ASC";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
 });

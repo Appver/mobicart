@@ -138,13 +138,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         };
     })
-    .controller('AdminDashboardCntlr', function($scope, $route, $routeParams, $location) {
+    .controller('AdminDashboardCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
+        $scope.$http = $http;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+
         $(document).ready(function() {
             // Javascript method's body can be found in assets/js/demos.js
-            demo.initDashboardPageCharts();
+            //demo.initDashboardPageCharts();
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function
                 $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
@@ -153,7 +155,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             } else {
                 $('html').addClass('perfect-scrollbar-off');
             }
+            $http.get('/skm/adminStockData/').then(function(response) {
+                var res = response.data;
+                $scope.stockStatusArray = angular.fromJson(res);
+                console.log(res)
+                console.log("$scope.stockStatusArray : " + $scope.stockStatusArray)
+            }, function(response) {});
+
         });
+
 
     })
     .controller('SalesInvoiceCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
