@@ -4,6 +4,7 @@ app.run(function($rootScope, $location, $cookieStore) {
     $rootScope.isUser = false;
     $rootScope.isAdmin = false;
     $rootScope.user = $cookieStore.get('user');
+    $rootScope.userObj = '';
     if ($rootScope.user) {
         if ($rootScope.user.uid) {
             $rootScope.isUser = true;
@@ -108,6 +109,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
 
         $scope.loginValidate = function() {
+
             var data = { name: $scope.lUserName, pass: $scope.lPassword };
             $http.post('/skm/login/', data).then(function(response) {
                 var output = response.data;
@@ -116,6 +118,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     // Put cookie
                     $cookieStore.put('user', user);
                     $rootScope.user = user;
+                    $rootScope.userObj = user;
                     if (user.rid == 1) {
                         $rootScope.isAdmin = true;
                         $location.path('/dashboard');
@@ -131,6 +134,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $location.path('/');
                 }
             }, function(response) {});
+
 
         };
     })
@@ -457,15 +461,18 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.amountDue = 0;
                 $scope.dueDate = '';
                 $scope.createdDate = '';
+
                 if ($scope.salesProductList.pList.length > 0) {
+                    var timeToSecond = $rootScope.timeToSeconds();
                     var salesData = {
                         billNo: $scope.billNo,
                         item: $scope.salesProductList.pList,
-                        createdDate: '',
-                        modifiedDate: '',
-                        modifiedBy: ''
+                        createdDate: timeToSecond,
+                        modifiedDate: timeToSecond,
+                        modifiedBy: $rootScope.userObj.uid
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
+
 
                     }, function(response) {});
                 }
