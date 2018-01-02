@@ -348,7 +348,7 @@ app.post('/skm/login/', function(req, res) {
 
 //admin-dashboard stock data
 app.get('/skm/adminStockData/', function(req, res) {
-    let sql = "SELECT model.model as Model, COUNT(stock.item_id) as Count FROM model LEFT JOIN stock ON model.item_id = stock.item_id GROUP BY model.item_id ORDER BY COUNT(stock.item_id) ASC";
+    let sql = "SELECT brand.brand as Brand, model.model as Model, COUNT(stock.item_id) as Count FROM brand JOIN model ON (brand.bid = model.bid) LEFT JOIN stock ON (model.item_id = stock.item_id) GROUP BY model.item_id ORDER BY COUNT(stock.item_id) ASC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

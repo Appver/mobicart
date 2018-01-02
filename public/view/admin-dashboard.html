@@ -127,16 +127,18 @@
                                 <h4 class="title">Stock Status</h4>
                                 <p class="category">Stock Status for {{currDateTime}}</p>
                             </div>
-                            <div class="card-content table-responsive">
+                            <div class="card-content table-responsive" style="height:50%">
                                 <table class="table table-hover">
                                     <thead class="text-primary">
                                         <th>Si No</th>
+                                        <th>Brand</th>
                                         <th>Model</th>
                                         <th>Count</th>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="sStatus in stockStatusArray">
                                             <td>{{$index + 1}}</td>
+                                            <td>{{sStatus.Brand}}</td>
                                             <td>{{sStatus.Model}}</td>
                                             <td>{{sStatus.Count}}</td>
                                         </tr>
