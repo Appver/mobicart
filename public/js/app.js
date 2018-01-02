@@ -158,8 +158,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $http.get('/skm/adminStockData/').then(function(response) {
                 var res = response.data;
                 $scope.stockStatusArray = angular.fromJson(res);
-                console.log(res)
-                console.log("$scope.stockStatusArray : " + $scope.stockStatusArray)
             }, function(response) {});
 
         });
