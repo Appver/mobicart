@@ -129,7 +129,7 @@ app.post('/skm/productTaxDetails/', function(req, res) {
 
 // insert new billNo
 app.post('/skm/billNo/', function(req, res) {
-    let sql = "INSERT INTO bill (cust_id, sub_total,cgst_amnt,sgst_amnt,payment_type,amount) VALUES (" + req.body.custId + "," + req.body.subTotal + "," + req.body.CGST + "," + req.body.SGST + ",'" + req.body.paymentType + "'," + req.body.Total + ")";
+    let sql = "INSERT INTO bill (cust_id, sub_total, cgst_amnt, sgst_amnt, payment_type, amount, created_date, modified_date, modified_by) VALUES (" + req.body.item.custId + "," + req.body.item.subTotal + "," + req.body.item.CGST + "," + req.body.item.SGST + ",'" + req.body.item.paymentType + "'," + req.body.item.Total + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + ")";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -239,7 +239,7 @@ app.get('/skm/tax/:gid/', function(req, res) {
 });
 
 app.post('/skm/productInsert/', function(req, res) {
-    let sql = "INSERT INTO purchase (item_id,imei_number,details,purchase_price,selling_price,tax_group,bar_code) VALUES (" + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.purchase_price + "," + req.body.selling_price + "," + req.body.tax_group + ",'" + req.body.bar_code + "')";
+    let sql = "INSERT INTO purchase (item_id, imei_number, details, purchase_price, selling_price, tax_group, bar_code, created_date, modified_date, modified_by) VALUES (" + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.purchase_price + "," + req.body.selling_price + "," + req.body.tax_group + ",'" + req.body.bar_code + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + ")";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

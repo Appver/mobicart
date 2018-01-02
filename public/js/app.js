@@ -450,7 +450,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $("#previewBill").modal();
             salesProductList.paymentType = $scope.paymentType;
             salesProductList.custId = $scope.cusID;
-            $http.post('/skm/billNo/', salesProductList).then(function(response) {
+            var timeToSecond = $rootScope.timeToSeconds();
+            var salesProductListData = {
+                item: salesProductList,
+                createdDate: timeToSecond,
+                modifiedDate: timeToSecond,
+                modifiedBy: $rootScope.userObj.uid
+            }
+
+            $http.post('/skm/billNo/', salesProductListData).then(function(response) {
                 output = response.data;
                 $scope.billNo = output.insertId;
             }, function(response) {});
@@ -879,6 +887,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.taxes = taxlist;
 
         $scope.addProduct = function() {
+            var timeToSecond = $rootScope.timeToSeconds();
             var data = {
                 item_id: $scope.item,
                 imei_number: $scope.imeiNumber,
@@ -887,7 +896,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 selling_price: $scope.sprice,
                 price: $scope.sprice,
                 tax_group: $scope.tax,
-                bar_code: 'NA'
+                bar_code: 'NA',
+                createdDate: timeToSecond,
+                modifiedDate: timeToSecond,
+                modifiedBy: $rootScope.userObj.uid
             };
 
             $http.post('/skm/productInsert/', data).then(function(response) {
