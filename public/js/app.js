@@ -28,6 +28,16 @@ app.run(function($rootScope, $location, $cookieStore) {
     }
     $rootScope.currDateTime = ('0' + d.getDate()).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear() + " " + rhr + ":" + min + " " + ampm;
     $rootScope.ystrDate = ('0' + (d.getDate() - 1)).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear();
+
+    $rootScope.timeToSeconds = function() {
+        return Math.round(new Date().getTime() / 1000);
+    };
+
+    $rootScope.secondsToTime = function(secs) {
+        var date = new Date(0);
+        date.setUTCSeconds(secs);
+        return date.toLocaleString();
+    };
 });
 
 app.config(function($routeProvider, $locationProvider) {
@@ -142,7 +152,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         });
 
     })
-    .controller('SalesInvoiceCntlr', function($scope, $http, $route, $routeParams, $location) {
+    .controller('SalesInvoiceCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
