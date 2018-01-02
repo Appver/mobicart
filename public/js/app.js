@@ -433,6 +433,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.removeItem = function(product) {
             var ritems = $scope.salesProductList.pList;
             var removeId = product.SNo - 1;
+            var removeProduct = ritems[removeId];
+            var itemCTax = removeProduct.pCTaxPer;
+            var itemSTax = removeProduct.pSTaxPer;
+            var itemPrice = removeProduct.pPrice;
+            var sPrice = removeProduct.soldPrice;
+            $scope.salesProductList.subTotal = round(($scope.salesProductList.subTotal - itemPrice), 2);
+            $scope.salesProductList.CGST = round(($scope.salesProductList.CGST - itemCTax), 2);
+            $scope.salesProductList.SGST = round(($scope.salesProductList.SGST - itemSTax), 2);
+            $scope.salesProductList.Total = round(($scope.salesProductList.Total - sPrice), 0);
             ritems.splice(removeId, 1);
             $scope.salesProductList.pList = ritems;
             var stockRemovedData = {
