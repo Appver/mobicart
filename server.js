@@ -198,7 +198,6 @@ app.post('/skm/addNewCustomer/', function(req, res) {
     let sql = "INSERT INTO customer_details (cust_name, cust_phone, cust_email, cust_address, cust_city, cust_state, cust_pincode, created_date, cust_alt_phone) VALUES ('" + req.body.name + "', '" + req.body.phone + "', '" + req.body.email + "', '" + req.body.address + "', '" + req.body.city + "', '" + req.body.state + "', '" + req.body.pincode + "','" + req.body.created + "','" + req.body.altphone + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
-        console.log("rows affected in customer_details : " + result.affectedRows);
         res.send(result);
     });
 });
@@ -208,7 +207,6 @@ app.post('/skm/addEditCustomer/', function(req, res) {
     let sql = "UPDATE customer_details SET cust_name = '" + req.body.name + "', cust_phone = '" + req.body.phone + "', cust_email =  '" + req.body.email + "', cust_address =  '" + req.body.address + "', cust_city = '" + req.body.city + "', cust_state = '" + req.body.state + "', cust_pincode = '" + req.body.pincode + "', created_date = '" + req.body.created + "', cust_alt_phone = '" + req.body.altphone + "' WHERE cust_id = '" + req.body.id + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
-        console.log("rows affected in customer_details : " + result.affectedRows);
         res.send(result);
     });
 });

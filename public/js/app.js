@@ -461,6 +461,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     var salesData = {
                         billNo: $scope.billNo,
                         item: $scope.salesProductList.pList,
+                        createdDate: '',
+                        modifiedDate: '',
+                        modifiedBy: ''
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
 
@@ -495,12 +498,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.isProduct = false;
             $scope.isValueLoad = false;
             $scope.brandId = '';
-            console.log("Lenght : " + $scope.salesProductList.pList.length);
             var stockRemovedDataList = {
                 item: $scope.salesProductList.pList
             }
             $http.post('/skm/stockProductUpdate', stockRemovedDataList).then(function(response) {
-                console.log(response.data)
 
             }, function(response) {});
             $scope.salesProductList = {
@@ -543,7 +544,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "duePay": null
             };
             $scope.paymentType = 'CASH';
-            console.log("After Lenght : " + $scope.salesProductList.pList.length);
         };
 
         function gstAmt(MRP, GSTPer) {
