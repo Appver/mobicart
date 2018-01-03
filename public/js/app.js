@@ -124,6 +124,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         $location.path('/dashboard');
                     } else {
                         $rootScope.isUser = true;
+                        $rootScope.isAdmin = false;
                         $location.path('/addcustomer');
                     }
                 } else {
