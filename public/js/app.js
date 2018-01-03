@@ -439,12 +439,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         };
 
-        $scope.removeItem = function(product) {
+        $scope.removeItem = function(removeId) {
             var ritems = $scope.salesProductList.pList;
-            var removeId = product.SNo - 1;
             var removeProduct = ritems[removeId];
-            var itemCTax = removeProduct.pCTaxPer;
-            var itemSTax = removeProduct.pSTaxPer;
+            var itemCTax = removeProduct.pCTax;
+            var itemSTax = removeProduct.pSTax;
             var itemPrice = removeProduct.pPrice;
             var sPrice = removeProduct.soldPrice;
             $scope.salesProductList.subTotal = round(($scope.salesProductList.subTotal - itemPrice), 2);
@@ -452,9 +451,12 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.salesProductList.SGST = round(($scope.salesProductList.SGST - itemSTax), 2);
             $scope.salesProductList.Total = round(($scope.salesProductList.Total - sPrice), 0);
             ritems.splice(removeId, 1);
+            $scope.itemsCount = ritems.length;
+            $scope.totalCash = $scope.salesProductList.Total;
+            $scope.totalCashWords = convertNumberToWords($scope.totalCash);
             $scope.salesProductList.pList = ritems;
             var stockRemovedData = {
-                skuno: product.pSkuno,
+                skuno: removeProduct.pSkuno,
                 value: 'Y',
             }
             $http.post('/skm/stockUpdate', stockRemovedData).then(function(response) {

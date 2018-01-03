@@ -296,7 +296,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr ng-repeat="product in salesProductList.pList">
-                                                                    <td>{{product.SNo}}</td>
+                                                                    <td>{{$index + 1}}</td>
                                                                     <td>{{product.pName}}</td>
                                                                     <td>{{product.pIMEI}}</td>
                                                                     <td>{{product.pPrice}}</td>
@@ -307,7 +307,7 @@
                                                                         <!--<button type="button" rel="tooltip" title="Edit Product" class="btn btn-primary btn-simple btn-xs">
                                                                                 <i class="material-icons">edit</i>
                                                                             </button>-->
-                                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs" ng-click="removeItem(product)">
+                                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs" ng-click="removeItem($index)">
                                                                                 <i class="material-icons">close</i>
                                                                             </button>
                                                                     </td>
@@ -816,7 +816,7 @@
                                             </td>
                                         </tr>
                                         <tr ng-repeat="product in salesProductList.pList">
-                                            <td align="center" valign="middle">{{product.SNo}}</td>
+                                            <td align="center" valign="middle">{{$index + 1}}</td>
                                             <td align="center" valign="middle">{{product.pName}}</td>
                                             <td align="center" valign="middle">{{product.pSkuno}}</td>
                                             <td align="center" valign="middle">{{product.pPrice}}</td>
