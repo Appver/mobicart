@@ -748,38 +748,38 @@
                                 <div print-section>
                                     <table border="1">
                                         <tr>
-                                            <td colspan="10" align="center" valign="middle">
+                                            <td colspan="8" align="center" valign="middle">
                                                 <p style="font-weight: bold;">CASH/CERDIT BILL</p>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="5" rowspan="2">
+                                            <td colspan="4" rowspan="2">
                                                 <p style="font-weight: bold;">{{shopDetail.name}}</p>
                                                 <br>#{{shopDetail.address}}
                                                 <br> {{shopDetail.city}}-{{shopDetail.pincode}}.
                                                 <br> Ph: {{shopDetail.phone}}
                                                 <br> Ph: {{shopDetail.email}}
                                                 <br> GSTIN: {{shopDetail.gstin}}</td>
-                                            <td colspan="3" align="center" valign="middle">Date : {{issueDate}}</td>
+                                            <td colspan="2" align="center" valign="middle">Date : {{issueDate}}</td>
                                             <td colspan="2" align="center" valign="middle">Bill no : {{billNo}}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3" align="center" valign="middle">{{paymentType}}</td>
+                                            <td colspan="2" align="center" valign="middle">{{paymentType}}</td>
                                             <td colspan="2" align="center" valign="middle">{{totalCash}}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="5">
+                                            <td colspan="4">
                                                 <p style="font-weight: bold;">Buyer
                                                     <br> {{customerDetails.cust_name}}</p>,
                                                 <br>{{customerDetails.cust_city}},
                                                 <br> Ph:{{customerDetails.cust_phone}}.</td>
-                                            <td colspan="5" align="center" valign="middle"> Mobile Warrenty : One Year
+                                            <td colspan="4" align="center" valign="middle"> Mobile Warrenty : One Year
                                                 <br> Battery : 6 Months
                                                 <br> Charger : 6 Months</td>
 
                                         </tr>
                                         <tr>
-                                            <td colspan="10">
+                                            <td colspan="8">
                                                 <br>
                                             </td>
                                         </tr>
@@ -791,13 +791,7 @@
                                                 <p style="font-weight: bold;">PARTICULARS</p>
                                             </td>
                                             <td align="center" valign="middle">
-                                                <p style="font-weight: bold;">SKU NO</p>
-                                            </td>
-                                            <td align="center" valign="middle">
                                                 <p style="font-weight: bold;">PRICE</p>
-                                            </td>
-                                            <td align="center" valign="middle">
-                                                <p style="font-weight: bold;">QTY</p>
                                             </td>
                                             <td align="center" valign="middle">
                                                 <p style="font-weight: bold;">CGST%</p>
@@ -818,9 +812,7 @@
                                         <tr ng-repeat="product in salesProductList.pList">
                                             <td align="center" valign="middle">{{$index + 1}}</td>
                                             <td align="center" valign="middle">{{product.pName}}</td>
-                                            <td align="center" valign="middle">{{product.pSkuno}}</td>
                                             <td align="center" valign="middle">{{product.pPrice}}</td>
-                                            <td align="center" valign="middle">{{product.pQty}}</td>
                                             <td align="center" valign="middle">{{product.pCTaxPer}}</td>
                                             <td align="center" valign="middle">{{product.pCTax}}</td>
                                             <td align="center" valign="middle">{{product.pSTaxPer}}</td>
@@ -845,14 +837,12 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
-                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td colspan="1" align="center" valign="middle">
                                                 <p style="font-weight: bold;">{{itemsCount}}</p>
                                             </td>
-                                            <td colspan="4" align="center" valign="middle">
+                                            <td colspan="2" align="center" valign="middle">
                                                 <p style="font-weight: bold;"> E & O.E</p>
                                             </td>
                                             <td colspan="1"></td>
@@ -868,13 +858,13 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="9">
+                                            <td colspan="7">
                                                 <p style="font-weight: bold;">{{totalCashWords}}</p>
                                             </td>
                                             <td colspan="1"></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="9">
+                                            <td colspan="7">
                                                 <ul style="list-style-type:square">
                                                     <li>GOODS ONCE SOLD CANNOT BE TAKEN BACK</li>
                                                     <li>WARRENTY SHOULD BE CLAIM FROM MANUFACTURER ONLY</li>
@@ -886,7 +876,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="9">I HAVE READ THE WARRENTY AND TERMS & CONDITIONS AND
+                                            <td colspan="7">I HAVE READ THE WARRENTY AND TERMS & CONDITIONS AND
                                                 <br>RECEIVED THE GOODS IN GOOD CONDITION
                                                 <br>
                                                 <br>
