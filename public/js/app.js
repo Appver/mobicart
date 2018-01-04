@@ -549,7 +549,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                             $scope.isSaveBill = true;
                             $scope.isPrintBill = true;
                             $scope.isBackBill = true;
-                            $scope.isResetClean = false;
+                            $scope.isResetClean = true;
                             $scope.isResetBill = true;
                         }
 
