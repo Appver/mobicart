@@ -37,7 +37,9 @@ app.run(function($rootScope, $location, $cookieStore) {
 
     $rootScope.secondsToTime = function(secs) {
         var date = new Date(0);
-        date.setUTCSeconds(secs);
+        if (secs != 0) {
+            date.setUTCSeconds(secs);
+        }
         return date.toLocaleString();
     };
 });
@@ -160,6 +162,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $http.get('/skm/adminStockData/').then(function(response) {
                 var res = response.data;
                 $scope.stockStatusArray = angular.fromJson(res);
+            }, function(response) {});
+
+            $http.get('/skm/adminBillData/').then(function(response) {
+                var res = response.data;
+                $scope.billStatusArray = angular.fromJson(res);
             }, function(response) {});
 
         });

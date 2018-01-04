@@ -354,3 +354,12 @@ app.get('/skm/adminStockData/', function(req, res) {
         res.send(result);
     });
 });
+
+//admin-dashboard bill data
+app.get('/skm/adminBillData/', function(req, res) {
+    let sql = "SELECT bill.bill_no as BillNo, customer_details.cust_name as CustomerName, bill.amount as TotalBillAmount, bill.created_date as IssuedDate FROM bill JOIN customer_details ON (bill.cust_id = customer_details.cust_id) GROUP BY bill.bill_no ORDER BY bill.created_date ASC";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
