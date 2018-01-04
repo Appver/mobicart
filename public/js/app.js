@@ -6,6 +6,7 @@ app.run(function($rootScope, $location, $cookieStore) {
     $rootScope.user = $cookieStore.get('user');
     $rootScope.userObj = '';
     if ($rootScope.user) {
+        $rootScope.userObj = $rootScope.user;
         if ($rootScope.user.uid) {
             $rootScope.isUser = true;
             if ($rootScope.user.rid == 1)
@@ -538,16 +539,18 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedBy: $rootScope.userObj.uid
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-                        if (response.affectedRows >= 1) {
+                        if (response.data.affectedRows >= 1) {
                             $scope.isSaveBill = true;
                             $scope.isPrintBill = true;
                             $scope.isBackBill = true;
                             $scope.isResetClean = true;
+                            $scope.isResetBill = true;
                         } else {
                             $scope.isSaveBill = true;
                             $scope.isPrintBill = true;
                             $scope.isBackBill = true;
                             $scope.isResetClean = false;
+                            $scope.isResetBill = true;
                         }
 
                     }, function(response) {});
