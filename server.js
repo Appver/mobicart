@@ -247,7 +247,7 @@ app.post('/skm/productInsert/', function(req, res) {
 });
 
 app.post('/skm/stockInsert/', function(req, res) {
-    let sql = "INSERT INTO stock (sku_no, item_id,imei_number,details,price,tax_group,bar_code,product_flag) VALUES (" + req.body.sku_no + "," + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group + ",'" + req.body.bar_code + "','" + req.body.product_flag + "')";
+    let sql = "INSERT INTO stock (sku_no, item_id,imei_number,details,price,tax_group,bar_code, in_time, product_flag) VALUES (" + req.body.sku_no + "," + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group + ",'" + req.body.bar_code + "'," + req.body.createdDate + ",'" + req.body.product_flag + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
