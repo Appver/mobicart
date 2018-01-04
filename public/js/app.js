@@ -212,6 +212,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "SNo": null,
                 "custId": null,
                 "pSkuno": null,
+                "pHSNSAC": null,
                 "pName": null,
                 "pIMEI": null,
                 "pDesc": null,
@@ -240,6 +241,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.isGenerateBill = true;
         $scope.isResetBill = true;
         $scope.isCustomerSelected = false;
+        $scope.isSaveBill = false;
+        $scope.isPrintBill = false;
+        $scope.isBackBill = false;
 
         $scope.isValidCustPhone = function() {
             $scope.isSearchCust = false;
@@ -385,6 +389,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "SNo": $scope.salesProductList.tItems,
                 "custId": $scope.cusID,
                 "pSkuno": selproduct.sku_no,
+                "pHSNSAC": selproduct.sku_no,
                 "pName": selproduct.brand + ' ' + selproduct.model,
                 "pIMEI": selproduct.imei_number,
                 "pDesc": '',
@@ -484,7 +489,37 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
 
-        $scope.salesInvoice = function() {
+        $scope.salesInvoiceSave = function() {
+            if ($scope.billNo != '') {
+                $scope.amountDue = 0;
+                $scope.dueDate = '';
+                $scope.createdDate = '';
+
+                if ($scope.salesProductList.pList.length > 0) {
+                    var timeToSecond = $rootScope.timeToSeconds();
+                    var salesData = {
+                        billNo: $scope.billNo,
+                        item: $scope.salesProductList.pList,
+                        createdDate: timeToSecond,
+                        modifiedDate: timeToSecond,
+                        modifiedBy: $rootScope.userObj.uid
+                    }
+                    $http.post('/skm/salesInvoice/', salesData).then(function(response) {
+                        if (response.affectedRows >= 1) {
+                            alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
+                        } else {
+                            alert("Error in Savin Bill No : " + $scope.billNo + ", Please Try after some time !#!#");
+                        }
+
+                    }, function(response) {});
+                    $scope.resetSalesInvoice('saveBill');
+                }
+            } else {
+                $scope.billNo = '';
+            }
+        };
+
+        $scope.salesInvoicePrint = function() {
             if ($scope.billNo != '') {
                 $scope.amountDue = 0;
                 $scope.dueDate = '';
@@ -504,6 +539,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
                     }, function(response) {});
                 }
+                $scope.isSaveBill = true;
+                $scope.isPrintBill = true;
+                $scope.isBackBill = true;
+                $scope.resetSalesInvoice('printBill');
             } else {
                 $scope.billNo = '';
             }
@@ -518,7 +557,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
 
-        $scope.resetSalesInvoice = function() {
+        $scope.resetSalesInvoice = function(action) {
             $scope.isCustomerSelected = false;
             $scope.cusID = '';
             $scope.customerName = '';
@@ -533,12 +572,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.isProduct = false;
             $scope.isValueLoad = false;
             $scope.brandId = '';
-            var stockRemovedDataList = {
-                item: $scope.salesProductList.pList
-            }
-            $http.post('/skm/stockProductUpdate', stockRemovedDataList).then(function(response) {
+            if (action == 'resetBill') {
+                var stockRemovedDataList = {
+                    item: $scope.salesProductList.pList
+                }
+                $http.post('/skm/stockProductUpdate', stockRemovedDataList).then(function(response) {
 
-            }, function(response) {});
+                }, function(response) {});
+            }
             $scope.salesProductList = {
                 "cusDetails": [{
                     "name": null,
@@ -554,6 +595,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     "SNo": null,
                     "custId": null,
                     "pSkuno": null,
+                    "pHSNSAC": '8517',
                     "pName": null,
                     "pIMEI": null,
                     "pDesc": null,
@@ -854,7 +896,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
     })
-    .controller('PurchaseInvoiceCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
+    .controller('PurchaseInvoiceCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location, toaster) {
         $(document).ready(function() {
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function

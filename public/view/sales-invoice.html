@@ -489,8 +489,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary" ng-disabled="isResetBill" ng-click="resetSalesInvoice();">Reset</button>
-                                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="isGenerateBill" ng-click="generatePreviewBill(salesProductList);">Generate Bill</button>
+                                        <button type="submit" class="btn btn-primary" ng-disabled="isResetBill" ng-click="resetSalesInvoice('resetBill');">Reset</button>
+                                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="isGenerateBill" ng-click="generatePreviewBill(salesProductList);">Preview Bill</button>
                                         <div class="clearfix"></div>
                                     </form>
                                 </div>
@@ -748,7 +748,7 @@
                                 <div print-section>
                                     <table border="1">
                                         <tr>
-                                            <td colspan="8" align="center" valign="middle">
+                                            <td colspan="9" align="center" valign="middle">
                                                 <p style="font-weight: bold;">CASH/CERDIT BILL</p>
                                             </td>
                                         </tr>
@@ -760,26 +760,28 @@
                                                 <br> Ph: {{shopDetail.phone}}
                                                 <br> Ph: {{shopDetail.email}}
                                                 <br> GSTIN: {{shopDetail.gstin}}</td>
-                                            <td colspan="2" align="center" valign="middle">Date : {{issueDate}}</td>
+                                            <td colspan="3" align="center" valign="middle">Date : {{issueDate}}</td>
                                             <td colspan="2" align="center" valign="middle">Bill no : {{billNo}}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2" align="center" valign="middle">{{paymentType}}</td>
+                                            <td colspan="3" align="center" valign="middle">{{paymentType}}</td>
                                             <td colspan="2" align="center" valign="middle">{{totalCash}}</td>
                                         </tr>
                                         <tr>
                                             <td colspan="4">
-                                                <p style="font-weight: bold;">Buyer
-                                                    <br> {{customerDetails.cust_name}}</p>,
+                                                <span style="font-weight: bold;">Buyer
+                                                    <br> {{customerDetails.cust_name}},</span>
+                                                <br>{{customerDetails.cust_address}},
                                                 <br>{{customerDetails.cust_city}},
-                                                <br> Ph:{{customerDetails.cust_phone}}.</td>
-                                            <td colspan="4" align="center" valign="middle"> Mobile Warrenty : One Year
+                                                <br>{{customerDetails.cust_state}}.
+                                                <br> Ph:{{customerDetails.cust_phone}}/{{customerDetails.cust_alt_phone}}.</td>
+                                            <td colspan="5" align="center" valign="middle"> Mobile Warrenty : One Year
                                                 <br> Battery : 6 Months
                                                 <br> Charger : 6 Months</td>
 
                                         </tr>
                                         <tr>
-                                            <td colspan="8">
+                                            <td colspan="9">
                                                 <br>
                                             </td>
                                         </tr>
@@ -789,6 +791,9 @@
                                             </td>
                                             <td align="center" valign="middle">
                                                 <p style="font-weight: bold;">PARTICULARS</p>
+                                            </td>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">HSN/SAC</p>
                                             </td>
                                             <td align="center" valign="middle">
                                                 <p style="font-weight: bold;">PRICE</p>
@@ -811,7 +816,13 @@
                                         </tr>
                                         <tr ng-repeat="product in salesProductList.pList">
                                             <td align="center" valign="middle">{{$index + 1}}</td>
-                                            <td align="center" valign="middle">{{product.pName}}</td>
+                                            <td align="center" valign="middle">
+                                                {{product.pName}}
+                                                <br> IMEI: {{product.pIMEI}}
+                                                <!--<br> BATTERY: {{product.pBattery}}
+                                                <br> CHARGER: {{product.pCharger}}-->
+                                            </td>
+                                            <td align="center" valign="middle">{{product.pHSNSAC}}</td>
                                             <td align="center" valign="middle">{{product.pPrice}}</td>
                                             <td align="center" valign="middle">{{product.pCTaxPer}}</td>
                                             <td align="center" valign="middle">{{product.pCTax}}</td>
@@ -837,12 +848,13 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td colspan="1" align="center" valign="middle">
                                                 <p style="font-weight: bold;">{{itemsCount}}</p>
                                             </td>
-                                            <td colspan="2" align="center" valign="middle">
+                                            <td colspan="3" align="center" valign="middle">
                                                 <p style="font-weight: bold;"> E & O.E</p>
                                             </td>
                                             <td colspan="1"></td>
@@ -858,13 +870,13 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="7">
+                                            <td colspan="8">
                                                 <p style="font-weight: bold;">{{totalCashWords}}</p>
                                             </td>
                                             <td colspan="1"></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="7">
+                                            <td colspan="8">
                                                 <ul style="list-style-type:square">
                                                     <li>GOODS ONCE SOLD CANNOT BE TAKEN BACK</li>
                                                     <li>WARRENTY SHOULD BE CLAIM FROM MANUFACTURER ONLY</li>
@@ -876,7 +888,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="7">I HAVE READ THE WARRENTY AND TERMS & CONDITIONS AND
+                                            <td colspan="8">I HAVE READ THE WARRENTY AND TERMS & CONDITIONS AND
                                                 <br>RECEIVED THE GOODS IN GOOD CONDITION
                                                 <br>
                                                 <br>
@@ -892,8 +904,9 @@
                                         </tr>
                                     </table>
                                 </div>
-                                <button print-btn type="button" class="btn btn-primary pull-right" ng-click="salesInvoice();">Print</button>
-                                <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" ng-click="backToSalesInvoice();">Back</button>
+                                <button print-btn type="button" ng-disabled="isPrintBill" class="btn btn-primary pull-right" ng-click="salesInvoicePrint();">Print</button>
+                                <button type="button" ng-disabled="isSaveBill" class="btn btn-primary pull-right" data-dismiss="modal" ng-click="salesInvoiceSave();">Save</button>
+                                <button type="button" ng-disabled="isBackBill" class="btn btn-primary pull-right" data-dismiss="modal" ng-click="backToSalesInvoice();">Back</button>
                                 <div class="clearfix"></div>
                             </form>
                         </div>
