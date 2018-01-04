@@ -244,6 +244,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.isSaveBill = false;
         $scope.isPrintBill = false;
         $scope.isBackBill = false;
+        $scope.isResetClean = false;
 
         $scope.isValidCustPhone = function() {
             $scope.isSearchCust = false;
@@ -505,14 +506,16 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedBy: $rootScope.userObj.uid
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-                        if (response.affectedRows >= 1) {
+                        if (response.data.affectedRows >= 1) {
                             alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
+                            $scope.resetSalesInvoice('saveBill');
                         } else {
                             alert("Error in Savin Bill No : " + $scope.billNo + ", Please Try after some time !#!#");
+                            $scope.resetSalesInvoice('saveBill');
                         }
 
                     }, function(response) {});
-                    $scope.resetSalesInvoice('saveBill');
+
                 }
             } else {
                 $scope.billNo = '';
@@ -535,18 +538,33 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedBy: $rootScope.userObj.uid
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-
+                        if (response.affectedRows >= 1) {
+                            $scope.isSaveBill = true;
+                            $scope.isPrintBill = true;
+                            $scope.isBackBill = true;
+                            $scope.isResetClean = true;
+                        } else {
+                            $scope.isSaveBill = true;
+                            $scope.isPrintBill = true;
+                            $scope.isBackBill = true;
+                            $scope.isResetClean = false;
+                        }
 
                     }, function(response) {});
                 }
-                $scope.isSaveBill = true;
-                $scope.isPrintBill = true;
-                $scope.isBackBill = true;
-                $scope.resetSalesInvoice('printBill');
+
             } else {
                 $scope.billNo = '';
             }
         };
+
+        $scope.closeBill = function() {
+            if ($scope.isResetClean == true) {
+                $scope.resetSalesInvoice('printBill');
+            } else {
+                $scope.isResetClean = false;
+            }
+        }
 
         $scope.backToSalesInvoice = function() {
             var salesData = {
