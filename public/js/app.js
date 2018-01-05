@@ -398,7 +398,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "SNo": $scope.salesProductList.tItems,
                 "custId": $scope.cusID,
                 "pSkuno": selproduct.sku_no,
-                "pHSNSAC": selproduct.sku_no,
+                "pHSNSAC": '8517',
                 "pName": selproduct.brand + ' ' + selproduct.model,
                 "pIMEI": selproduct.imei_number,
                 "pDesc": '',
