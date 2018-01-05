@@ -348,7 +348,7 @@ app.post('/skm/login/', function(req, res) {
 
 //admin-dashboard stock data
 app.get('/skm/adminStockData/', function(req, res) {
-    let sql = "SELECT brand.brand as Brand, model.model as Model, COUNT(stock.item_id) as Count FROM brand JOIN model ON (brand.bid = model.bid) LEFT JOIN stock ON (model.item_id = stock.item_id) GROUP BY model.item_id ORDER BY COUNT(stock.item_id) ASC";
+    let sql = "SELECT brand.brand as Brand, model.model as Model, COUNT(stock.item_id) as Count FROM brand JOIN model ON (brand.bid = model.bid) LEFT JOIN stock ON (model.item_id = stock.item_id) GROUP BY model.item_id ORDER BY brand.brand,model.model ASC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -357,7 +357,7 @@ app.get('/skm/adminStockData/', function(req, res) {
 
 //admin-dashboard bill data
 app.get('/skm/adminBillData/', function(req, res) {
-    let sql = "SELECT bill.bill_no as BillNo, customer_details.cust_name as CustomerName, bill.amount as TotalBillAmount, bill.created_date as IssuedDate FROM bill JOIN customer_details ON (bill.cust_id = customer_details.cust_id) GROUP BY bill.bill_no ORDER BY bill.created_date ASC";
+    let sql = "SELECT bill.bill_no as BillNo, customer_details.cust_name as CustomerName, bill.amount as TotalBillAmount, bill.created_date as IssuedDate FROM bill JOIN customer_details ON (bill.cust_id = customer_details.cust_id) GROUP BY bill.bill_no ORDER BY bill.bill_no DESC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
