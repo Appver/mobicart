@@ -5,10 +5,10 @@ const bodyParser = require('body-parser');
 
 //Create Connection - Remote1
 const db = mysql.createConnection({
-    host: 'sql12.freesqldatabase.com',
-    user: 'sql12207175',
-    password: 'g5aN9Qj4Zu',
-    database: 'sql12207175'
+    host: 'sql3.freesqldatabase.com',
+    user: 'sql3214500',
+    password: 'Av52djpEBs',
+    database: 'sql3214500'
 });
 
 /*const db = mysql.createConnection({
