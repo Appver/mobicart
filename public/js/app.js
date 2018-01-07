@@ -512,7 +512,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedBy: $rootScope.userObj.uid
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-                        if (response.data.affectedRows >= 1) {
+                        if (response.data == 'done') {
                             alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
                             $scope.resetSalesInvoice('saveBill');
                         } else {
