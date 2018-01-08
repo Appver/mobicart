@@ -4,12 +4,12 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
 //Create Connection - Remote1
-const db = mysql.createConnection({
-    host: 'sql12.freesqldatabase.com',
-    user: 'sql12207175',
-    password: 'g5aN9Qj4Zu',
-    database: 'sql12207175'
-});
+//const db = mysql.createConnection({
+//    host: 'sql12.freesqldatabase.com',
+//    user: 'sql12207175',
+//    password: 'g5aN9Qj4Zu',
+//    database: 'sql12207175'
+//});
 
 /*const db = mysql.createConnection({
     host: '127.0.0.1',
@@ -27,12 +27,12 @@ const db = mysql.createConnection({
 //});
 
 //Create Connection - Local1
-//const db = mysql.createConnection({
-//	host : '127.0.0.1',
-//	user : 'root',
-//	password : 'admin',
-//	database : 'km_db_1117'
-//});
+const db = mysql.createConnection({
+    host: '127.0.0.1',
+    user: 'root',
+    password: 'admin',
+    database: 'km_db_dev'
+});
 
 //DB Connect
 db.connect((err) => {
@@ -129,7 +129,7 @@ app.post('/skm/productTaxDetails/', function(req, res) {
 
 // insert new billNo
 app.post('/skm/billNo/', function(req, res) {
-    let sql = "INSERT INTO bill (cust_id, sub_total, cgst_amnt, sgst_amnt, payment_type, amount, created_date, modified_date, modified_by) VALUES (" + req.body.item.custId + "," + req.body.item.subTotal + "," + req.body.item.CGST + "," + req.body.item.SGST + ",'" + req.body.item.paymentType + "'," + req.body.item.Total + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + ")";
+    let sql = "INSERT INTO bill (cust_id, sub_total, cgst_amnt, sgst_amnt, payment_type, amount, due_amount, created_date, modified_date, modified_by) VALUES (" + req.body.item.custId + "," + req.body.item.subTotal + "," + req.body.item.CGST + "," + req.body.item.SGST + ",'" + req.body.item.paymentType + "'," + req.body.item.Total + "," + req.body.dueAmnt + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + ")";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -362,4 +362,15 @@ app.get('/skm/adminBillData/', function(req, res) {
         if (err) throw err;
         res.send(result);
     });
+});
+
+
+// getGeneratedBill Data
+app.post('/skm/getGeneratedBill/', function(req, res) {
+    let sql = "SELECT bill.created_date as billDate, bill.bill_no, bill.created_date, customer_details.cust_name, customer_details.cust_phone, customer_details.cust_alt_phone, customer_details.cust_address, customer_details.cust_city, customer_details.cust_state, bill.payment_type, bill.amount, bill.cgst_amnt as TCGST, bill.sgst_amnt as TSGST, sales_invoice.sku_no, sales_invoice.unit_price, sales_invoice.tax/2 as TaxPer, sales_invoice.cgst_amnt, sales_invoice.sgst_amnt, (sales_invoice.cgst_amnt + sales_invoice.sgst_amnt + sales_invoice.unit_price) as pAmount, '8517' as pHSNSAC, purchase.imei_number, CONCAT(brand.brand,' ', model.model) as PName FROM bill JOIN sales_invoice on (bill.bill_no = sales_invoice.bill_no) JOIN purchase on (sales_invoice.sku_no = purchase.sku_no) JOIN model on (purchase.item_id = model.item_id) JOIN brand on (model.bid = brand.bid) JOIN customer_details ON (bill.cust_id = customer_details.cust_id) WHERE bill.bill_no = '" + req.body.billNo + "'";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+
 });

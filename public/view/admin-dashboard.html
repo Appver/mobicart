@@ -171,7 +171,7 @@
                                             <td>{{bill.TotalBillAmount}}</td>
                                             <td>{{secondsToTime(bill.IssuedDate)}}</td>
                                             <td>
-                                                <button type="button" rel="tooltip" title="Print Bill" class="btn btn-warning btn-simple btn-xs">
+                                                <button type="button" rel="tooltip" title="Print Bill" class="btn btn-warning btn-simple btn-xs" ng-click="getGeneratedBills(bill)">
                                                     <i class="material-icons">print</i>
                                                 </button>
                                             </td>
@@ -216,4 +216,191 @@
             </div>
         </footer>
     </div>
+</div>
+
+<!-- Modal Core -->
+<div class="modal fade" id="generatedBill" tabindex="-1" role="dialog" aria-labelledby="generatedBill" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeBill();">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form>
+                                <div print-section>
+                                    <table border="1" style="margin-left: auto;margin-right: auto;">
+                                        <tr>
+                                            <td colspan="9" align="center" valign="middle">
+                                                <p style="font-weight: bold;">CASH/CERDIT BILL</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" rowspan="2">
+                                                <!--<p style="font-weight: bold;">{{shopDetail.name}}</p>-->
+                                                <br>
+                                                <span style="padding:4%;">
+                                                    <img src="../img/store-logo.jpg" alt="storelogo" height="95" width="115" />
+                                                </span>
+                                                <br>#{{shopDetail.address}}
+                                                <br> {{shopDetail.city}}-{{shopDetail.pincode}}.
+                                                <br> Ph: {{shopDetail.phone}} / {{shopDetail.mobile}}
+                                                <br> Email: {{shopDetail.email}}
+                                                <br> GSTIN: {{shopDetail.gstin}}</td>
+                                            <td colspan="3" align="center" valign="middle">Date : {{secondsToTime(generatedBillData[0].billDate)}}</td>
+                                            <td colspan="2" align="center" valign="middle">Bill no : {{generatedBillData[0].bill_no}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" align="center" valign="middle">{{generatedBillData[0].payment_type}}</td>
+                                            <td colspan="2" align="center" valign="middle">{{generatedBillData[0].amount}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <span style="font-weight: bold;">Buyer
+                                                    <br> {{generatedBillData[0].cust_name}},</span>
+                                                <br>{{generatedBillData[0].cust_address}},
+                                                <br>{{generatedBillData[0].cust_city}},
+                                                <br>{{generatedBillData[0].cust_state}}.
+                                                <br> Ph:{{generatedBillData[0].cust_phone}}/{{generatedBillData[0].cust_alt_phone}}.</td>
+                                            <td colspan="5" align="center" valign="middle"> Mobile Warrenty : One Year
+                                                <br> Battery : 6 Months
+                                                <br> Charger : 6 Months</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="9">
+                                                <br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">SI NO</p>
+                                            </td>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">PARTICULARS</p>
+                                            </td>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">HSN/SAC</p>
+                                            </td>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">PRICE</p>
+                                            </td>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">CGST%</p>
+                                            </td>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">CGST</p>
+                                            </td>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">SGST%</p>
+                                            </td>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">SGST</p>
+                                            </td>
+                                            <td align="center" valign="middle">
+                                                <p style="font-weight: bold;">AMOUNT</p>
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="product in generatedBillData">
+                                            <td align="center" valign="middle">{{$index + 1}}</td>
+                                            <td align="center" valign="middle">
+                                                {{product.PName}}
+                                                <br> IMEI: {{product.imei_number}}
+                                                <!--<br> BATTERY: {{product.pBattery}}
+                                                <br> CHARGER: {{product.pCharger}}-->
+                                            </td>
+                                            <td align="center" valign="middle">{{product.pHSNSAC}}</td>
+                                            <td align="center" valign="middle">{{product.unit_price}}</td>
+                                            <td align="center" valign="middle">{{product.TaxPer}}</td>
+                                            <td align="center" valign="middle">{{product.cgst_amnt}}</td>
+                                            <td align="center" valign="middle">{{product.TaxPer}}</td>
+                                            <td align="center" valign="middle">{{product.sgst_amnt}}</td>
+                                            <td align="center" valign="middle">{{product.pAmount}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1" align="center" valign="middle">
+                                                <p style="font-weight: bold;">{{geItemsCount}}</p>
+                                            </td>
+                                            <td colspan="3" align="center" valign="middle">
+                                                <p style="font-weight: bold;"> E & O.E</p>
+                                            </td>
+                                            <td colspan="1"></td>
+                                            <td colspan="1" align="center" valign="middle">
+                                                <p style="font-weight: bold;">{{generatedBillData[0].TCGST}}</p>
+                                            </td>
+                                            <td colspan="1"></td>
+                                            <td colspan="1" align="center" valign="middle">
+                                                <p style="font-weight: bold;">{{generatedBillData[0].TSGST}}</p>
+                                            </td>
+                                            <td colspan="1" rowspan="2" align="center" valign="middle">
+                                                <p style="font-weight: bold;">{{generatedBillData[0].amount}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8">
+                                                <p style="font-weight: bold;">{{totalCashWor}}</p>
+                                            </td>
+                                            <td colspan="1"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8">
+                                                <ul style="list-style-type:square">
+                                                    <li>GOODS ONCE SOLD CANNOT BE TAKEN BACK</li>
+                                                    <li>WARRENTY SHOULD BE CLAIM FROM MANUFACTURER ONLY</li>
+                                                    <li>SERVICE & REPAIR CONTACT SERVICE CENTRE ONLY</li>
+                                                </ul>
+                                            </td>
+                                            <td colspan="1" align="center" valign="middle">
+                                                <p style="font-weight: bold;">{{generatedBillData[0].amount}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8">I HAVE READ THE WARRENTY AND TERMS & CONDITIONS AND
+                                                <br>RECEIVED THE GOODS IN GOOD CONDITION
+                                                <br>
+                                                <br>
+                                                <br> Buyer's Singatory
+                                            </td>
+                                            <td colspan="1">
+                                                <p style="font-weight: bold;">for Kaviya Mobiles</p>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>Authorided Singatory
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <button print-btn type="button" class="btn btn-primary pull-right">Print</button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
 </div>
