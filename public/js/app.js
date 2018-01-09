@@ -42,6 +42,14 @@ app.run(function($rootScope, $location, $cookieStore) {
         }
         return date.toLocaleString();
     };
+    
+    $rootScope.secondsToDate = function(secs) {
+        var date = new Date(0);
+        if (secs != 0) {
+            date.setUTCSeconds(secs);
+        }
+        return date.toLocaleDateString();
+    };
 
     $rootScope.convertNumberToWords = function(amount) {
         var words = new Array();
