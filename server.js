@@ -3,7 +3,7 @@ const router = express.Router();
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
-/*
+
 //Create Connection - Remote-Prod
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
@@ -12,13 +12,14 @@ const db = mysql.createConnection({
     database: 'sql3214500'
 });
 
+/*
 //Create Connection - Remote-Sandbox
 const db = mysql.createConnection({
     host: 'sql12.freesqldatabase.com',
     user: 'sql12215148',
     password: '1mKykHf8kw',
     database: 'sql12215148'
-});*/
+});
 
 
 //Create Connection - Remote-Dev
@@ -29,7 +30,6 @@ const db = mysql.createConnection({
     database: 'sql12215148'
 });
 
-/*
 //Create Connection - Remote-Local
 const db = mysql.createConnection({
     host: '127.0.0.1',
