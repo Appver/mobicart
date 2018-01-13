@@ -754,31 +754,40 @@
                                         </tr>
                                         <tr>
                                             <td colspan="4" rowspan="2">
-                                                <!--<p style="font-weight: bold;">{{shopDetail.name}}</p>-->
-                                                <br>
-                                                <span style="padding:4%;">
-                                                    <img src="../img/store-logo.jpg" alt="storelogo" height="95" width="115" />
-                                                </span>
-                                                <br>#{{shopDetail.address}}
-                                                <br> {{shopDetail.city}}-{{shopDetail.pincode}}.
-                                                <br> Ph: {{shopDetail.phone}} / {{shopDetail.mobile}}
-                                                <br> Email: {{shopDetail.email}}
-                                                <br> GSTIN: {{shopDetail.gstin}}</td>
+                                                <div style="padding-left: 30px;text-align: left;">
+                                                    <br>
+                                                    <span style="padding:4%;">
+                                                        <img src="../img/store-logo.jpg" alt="storelogo" height="95" width="115" />
+                                                    </span>
+                                                    <br>#{{shopDetail.address}}
+                                                    <br> {{shopDetail.city}}-{{shopDetail.pincode}}.
+                                                    <br> Ph: {{shopDetail.phone}} / {{shopDetail.mobile}}
+                                                    <br> Email: {{shopDetail.email}}
+                                                    <br> GSTIN: {{shopDetail.gstin}}
+                                                </div>
+                                            </td>
                                             <td colspan="3" align="center" valign="middle">Date : {{issueDate}}</td>
                                             <td colspan="2" align="center" valign="middle">Bill no : {{billNo}}</td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" align="center" valign="middle">{{paymentType}}</td>
-                                            <td colspan="2" align="center" valign="middle">{{totalCash}}</td>
+                                            <td colspan="2" align="center" valign="middle"></td>
                                         </tr>
                                         <tr>
                                             <td colspan="4">
-                                                <span style="font-weight: bold;">Buyer
-                                                    <br> {{customerDetails.cust_name}},</span>
-                                                <br>{{customerDetails.cust_address}},
-                                                <br>{{customerDetails.cust_city}},
-                                                <br>{{customerDetails.cust_state}}.
-                                                <br> Ph:{{customerDetails.cust_phone}}/{{customerDetails.cust_alt_phone}}.</td>
+                                                <p style="font-weight: bold;">Buyer</p>
+                                                <div style="padding-left: 30px;text-align: left;">
+                                                    <span style="font-weight: bold;"> 
+                                                        {{customerDetails.cust_name}},
+                                                    </span>
+                                                    <span>
+                                                        <br>{{customerDetails.cust_address}},
+                                                        <br>{{customerDetails.cust_city}},
+                                                        <br>{{customerDetails.cust_state}}.
+                                                        <br> Ph:{{customerDetails.cust_phone}}/{{customerDetails.cust_alt_phone}}.
+                                                    </span>
+                                                </div>
+                                            </td>
                                             <td colspan="5" align="center" valign="middle"> Mobile Warrenty : One Year
                                                 <br> Battery : 6 Months
                                                 <br> Charger : 6 Months</td>
@@ -820,7 +829,7 @@
                                         </tr>
                                         <tr ng-repeat="product in salesProductList.pList">
                                             <td align="center" valign="middle">{{$index + 1}}</td>
-                                            <td align="center" valign="middle">
+                                            <td align="center" valign="middle" style="padding: 5px;">
                                                 {{product.pName}}
                                                 <br> IMEI: {{product.pIMEI}}
                                                 <!--<br> BATTERY: {{product.pBattery}}
@@ -880,12 +889,15 @@
                                             <td colspan="1"></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="8">
+                                            <td colspan="6">
                                                 <ul style="list-style-type:square">
                                                     <li>GOODS ONCE SOLD CANNOT BE TAKEN BACK</li>
                                                     <li>WARRENTY SHOULD BE CLAIM FROM MANUFACTURER ONLY</li>
                                                     <li>SERVICE & REPAIR CONTACT SERVICE CENTRE ONLY</li>
                                                 </ul>
+                                            </td>
+                                            <td colspan="2" align="center" valign="middle">
+                                                <p style="font-weight: bold;">Net Value</p>
                                             </td>
                                             <td colspan="1" align="center" valign="middle">
                                                 <p style="font-weight: bold;">{{totalCash}}</p>
