@@ -3,36 +3,40 @@ const router = express.Router();
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
-//Create Connection - Remote1
-//const db = mysql.createConnection({
-//    host: 'sql12.freesqldatabase.com',
-//    user: 'sql12207175',
-//    password: 'g5aN9Qj4Zu',
-//    database: 'sql12207175'
-//});
+/*
+//Create Connection - Remote-Prod
+const db = mysql.createConnection({
+    host: 'sql3.freesqldatabase.com',
+    user: 'sql3214500',
+    password: 'Av52djpEBs',
+    database: 'sql3214500'
+});
 
-/*const db = mysql.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    password: '',
-    database: 'sql12207175'
+//Create Connection - Remote-Sandbox
+const db = mysql.createConnection({
+    host: 'sql12.freesqldatabase.com',
+    user: 'sql12215148',
+    password: '1mKykHf8kw',
+    database: 'sql12215148'
 });*/
 
-//Create Connection - Remote2
-//const db = mysql.createConnection({
-//	host : 'db4free.net',
-//	user : 'km1117',
-//	password : 'mobicart',
-//	database : 'km_db_mysql_1117'
-//});
 
-//Create Connection - Local1
+//Create Connection - Remote-Dev
+const db = mysql.createConnection({
+    host: 'sql12.freesqldatabase.com',
+    user: 'sql12215148',
+    password: '1mKykHf8kw',
+    database: 'sql12215148'
+});
+
+/*
+//Create Connection - Remote-Local
 const db = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: 'admin',
-    database: 'km_db_dev'
-});
+    password: '',
+    database: 'sql3214500-dev'
+}); */
 
 //DB Connect
 db.connect((err) => {
