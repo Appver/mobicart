@@ -368,7 +368,6 @@ app.get('/skm/adminBillData/', function(req, res) {
     });
 });
 
-
 // getGeneratedBill Data
 app.post('/skm/getGeneratedBill/', function(req, res) {
     let sql = "SELECT bill.created_date as billDate, bill.bill_no, bill.created_date, customer_details.cust_name, customer_details.cust_phone, customer_details.cust_alt_phone, customer_details.cust_address, customer_details.cust_city, customer_details.cust_state, bill.payment_type, bill.amount, bill.cgst_amnt as TCGST, bill.sgst_amnt as TSGST, sales_invoice.sku_no, sales_invoice.unit_price, sales_invoice.tax/2 as TaxPer, sales_invoice.cgst_amnt, sales_invoice.sgst_amnt, (sales_invoice.cgst_amnt + sales_invoice.sgst_amnt + sales_invoice.unit_price) as pAmount, '8517' as pHSNSAC, purchase.imei_number, CONCAT(brand.brand,' ', model.model) as PName FROM bill JOIN sales_invoice on (bill.bill_no = sales_invoice.bill_no) JOIN purchase on (sales_invoice.sku_no = purchase.sku_no) JOIN model on (purchase.item_id = model.item_id) JOIN brand on (model.bid = brand.bid) JOIN customer_details ON (bill.cust_id = customer_details.cust_id) WHERE bill.bill_no = '" + req.body.billNo + "'";
@@ -378,3 +377,4 @@ app.post('/skm/getGeneratedBill/', function(req, res) {
     });
 
 });
+
