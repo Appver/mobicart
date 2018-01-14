@@ -1,4 +1,4 @@
-var app = angular.module('KaviyaMobiles', ['ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster']);
+var app = angular.module('KaviyaMobiles', ['ngTable', 'ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster']);
 
 app.run(function($rootScope, $location, $cookieStore) {
     $rootScope.isUser = false;
@@ -42,7 +42,7 @@ app.run(function($rootScope, $location, $cookieStore) {
         }
         return date.toLocaleString();
     };
-    
+
     $rootScope.secondsToDate = function(secs) {
         var date = new Date(0);
         if (secs != 0) {
@@ -232,7 +232,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         };
     })
-    .controller('AdminDashboardCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
+    .controller('AdminDashboardCntlr', function(NgTableParams, $rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
@@ -253,12 +253,17 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $http.get('/skm/adminStockData/').then(function(response) {
             var res = response.data;
-            $scope.stockStatusArray = angular.fromJson(res);
+            var data = angular.fromJson(res);
+            $scope.tableParamsstockData = new NgTableParams({}, { dataset: data });
         }, function(response) {});
 
         $http.get('/skm/adminBillData/').then(function(response) {
             var res = response.data;
-            $scope.billStatusArray = angular.fromJson(res);
+            var data = angular.fromJson(res);
+            for (var i = 0; i < data.length; i++) {
+                data[i].IssuedDate = $rootScope.secondsToTime(data[i].IssuedDate);
+            }
+            $scope.tableParamsBillData = new NgTableParams({}, { dataset: data });
         }, function(response) {});
 
         $scope.getGeneratedBills = function(getBill) {

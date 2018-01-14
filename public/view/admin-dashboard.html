@@ -128,21 +128,18 @@
                                 <p class="category">Stock Status for {{currDateTime}}</p>
                             </div>
                             <div class="card-content table-responsive" style="height:50%">
-                                <table class="table table-hover">
-                                    <thead class="text-primary">
-                                        <th>Si No</th>
-                                        <th>Brand</th>
-                                        <th>Model</th>
-                                        <th>Count</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="sStatus in stockStatusArray">
-                                            <td>{{$index + 1}}</td>
-                                            <td>{{sStatus.Brand}}</td>
-                                            <td>{{sStatus.Model}}</td>
-                                            <td>{{sStatus.Count}}</td>
-                                        </tr>
-                                    </tbody>
+                                <table ng-table="tableParamsstockData" class="table table-hover" show-filter="true">
+                                    <tr ng-repeat="sStatus in $data">
+                                        <td title="'Brand'" filter="{ Brand: 'text'}" sortable="'Brand'">
+                                            {{sStatus.Brand}}
+                                        </td>
+                                        <td title="'Model'" filter="{ Model: 'text'}" sortable="'Model'">
+                                            {{sStatus.Model}}
+                                        </td>
+                                        <td title="'Count'" filter="{ Count: 'number'}" sortable="'Count'">
+                                            {{sStatus.Count}}
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
@@ -154,29 +151,26 @@
                                 <p class="category">Total Bill for {{currDateTime}}</p>
                             </div>
                             <div class="card-content table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="text-warning">
-                                        <th>Si No</th>
-                                        <th>Bill No</th>
-                                        <th>Customer Name</th>
-                                        <th>Toatl Bill Amount</th>
-                                        <th>Issued Date</th>
-                                        <th>Action</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="bill in billStatusArray">
-                                            <td>{{$index + 1}}</td>
-                                            <td>{{bill.BillNo}}</td>
-                                            <td>{{bill.CustomerName}}</td>
-                                            <td>{{bill.TotalBillAmount}}</td>
-                                            <td>{{secondsToTime(bill.IssuedDate)}}</td>
-                                            <td>
-                                                <button type="button" rel="tooltip" title="Print Bill" class="btn btn-warning btn-simple btn-xs" ng-click="getGeneratedBills(bill)">
-                                                    <i class="material-icons">print</i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                <table ng-table="tableParamsBillData" class="table table-hover" show-filter="true">
+                                    <tr ng-repeat="bill in $data">
+                                        <td title="'Bill No'" filter="{ BillNo: 'number'}" sortable="'BillNo'">
+                                            {{bill.BillNo}}
+                                        </td>
+                                        <td title="'Customer Name'" filter="{ CustomerName: 'text'}" sortable="'CustomerName'">
+                                            {{bill.CustomerName}}
+                                        </td>
+                                        <td title="'Bill Amount'" filter="{ TotalBillAmount: 'number'}" sortable="'TotalBillAmount'">
+                                            {{bill.TotalBillAmount}}
+                                        </td>
+                                        <td title="'Bill Date'">
+                                            {{bill.IssuedDate}}
+                                        </td>
+                                        <td title="'Action'">
+                                            <button type="button" rel="tooltip" title="Print Bill" class="btn btn-warning btn-simple btn-xs" ng-click="getGeneratedBills(bill)">
+                                                <i class="material-icons">print</i>
+                                            </button>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
