@@ -273,6 +273,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $http.post('/skm/getGeneratedBill/', getBillData).then(function(response) {
                 var res = response.data;
                 $scope.generatedBillData = angular.fromJson(res);
+                console.log("$scope.generatedBillData : ");
+                console.log($scope.generatedBillData);
                 $scope.totalCashWor = $rootScope.convertNumberToWords($scope.generatedBillData[0].amount);
                 $scope.geItemsCount = $scope.generatedBillData.length;
                 $http.get('/skm/storeDetails/').then(function(response) {
@@ -591,6 +593,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.billNo = '';
 
         $scope.generatePreviewBill = function(salesProductList) {
+            $scope.isSaveBill = false;
+            $scope.isPrintBill = false;
+            $scope.isBackBill = false;
             $("#previewBill").modal();
             salesProductList.paymentType = $scope.paymentType;
             salesProductList.custId = $scope.cusID;
@@ -657,19 +662,19 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedBy: $rootScope.userObj.uid
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-                        if (response.data.affectedRows >= 1) {
+                        //if (response.data.affectedRows >= 1) {
+                        $scope.isSaveBill = true;
+                        $scope.isPrintBill = true;
+                        $scope.isBackBill = true;
+                        $scope.isResetClean = true;
+                        $scope.isResetBill = true;
+                        /*} else {
                             $scope.isSaveBill = true;
                             $scope.isPrintBill = true;
                             $scope.isBackBill = true;
                             $scope.isResetClean = true;
                             $scope.isResetBill = true;
-                        } else {
-                            $scope.isSaveBill = true;
-                            $scope.isPrintBill = true;
-                            $scope.isBackBill = true;
-                            $scope.isResetClean = true;
-                            $scope.isResetBill = true;
-                        }
+                        }*/
 
                     }, function(response) {});
                 }
@@ -760,6 +765,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "duePay": null
             };
             $scope.paymentType = 'CASH';
+            $scope.isSaveBill = false;
+            $scope.isPrintBill = false;
+            $scope.isBackBill = false;
+            $scope.isResetClean = false;
+            $scope.isResetBill = true;
         };
 
         function gstAmt(MRP, GSTPer) {
