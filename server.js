@@ -173,6 +173,7 @@ app.post('/skm/stockUpdate/', function(req, res) {
 
 // insert new sales-invoice
 app.post('/skm/salesInvoice/', function(req, res) {
+    var insertFlag = false;
     if (req.body.item.length > 0) {
         for (var i = 0; i < req.body.item.length; i++) {
             let sql = "INSERT INTO sales_invoice (bill_no, sku_no, sold_price, unit_price, tax, cgst_amnt, sgst_amnt, created_date, modified_date, modified_by) VALUES (" + req.body.billNo + "," + req.body.item[i].pSkuno + "," + req.body.item[i].soldPrice + "," + req.body.item[i].pPrice + "," + req.body.item[i].pTax + "," + req.body.item[i].pCTax + "," + req.body.item[i].pSTax + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + ")";
@@ -183,9 +184,18 @@ app.post('/skm/salesInvoice/', function(req, res) {
             let query2 = db.query(sql2, (err, result2) => {
                 if (err) throw err;
             });
+            if (req.body.item.length >= i) {
+                insertFlag = true;
+            }
+        }
+        if (req.body.item.length >= i) {
+            if (insertFlag) {
+                res.send("DONE");
+            } else {
+                res.send("NOT DONE");
+            }
         }
     }
-    res.send("done");
 });
 
 // get customer details
@@ -199,7 +209,7 @@ app.get('/skm/customerDetails/:customerPhone', function(req, res) {
 
 // Add new customer id
 app.post('/skm/addNewCustomer/', function(req, res) {
-    let sql = "INSERT INTO customer_details (cust_name, cust_phone, cust_email, cust_address, cust_city, cust_state, cust_pincode, created_date, cust_alt_phone) VALUES ('" + req.body.name + "', '" + req.body.phone + "', '" + req.body.email + "', '" + req.body.address + "', '" + req.body.city + "', '" + req.body.state + "', '" + req.body.pincode + "','" + req.body.created + "','" + req.body.altphone + "')";
+    let sql = "INSERT INTO customer_details (cust_name, cust_phone, cust_email, cust_address, cust_city, cust_state, cust_pincode, created_date, cust_alt_phone) VALUES ('" + req.body.cust_name + "', '" + req.body.cust_phone + "', '" + req.body.email + "', '" + req.body.cust_address + "', '" + req.body.cust_city + "', '" + req.body.cust_state + "', '" + req.body.pincode + "','" + req.body.created + "','" + req.body.cust_alt_phone + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -377,4 +387,3 @@ app.post('/skm/getGeneratedBill/', function(req, res) {
     });
 
 });
-

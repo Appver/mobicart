@@ -273,8 +273,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $http.post('/skm/getGeneratedBill/', getBillData).then(function(response) {
                 var res = response.data;
                 $scope.generatedBillData = angular.fromJson(res);
-                console.log("$scope.generatedBillData : ");
-                console.log($scope.generatedBillData);
                 $scope.totalCashWor = $rootScope.convertNumberToWords($scope.generatedBillData[0].amount);
                 $scope.geItemsCount = $scope.generatedBillData.length;
                 $http.get('/skm/storeDetails/').then(function(response) {
@@ -406,10 +404,22 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $("#addCustomer").modal('hide');
             $scope.custTitle = '';
             $scope.custMessage = '';
-            var currentDate = '2017-11-27';
-            $scope.addCustomer.altphone = $scope.addCustomer.phone;
+            var currentDate = $rootScope.timeToSeconds();
+            $scope.addCustomer.cust_alt_phone = $scope.addCustomer.cust_phone;
 
-            $http.post('/skm/addNewCustomer/', $scope.addCustomer).then(function(response) {
+            var addCustData = {
+                cust_name: $scope.addCustomer.cust_name,
+                cust_phone: $scope.addCustomer.cust_phone,
+                email: $scope.addCustomer.email,
+                cust_address: $scope.addCustomer.cust_address,
+                cust_city: $scope.addCustomer.cust_city,
+                cust_state: $scope.addCustomer.cust_state,
+                pincode: $scope.addCustomer.pincode,
+                created: currentDate,
+                cust_alt_phone: $scope.addCustomer.cust_phone
+            }
+
+            $http.post('/skm/addNewCustomer/', addCustData).then(function(response) {
                 output = response.data;
                 var newCustId = output.insertId;
                 if (response.data.affectedRows == 1) {
@@ -417,8 +427,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.custMessage = ", Added Successfully.";
                     $scope.cusID = newCustId;
                     $scope.addCustomer.cusID = newCustId;
-                    $scope.customerName = $scope.addCustomer.name;
+                    $scope.customerName = $scope.addCustomer.cust_name;
                     $scope.isCustomerSelected = true;
+                    $scope.customerDetails = $scope.addCustomer;
                 } else {
                     $scope.custTitle = "Failed";
                     $scope.custMessage = ", Added Failed. Please try again.";
@@ -630,7 +641,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedBy: $rootScope.userObj.uid
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-                        if (response.data == 'done') {
+                        if (response.data == 'DONE') {
                             alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
                             $scope.resetSalesInvoice('saveBill');
                         } else {
@@ -662,7 +673,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedBy: $rootScope.userObj.uid
                     }
                     $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-                        //if (response.data.affectedRows >= 1) {
+                        //if (response.data == 'DONE') {
                         $scope.isSaveBill = true;
                         $scope.isPrintBill = true;
                         $scope.isBackBill = true;
@@ -770,6 +781,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.isBackBill = false;
             $scope.isResetClean = false;
             $scope.isResetBill = true;
+            $scope.isGenerateBill = true;
         };
 
         function gstAmt(MRP, GSTPer) {
@@ -815,8 +827,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             return tax = pTax / 2;
         }
     })
-
-.controller('ProductSearchCntlr', function($scope, $http, $route, $routeParams, $location) {
+    .controller('ProductSearchCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
@@ -910,17 +921,17 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     }
                 }
                 if ($scope.addEditCustNameArray.length == 0 || $scope.addEditCustNameArray == undefined) {
-                    var currentDate = '2017-11-27';
+                    var currentDate = $rootScope.timeToSeconds();
                     var addEditCustData = {
-                        name: $scope.addEditCustName,
-                        phone: $scope.addEditCustPhone,
+                        cust_name: $scope.addEditCustName,
+                        cust_phone: $scope.addEditCustPhone,
                         email: $scope.addEditCustEmail,
-                        address: $scope.addEditCustAddress,
-                        city: $scope.addEditCustCity,
-                        state: $scope.addEditCustState,
+                        cust_address: $scope.addEditCustAddress,
+                        cust_city: $scope.addEditCustCity,
+                        cust_state: $scope.addEditCustState,
                         pincode: $scope.addEditCustPinCode,
                         created: currentDate,
-                        altphone: $scope.addEditCustPhone
+                        cust_alt_phone: $scope.addEditCustPhone
                     }
                     $http.post('/skm/addNewCustomer/', addEditCustData).then(function(response) {
                         $scope.addEditCustomerName = $scope.addEditCustName;
@@ -935,18 +946,18 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     }, function(response) {});
                 } else {
                     var newAddEditCustId = $scope.addEditCustNameArray[0];
-                    var currentDate = '2017-11-27';
+                    var currentDate = $rootScope.timeToSeconds();
                     var editCustData = {
                         id: newAddEditCustId,
-                        name: $scope.addEditCustName,
-                        phone: $scope.addEditCustPhone,
+                        cust_name: $scope.addEditCustName,
+                        cust_phone: $scope.addEditCustPhone,
                         email: $scope.addEditCustEmail,
-                        address: $scope.addEditCustAddress,
-                        city: $scope.addEditCustCity,
-                        state: $scope.addEditCustState,
+                        cust_address: $scope.addEditCustAddress,
+                        cust_city: $scope.addEditCustCity,
+                        cust_state: $scope.addEditCustState,
                         pincode: $scope.addEditCustPinCode,
                         created: currentDate,
-                        altphone: $scope.addEditCustPhone
+                        cust_alt_phone: $scope.addEditCustPhone
                     }
                     $http.post('/skm/addEditCustomer/', editCustData).then(function(response) {
                         $scope.addEditCustomerName = $scope.addEditCustName;

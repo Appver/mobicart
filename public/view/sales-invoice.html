@@ -557,13 +557,13 @@
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Name</label>
-                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.name" required>
+                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.cust_name" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Phone</label>
-                                                    <input type="number" class="form-control" ng-model="addCustomer.phone" required>
+                                                    <input type="number" class="form-control" ng-model="addCustomer.cust_phone" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -577,7 +577,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Adress</label>
-                                                    <input type="text" class="form-control" ng-model="addCustomer.address" required>
+                                                    <input type="text" class="form-control" ng-model="addCustomer.cust_address" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -585,13 +585,13 @@
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">City</label>
-                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.city" required>
+                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.cust_city" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">State</label>
-                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.state">
+                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.cust_state">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -734,7 +734,7 @@
 </div>
 
 <!-- Modal Core -->
-<div class="modal fade" id="previewBill" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="previewBill" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
