@@ -896,7 +896,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
     })
-    .controller('AddCustomerCntlr', function($scope, $http, $route, $routeParams, $location) {
+    .controller('AddCustomerCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
