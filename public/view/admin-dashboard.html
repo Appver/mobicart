@@ -169,6 +169,9 @@
                                             <button type="button" rel="tooltip" title="Print Bill" class="btn btn-warning btn-simple btn-xs" ng-click="getGeneratedBills(bill)">
                                                 <i class="material-icons">print</i>
                                             </button>
+                                            <button type="button" rel="tooltip" title="Delete Bill" class="btn btn-danger btn-simple btn-xs" ng-click="removeGeneratedBills(bill)">
+                                                <i class="material-icons">close</i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </table>
@@ -409,4 +412,35 @@
         </div>
     </div>
     <div class="modal-footer"></div>
+</div>
+
+<!-- Modal Core -->
+<div class="modal fade" id="getConfirmation" tabindex="-1" role="dialog" aria-labelledby="getConfirmationLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="getConfirmationLabel">Delete Generated Bill</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="purple">
+                                    <h4 class="title">Are you want to DELETE BILL NO {{deleteBillData.billNo}}</h4>
+                                </div>
+                                <div class="card-content">
+                                    <button type="button" class="btn btn-primary pull-right" ng-click="deleteBill()">Yes</button>
+                                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">No</button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
 </div>

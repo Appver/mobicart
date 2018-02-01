@@ -239,6 +239,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.$routeParams = $routeParams;
 
         $(document).ready(function() {
+            $scope.getGeneratedBillData();
             // Javascript method's body can be found in assets/js/demos.js
             //demo.initDashboardPageCharts();
             if (isWindows) {
@@ -257,14 +258,17 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.tableParamsstockData = new NgTableParams({}, { dataset: data });
         }, function(response) {});
 
-        $http.get('/skm/adminBillData/').then(function(response) {
-            var res = response.data;
-            var data = angular.fromJson(res);
-            for (var i = 0; i < data.length; i++) {
-                data[i].IssuedDate = $rootScope.secondsToTime(data[i].IssuedDate);
-            }
-            $scope.tableParamsBillData = new NgTableParams({}, { dataset: data });
-        }, function(response) {});
+        $scope.getGeneratedBillData = function() {
+            $scope.deleteBillData = {};
+            $http.get('/skm/adminBillData/').then(function(response) {
+                var res = response.data;
+                var data = angular.fromJson(res);
+                for (var i = 0; i < data.length; i++) {
+                    data[i].IssuedDate = $rootScope.secondsToTime(data[i].IssuedDate);
+                }
+                $scope.tableParamsBillData = new NgTableParams({}, { dataset: data });
+            }, function(response) {});
+        };
 
         $scope.getGeneratedBills = function(getBill) {
             var getBillData = {
@@ -280,6 +284,27 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.shopDetail = res[0];
                 }, function(response) {});
                 $("#generatedBill").modal();
+            }, function(response) {});
+        };
+        $scope.removeGeneratedBills = function(deleteBill) {
+            $("#getConfirmation").modal();
+            $scope.deleteBillData = {
+                billNo: deleteBill.BillNo
+            }
+
+        };
+        $scope.deleteBill = function() {
+            $("#getConfirmation").modal('hide');
+            $http.post('/skm/removeGeneratedBill/', $scope.deleteBillData).then(function(response) {
+                var res = response.data;
+                console.log(res)
+                if (res == 'DONE') {
+                    $scope.getGeneratedBillData();
+                } else if (res == 'BILL') {
+                    $scope.getGeneratedBillData();
+                } else {
+                    $scope.getGeneratedBillData();
+                }
             }, function(response) {});
         };
     })

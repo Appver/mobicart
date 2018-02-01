@@ -387,3 +387,50 @@ app.post('/skm/getGeneratedBill/', function(req, res) {
     });
 
 });
+
+// removeGeneratedBill Data
+app.post('/skm/removeGeneratedBill/', function(req, res) {
+    var i = 0;
+    var insertFlag = false;
+    var salesDelete = false;
+    var billDelete = false;
+    if (null != req.body.billNo || req.body.billNo != '' || req.body.billNo != "") {
+        let sql = "SELECT sku_no FROM `sales_invoice` where bill_no = '" + req.body.billNo + "'";
+        let query = db.query(sql, (err, result) => {
+            if (err) throw err;
+            if (result.length > 0) {
+                for (i = 0; i < result.length; i++) {
+                    let sql2 = "INSERT INTO stock (sku_no, item_id,imei_number,details,price,tax_group,bar_code, in_time, product_flag) SELECT sku_no, item_id,imei_number,details,selling_price,tax_group,bar_code, created_date, 'Y' FROM purchase where sku_no = '" + result[i].sku_no + "'";
+                    let query2 = db.query(sql2, (err2, result2) => {
+                        if (err2) throw err2;
+                    });
+                    if (result.length >= i) {
+                        insertFlag = true;
+                    }
+                }
+            }
+        });
+        let sql3 = "DELETE FROM `sales_invoice` WHERE  bill_no = '" + req.body.billNo + "'";
+        let query3 = db.query(sql3, (err3, result3) => {
+            if (err3) throw err3;
+            if (result3.affectedRows > 0) {
+                salesDelete = true;
+            }
+        });
+        let sql4 = "DELETE FROM `bill` WHERE  bill_no = '" + req.body.billNo + "'";
+        let query4 = db.query(sql4, (err4, result4) => {
+            if (err4) throw err4;
+            if (result4.affectedRows > 0) {
+                billDelete = true;
+            }
+        });
+        //if (result.length > i && result3.affectedRows > 0 && result4.affectedRows > 0) {
+        //console.log("insertFlag :" + insertFlag + "salesDelete : " + salesDelete + " billDelete : " + billDelete)
+        if (insertFlag && salesDelete && billDelete) {
+            res.send("DONE");
+        } else {
+            res.send("NOT DONE");
+        }
+        //}
+    }
+});
