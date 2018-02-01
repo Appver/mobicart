@@ -18,7 +18,7 @@
                         <p>History Data</p>
                     </a>
                 </li>
-                <li class="active" ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser">
                     <a href="#!addcustomer">
                         <i class="material-icons">person</i>
                         <p>Add/Edit Customer</p>
@@ -55,30 +55,30 @@
                         <p>GST Returns</p>
                     </a>
                 </li>
-                <!--<li ng-show="isAdmin || isUser">
-                        <a href="#!gstpurchase">
-                            <i class="material-icons">assignment</i>
-                            <p>GST Purchase</p>
-                        </a>
-                    </li>-->
+                <li class="active" ng-show="isAdmin || isUser">
+                    <a href="#!gstpurchase">
+                        <i class="material-icons">assignment</i>
+                        <p>GST Purchase</p>
+                    </a>
+                </li>
+                <!--<li ng-show="isAdmin">
+                    <a href="#!notifications">
+                        <i class="material-icons text-gray">notifications</i>
+                        <p>Notifications</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin">
+                    <a href="#!notifications">
+                        <i class="material-icons">assessment</i>
+                        <p>Transcations</p>
+                    </a>
+                </li>-->
                 <li ng-show="isAdmin || isUser">
                     <a href="#!preference">
                         <i class="material-icons">build</i>
                         <p>Preference</p>
                     </a>
                 </li>
-                <!--<li ng-show="isAdmin && !isUser">
-                    <a href="#!notifications">
-                        <i class="material-icons text-gray">notifications</i>
-                        <p>Notifications</p>
-                    </a>
-                </li>
-                <li ng-show="isAdmin && !isUser">
-                    <a href="#!notifications">
-                        <i class="material-icons">assessment</i>
-                        <p>Transcations</p>
-                    </a>
-                </li>-->
                 <li ng-show="isAdmin || isUser">
                     <a href="#!logout">
                         <i class="material-icons">input</i>
@@ -98,7 +98,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a style="color: #555555 !important;" class="navbar-brand" href="#"> Add/Edit Customer </a>
+                    <a class="navbar-brand" style="color: #555555 !important;" href=""> GST Purchase Invoice </a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -133,38 +133,38 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-lg-12 col-md-12">
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
-                                <h4 class="title">Add/Edit Customer</h4>
-                                <p class="category">{{currDateTime}} Add/Edit Customer</p>
+                                <h4 class="title">GST Purchase Invoice</h4>
                             </div>
                             <div class="card-content">
-                                <form ng-submit="submit()">
+                                <form ng-submit="submitGSTPurchase()">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Name</label>
+                                                <label class="control-label">Name of the seller </label>
                                                 <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addEditCustName" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Phone</label>
+                                                <label class="control-label">Invoice no</label>
                                                 <input type="number" class="form-control" ng-model="addEditCustPhone" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Email address</label>
-                                                <input type="email" class="form-control" ng-model="addEditCustEmail">
+                                                <label class="control-label">Invoice Date</label>
+                                                <input class="datepicker form-control" type="text" value="" />
+                                                <!--<input type="email" class="form-control" ng-model="addEditCustEmail">-->
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Adress</label>
+                                                <label class="control-label">Commodity Code</label>
                                                 <input type="text" class="form-control" ng-model="addEditCustAddress" required>
                                             </div>
                                         </div>
@@ -172,29 +172,36 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">City</label>
+                                                <label class="control-label">Purchase value (Rs)</label>
                                                 <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addEditCustCity" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">State</label>
+                                                <label class="control-label">CGST</label>
                                                 <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addEditCustState">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Postal Code</label>
+                                                <label class="control-label">SGST</label>
+                                                <input type="number" class="form-control" ng-model="addEditCustPinCode">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Total value (Rs)</label>
                                                 <input type="number" class="form-control" ng-model="addEditCustPinCode">
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary pull-right" id="submit">Add/Edit Customer</button>
+                                    <button type="submit" class="btn btn-primary pull-right" id="submit">Add GST Purchase</button>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -229,43 +236,5 @@
                 </p>
             </div>
         </footer>
-    </div>
-</div>
-
-<!-- Modal Core -->
-<div class="modal fade" id="addEditCustDBMessage" tabindex="-1" role="dialog" aria-labelledby="addCustDBMessageLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header" data-background-color="purple">
-                                    <h4 class="title">{{addEditCustName}} {{addEditCustTitle}}</h4>
-                                </div>
-                                <div class="card-content">
-                                    <form>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">{{addEditCustName}}{{addEditCustMessage}} !#!#</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Ok</button>
-                                        <div class="clearfix"></div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer"></div>
-        </div>
     </div>
 </div>

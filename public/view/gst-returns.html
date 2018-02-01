@@ -43,24 +43,24 @@
                         <p>Product Bar/QR Code</p>
                     </a>
                 </li>-->
-                <li class="active" ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser">
                     <a href="#!purchaseinvoice">
-                        <i class=" material-icons">bubble_chart</i>
+                        <i class="material-icons">bubble_chart</i>
                         <p>Purchase Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li class="active" ng-show="isAdmin || isUser">
                     <a href="#!gstreport">
                         <i class="material-icons">assignment</i>
                         <p>GST Returns</p>
                     </a>
                 </li>
                 <!--<li ng-show="isAdmin || isUser">
-                        <a href="#!gstpurchase">
-                            <i class="material-icons">assignment</i>
-                            <p>GST Purchase</p>
-                        </a>
-                    </li>-->
+                    <a href="#!gstpurchase">
+                        <i class="material-icons">assignment</i>
+                        <p>GST Purchase</p>
+                    </a>
+                </li>-->
                 <!--<li ng-show="isAdmin">
                     <a href="#!notifications">
                         <i class="material-icons text-gray">notifications</i>
@@ -98,7 +98,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a style="color: #555555 !important;" class="navbar-brand" href="#"> Add Product </a>
+                    <a class="navbar-brand" style="color: #555555 !important;" href=""> GST Returns </a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -133,76 +133,57 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <toaster-container toaster-options="{'time-out': 7000}"></toaster-container>
-                    <div class="col-md-12">
+                    <div class="col-lg-12 col-md-12">
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
-                                <h4 class="title">Add Product</h4>
-                                <p class="category">{{currDateTime}} Add Product</p>
+                                <h4 class="title">GST Returns {{currMonth}}, {{currYear}}</h4>
                             </div>
-                            <div class="card-content">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Brand</label>
-                                                <select class="form-control" ng-model="brandId" ng-change="getMobmodel()">
-                                                    <option ng-repeat="b in mobBrands" value="{{b.bid}}">{{b.brand}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Model</label>
-                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="item">
-                                                    <option ng-repeat="m in mobModels" value="{{m.item_id}}">{{m.model}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">IMEI Number</label>
-                                                <input type="text" class="form-control" ng-model="imeiNumber">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Purchase Price</label>
-                                                <input type="text" class="form-control" ng-model="pprice">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Selling Price</label>
-                                                <input type="text" class="form-control" ng-model="sprice">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Description</label>
-                                                <input type="text" class="form-control" ng-model="description">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Tax</label>
-                                                <input type="text" list="taxgroup" class="form-control" ng-model="tax">
-                                                <datalist id="taxgroup">
-                                                       <option ng-repeat="t in taxes" value="{{t.group_id}}">Tax : {{t.group_name}} {{t.taxes}}</option>
-                                                </datalist>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary pull-right" ng-click="addProduct()">Add Product</button>
-                                    <div class="clearfix"></div>
-                                </form>
+                            <div class="card-content table-responsive" style="height:50%">
+                                <br>
+                                <h6 class="category text-gray">GST Returns</h6>
+                                <br>
+                                <p class="card-content">All registered businesses have to file monthly, quarterly and/or annual GST Returns based on the type of business
+                                    <br> A return is a document containing details of income which a taxpayer is required to file with the tax administrative authorities.
+                                    <br> This is used by tax authorities to calculate tax liability. Under GST, a registered dealer has to file GST returns that include:
+                                    <br>
+                                    <ul>
+                                        <li>Purchases</li>
+                                        <li>Sales</li>
+                                        <li>Input tax credit (GST paid on purchases)</li>
+                                    </ul>
+                                    <br>To file GST returns, GST compliant sales and purchase invoices are required. You can generate
+                                </p>
+                                <br>
+                                <button ng-json-export-excel data="gstReturnsBillData" report-fields="{
+                                        GSTIN: 'GSTIN/UIN of Recipient', 
+                                        InvoiceNumber: 'Invoice Number', 
+                                        Invoicedate: 'Invoice date',
+                                        InvoiceValue: 'Invoice Value',
+                                        InvoiceType: 'Invoice Type',
+                                        TaxableValue: 'Taxable Value',
+                                        TaxAmount: 'Tax Amount'
+                                        }" filename="'GSTReturnsBillData'" separator=';' class="btn btn-warning">
+                                        <i class="material-icons">file_download</i>
+                                        GST Returns Bill Data
+                                </button>
+                                <button ng-json-export-excel data="gstReturnsPurchaseData" report-fields="{
+                                        seller_name: 'Name of the Seller', 
+                                        invoice_no: 'Invoice No', 
+                                        invoice_date: 'Invoice Date',
+                                        commodity_code: 'Commodity Code',
+                                        purchase_value: 'Purchase value (Rs)',
+                                        cgst_amnt: 'CGST',
+                                        sgst_amnt: 'SGST',
+                                        total_value: 'Total value (Rs)'
+                                        }" filename="'GSTReturnsPurchaseData'" separator=';' class="btn btn-success">
+                                        <i class="material-icons">file_download</i>
+                                        GST Returns Purchase Data
+                                </button>
+                                <br>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

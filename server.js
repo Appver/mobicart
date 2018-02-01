@@ -13,15 +13,6 @@ const db = mysql.createConnection({
 });
 
 /*
-//Create Connection - Remote-Sandbox
-const db = mysql.createConnection({
-    host: 'sql12.freesqldatabase.com',
-    user: 'sql12215148',
-    password: '1mKykHf8kw',
-    database: 'sql12215148'
-});
-
-
 //Create Connection - Remote-Dev
 const db = mysql.createConnection({
     host: 'sql12.freesqldatabase.com',
@@ -29,15 +20,7 @@ const db = mysql.createConnection({
     password: '1mKykHf8kw',
     database: 'sql12215148'
 });
-
-//Create Connection - Remote-Local
-const db = mysql.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    password: '',
-    database: 'sql3214500-dev'
-}); */
-
+*/
 //DB Connect
 db.connect((err) => {
     if (err) {
@@ -386,6 +369,24 @@ app.post('/skm/getGeneratedBill/', function(req, res) {
         res.send(result);
     });
 
+});
+
+//gst-returns bill data
+app.get('/skm/GSTReturnsBillData/', function(req, res) {
+    let sql = "SELECT '' as 'GSTIN',bill.bill_no as 'InvoiceNumber', bill.created_date as 'Invoicedate', bill.amount as 'InvoiceValue', bill.payment_type as 'InvoiceType', '' as 'Rate', bill.sub_total as 'TaxableValue', (bill.cgst_amnt+bill.sgst_amnt) as 'TaxAmount' FROM bill JOIN  customer_details ON (bill.cust_id = customer_details.cust_id) GROUP BY bill.bill_no ORDER BY bill.bill_no DESC";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//gst-returns purchase data
+app.get('/skm/GSTReturnsPurchaseData/', function(req, res) {
+    let sql = "SELECT seller_name, invoice_no, invoice_date, commodity_code, purchase_value, cgst_amnt, sgst_amnt, total_value FROM gst_purchase ORDER BY invoice_date DESC";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
 });
 
 // removeGeneratedBill Data

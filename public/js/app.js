@@ -156,6 +156,14 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: '/view/purchase-invoice.html',
             controller: 'PurchaseInvoiceCntlr'
         })
+        .when('/gstreport', {
+            templateUrl: '/view/gst-returns.html',
+            controller: 'GSTReturnsCntlr'
+        })
+        .when('/gstpurchase', {
+            templateUrl: '/view/gst-returns-purchase.html',
+            controller: 'GSTPurchaseCntlr'
+        })
         .when('/productsearch', {
             templateUrl: '/view/product-search.html',
             controller: 'ProductSearchCntlr'
@@ -1086,6 +1094,57 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
             }, function(response) {});
         }
+    })
+    .controller('GSTReturnsCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
+        $scope.$route = $route;
+        $scope.$http = $http;
+        $scope.$location = $location;
+        $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
+
+        $http.get('/skm/GSTReturnsBillData/').then(function(response) {
+            var res = response.data;
+            $scope.gstReturnsBillData = angular.fromJson(res);
+            for (var i = 0; i < $scope.gstReturnsBillData.length; i++) {
+                $scope.gstReturnsBillData[i].Invoicedate = $rootScope.secondsToDate($scope.gstReturnsBillData[i].Invoicedate);
+            }
+        }, function(response) {});
+
+        $http.get('/skm/GSTReturnsPurchaseData/').then(function(response) {
+            var res = response.data;
+            $scope.gstReturnsPurchaseData = angular.fromJson(res);
+            for (var i = 0; i < $scope.gstReturnsPurchaseData.length; i++) {
+                $scope.gstReturnsPurchaseData[i].invoice_date = $rootScope.secondsToDate($scope.gstReturnsPurchaseData[i].invoice_date);
+            }
+        }, function(response) {});
+    })
+    .controller('GSTPurchaseCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
+        $scope.$route = $route;
+        $scope.$http = $http;
+        $scope.$location = $location;
+        $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+            $('.datepicker').datepicker({
+                weekStart: 1
+            });
+        });
     })
     .controller('PreferenceCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
         $(document).ready(function() {
