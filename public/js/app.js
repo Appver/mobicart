@@ -1,4 +1,4 @@
-var app = angular.module('KaviyaMobiles', ['ngTable', 'ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster']);
+var app = angular.module('KaviyaMobiles', ['ngJsonExportExcel', 'ngTable', 'ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster']);
 
 app.run(function($rootScope, $location, $cookieStore) {
     $rootScope.isUser = false;
@@ -255,6 +255,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $http.get('/skm/adminStockData/').then(function(response) {
             var res = response.data;
             var data = angular.fromJson(res);
+            $scope.stockStatusData = data;
             $scope.tableParamsstockData = new NgTableParams({}, { dataset: data });
         }, function(response) {});
 

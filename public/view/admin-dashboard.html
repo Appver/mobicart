@@ -125,7 +125,19 @@
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
                                 <h4 class="title">Stock Status</h4>
-                                <p class="category">Stock Status for {{currDateTime}}</p>
+                                <p class="category">
+                                    Stock Status for {{currDateTime}}
+                                    <span style="padding-left:25%;">
+                                        <button rel="tooltip" title="Download Stock Status" class="btn btn-warning
+                                            btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockStatusData" report-fields="{
+                                            Brand: 'Brand', 
+                                            Model: 'Model', 
+                                            Count: 'Count'
+                                            }" filename="'StockStatus'" separator=';'>
+                                            <i class="material-icons">print</i>
+                                        </button>
+                                    </span>
+                                </p>
                             </div>
                             <div class="card-content table-responsive" style="height:50%">
                                 <table ng-table="tableParamsstockData" class="table table-hover" show-filter="true">
