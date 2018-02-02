@@ -139,62 +139,68 @@
                                 <h4 class="title">GST Purchase Invoice</h4>
                             </div>
                             <div class="card-content">
-                                <form ng-submit="submitGSTPurchase()">
+                                <form ng-submit="confirmAddGST()">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <div class="form-group label-floating">
+                                            <div class="form-group label-floating" ng-init="sellerNameSearch()">
                                                 <label class="control-label">Name of the seller </label>
-                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addEditCustName" required>
+                                                <input type="text" class="form-control" ng-model="gstPurSellerName" list="sellerNameList" capitalize>
+                                                <datalist id="sellerNameList">
+                                                    <option ng-repeat="gstPurSellerName in sellerNameArray track by $index" value="{{gstPurSellerName}}">
+                                                        {{gstPurSellerName}}
+                                                    </option>
+                                                </datalist>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Invoice no</label>
-                                                <input type="number" class="form-control" ng-model="addEditCustPhone" required>
+                                                <input type="text" class="form-control" ng-model="gstPurInvoiceNo" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Invoice Date</label>
-                                                <input class="datepicker form-control" type="text" value="" />
-                                                <!--<input type="email" class="form-control" ng-model="addEditCustEmail">-->
+                                                <label class="control-label">Invoice Date (mm/dd/yyy){{gstPurCurrDate}}</label>
+                                                <input type="text" class="form-control" ng-model="gstPurInvoiceDate" />
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Commodity Code</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustAddress" required>
+                                                <input type="text" class="form-control" ng-model="gstPurCommodityCode" required>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Purchase value (Rs)</label>
-                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addEditCustCity" required>
+                                                <input type="text" class="form-control" ng-model="gstPurPurchaseValue" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">CGST</label>
-                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addEditCustState">
+                                                <input type="text" class="form-control" ng-model="gstPurCgstAmnt">
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">SGST</label>
-                                                <input type="number" class="form-control" ng-model="addEditCustPinCode">
+                                                <input type="text" class="form-control" ng-model="gstPurSgstAmnt">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Total value (Rs)</label>
-                                                <input type="number" class="form-control" ng-model="addEditCustPinCode">
+                                                <input type="text" class="form-control" ng-model="gstPurTotalValue">
                                             </div>
                                         </div>
                                     </div>
+                                    <button type="submit" class="btn btn-primary" ng-disabled="isResetGSTPur" ng-click="resetGSTPurchase('resetBill');">Reset</button>
                                     <button type="submit" class="btn btn-primary pull-right" id="submit">Add GST Purchase</button>
                                     <div class="clearfix"></div>
                                 </form>
@@ -236,5 +242,87 @@
                 </p>
             </div>
         </footer>
+    </div>
+</div>
+
+<!-- Modal Core -->
+<div class="modal fade" id="addConfirmGSTPur" tabindex="-1" role="dialog" aria-labelledby="addConfirmGSTPurLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="purple">
+                                    <h4 class="title">Are You Sure, Need Add GSTPurchase Data</h4>
+                                </div>
+                                <div class="card-content">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Name of the seller : {{gstPurSellerName}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Invoice no : {{gstPurInvoiceNo}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Invoice Date : {{gstPurInvoiceDate}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Commodity Code : {{gstPurCommodityCode}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Purchase value (Rs) : {{gstPurPurchaseValue}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">CGST : {{gstPurCgstAmnt}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">SGST : {{gstPurSgstAmnt}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Total value (Rs) : {{gstPurTotalValue}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary pull-right" ng-click="addGSTPurchase()">Yes</button>
+                                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">No</button>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
     </div>
 </div>

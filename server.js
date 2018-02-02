@@ -435,3 +435,22 @@ app.post('/skm/removeGeneratedBill/', function(req, res) {
         //}
     }
 });
+
+//get all sellerName
+app.get('/skm/sellerNameSearch/', function(req, res) {
+    let sql = "select seller_name from gst_purchase";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//add into gst_purchase
+app.post('/skm/addGSTPurchase/', function(req, res) {
+    let sql = "INSERT INTO gst_purchase (seller_name, invoice_no, invoice_date, commodity_code, purchase_value, cgst_amnt, sgst_amnt, total_value, created_date) VALUES ('" + req.body.sellerName + "','" + req.body.invoiceNo + "','" + req.body.invoiceDate + "','" + req.body.commodityCode + "','" + req.body.purchaseValue + "','" + req.body.cgstAmnt + "','" + req.body.sgstAmnt + "','" + req.body.totalValue + "','" + req.body.createdDate + "')";
+    console.log("SQL : " + sql)
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});

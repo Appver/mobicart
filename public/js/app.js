@@ -1145,6 +1145,70 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 weekStart: 1
             });
         });
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        $scope.gstPurCurrDate = mm + '/' + dd + '/' + yyyy;
+        $scope.isResetGSTPur = false;
+
+        $scope.sellerNameSearch = function() {
+            $scope.sellerNameArray = [];
+            $http.get('/skm/sellerNameSearch/').then(function(response) {
+                var res = response.data;
+                for (var i = 0, length = res.length; i < length; i++) {
+                    for (obj in res[i]) {
+                        $scope.sellerNameArray.push(res[i][obj]);
+                    }
+                }
+            }, function(response) {});
+        };
+
+        $scope.confirmAddGST = function() {
+            $("#addConfirmGSTPur").modal();
+        };
+
+        $scope.addGSTPurchase = function() {
+            var currentDate = $rootScope.timeToSeconds();
+            //console.log("Before Epoch : " + $scope.checkin);
+            //console.log("Epoch : " + Math.round(new Date($scope.checkin).getTime() / 1000));
+            //console.log("After Epoch : " + secondsToDate(Math.round(new Date($scope.checkin).getTime() / 1000)));
+            var addGSTPurData = {
+                sellerName: $scope.gstPurSellerName,
+                invoiceNo: $scope.gstPurInvoiceNo,
+                invoiceDate: Math.round(new Date($scope.gstPurInvoiceDate).getTime() / 1000),
+                commodityCode: $scope.gstPurCommodityCode,
+                purchaseValue: $scope.gstPurPurchaseValue,
+                cgstAmnt: $scope.gstPurCgstAmnt,
+                sgstAmnt: $scope.gstPurSgstAmnt,
+                totalValue: $scope.gstPurTotalValue,
+                createdDate: currentDate
+            }
+            console.log(addGSTPurData)
+            $http.post('/skm/addGSTPurchase/', addGSTPurData).then(function(response) {
+                var res = response.data;
+                console.log(res)
+                if (res.affectedRows >= 1) {
+                    $("#addConfirmGSTPur").modal('hide');
+                    $scope.resetGSTPurchase('success')
+                } else {
+                    $("#addConfirmGSTPur").modal('hide');
+                    $scope.resetGSTPurchase('not success')
+                }
+            }, function(response) {});
+        };
+        $scope.resetGSTPurchase = function(action) {
+            console.log("action : " + action);
+            $scope.gstPurSellerName = '';
+            $scope.gstPurInvoiceNo = '';
+            $scope.gstPurInvoiceDate = '';
+            $scope.gstPurCommodityCode = '';
+            $scope.gstPurPurchaseValue = '';
+            $scope.gstPurCgstAmnt = '';
+            $scope.gstPurSgstAmnt = '';
+            $scope.gstPurTotalValue = '';
+            $scope.sellerNameSearch();
+        };
     })
     .controller('PreferenceCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
         $(document).ready(function() {
