@@ -586,10 +586,16 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="col-md-6">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Adress</label>
                                                     <input type="text" class="form-control" ng-model="addCustomer.cust_address" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">GST TIN</label>
+                                                    <input type="text" class="form-control" ng-model="addCustomer.cust_gsttin">
                                                 </div>
                                             </div>
                                         </div>
@@ -693,6 +699,19 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Customer GSTTIN : </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{customerDetails.cust_gsttin}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <button type="submit" class="btn btn-primary pull-right" ng-click="selectCust()">Select</button>
                                         <div class="clearfix"></div>
                                     </form>
@@ -775,7 +794,7 @@
                                                     <br> {{shopDetail.city}}-{{shopDetail.pincode}}.
                                                     <br> Ph: {{shopDetail.phone}} / {{shopDetail.mobile}}
                                                     <br> Email: {{shopDetail.email}}
-                                                    <br> GSTIN: {{shopDetail.gstin}}
+                                                    <br> GSTTIN: {{shopDetail.gstin}}
                                                 </div>
                                             </td>
                                             <td colspan="3" align="center" valign="middle">Date : {{issueDate}}</td>
@@ -797,6 +816,7 @@
                                                         <br>{{customerDetails.cust_city}},
                                                         <br>{{customerDetails.cust_state}}.
                                                         <br> Ph:{{customerDetails.cust_phone}}/{{customerDetails.cust_alt_phone}}.
+                                                        <br> Customer GSTTIN:{{customerDetails.cust_gsttin}}.
                                                     </span>
                                                 </div>
                                             </td>

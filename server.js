@@ -4,15 +4,15 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
 
-//Create Connection - Remote-Prod
+/*//Create Connection - Remote-Prod
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
     user: 'sql3214500',
     password: 'Av52djpEBs',
     database: 'sql3214500'
-});
+});*/
 
-/*
+
 //Create Connection - Remote-Dev
 const db = mysql.createConnection({
     host: 'sql12.freesqldatabase.com',
@@ -20,7 +20,7 @@ const db = mysql.createConnection({
     password: '1mKykHf8kw',
     database: 'sql12215148'
 });
-*/
+
 //DB Connect
 db.connect((err) => {
     if (err) {
@@ -192,7 +192,7 @@ app.get('/skm/customerDetails/:customerPhone', function(req, res) {
 
 // Add new customer id
 app.post('/skm/addNewCustomer/', function(req, res) {
-    let sql = "INSERT INTO customer_details (cust_name, cust_phone, cust_email, cust_address, cust_city, cust_state, cust_pincode, created_date, cust_alt_phone) VALUES ('" + req.body.cust_name + "', '" + req.body.cust_phone + "', '" + req.body.email + "', '" + req.body.cust_address + "', '" + req.body.cust_city + "', '" + req.body.cust_state + "', '" + req.body.pincode + "','" + req.body.created + "','" + req.body.cust_alt_phone + "')";
+    let sql = "INSERT INTO customer_details (cust_name, cust_phone, cust_email, cust_address, cust_city, cust_state, cust_pincode, created_date, cust_alt_phone, cust_gsttin) VALUES ('" + req.body.cust_name + "', '" + req.body.cust_phone + "', '" + req.body.email + "', '" + req.body.cust_address + "', '" + req.body.cust_city + "', '" + req.body.cust_state + "', '" + req.body.pincode + "','" + req.body.created + "','" + req.body.cust_alt_phone + "','" + req.body.cust_gsttin + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -201,7 +201,7 @@ app.post('/skm/addNewCustomer/', function(req, res) {
 
 // Edit new customer id
 app.post('/skm/addEditCustomer/', function(req, res) {
-    let sql = "UPDATE customer_details SET cust_name = '" + req.body.name + "', cust_phone = '" + req.body.phone + "', cust_email =  '" + req.body.email + "', cust_address =  '" + req.body.address + "', cust_city = '" + req.body.city + "', cust_state = '" + req.body.state + "', cust_pincode = '" + req.body.pincode + "', created_date = '" + req.body.created + "', cust_alt_phone = '" + req.body.altphone + "' WHERE cust_id = '" + req.body.id + "'";
+    let sql = "UPDATE customer_details SET cust_name = '" + req.body.name + "', cust_phone = '" + req.body.phone + "', cust_email =  '" + req.body.email + "', cust_address =  '" + req.body.address + "', cust_city = '" + req.body.city + "', cust_state = '" + req.body.state + "', cust_pincode = '" + req.body.pincode + "', created_date = '" + req.body.created + "', cust_alt_phone = '" + req.body.altphone + "', cust_gsttin = '" + req.body.cust_gsttin + "' WHERE cust_id = '" + req.body.id + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -363,7 +363,7 @@ app.get('/skm/adminBillData/', function(req, res) {
 
 // getGeneratedBill Data
 app.post('/skm/getGeneratedBill/', function(req, res) {
-    let sql = "SELECT bill.created_date as billDate, bill.bill_no, bill.created_date, customer_details.cust_name, customer_details.cust_phone, customer_details.cust_alt_phone, customer_details.cust_address, customer_details.cust_city, customer_details.cust_state, bill.payment_type, bill.amount, bill.cgst_amnt as TCGST, bill.sgst_amnt as TSGST, sales_invoice.sku_no, sales_invoice.unit_price, sales_invoice.tax/2 as TaxPer, sales_invoice.cgst_amnt, sales_invoice.sgst_amnt, (sales_invoice.cgst_amnt + sales_invoice.sgst_amnt + sales_invoice.unit_price) as pAmount, '8517' as pHSNSAC, purchase.imei_number, CONCAT(brand.brand,' ', model.model) as PName FROM bill JOIN sales_invoice on (bill.bill_no = sales_invoice.bill_no) JOIN purchase on (sales_invoice.sku_no = purchase.sku_no) JOIN model on (purchase.item_id = model.item_id) JOIN brand on (model.bid = brand.bid) JOIN customer_details ON (bill.cust_id = customer_details.cust_id) WHERE bill.bill_no = '" + req.body.billNo + "'";
+    let sql = "SELECT bill.created_date as billDate, bill.bill_no, bill.created_date, customer_details.cust_name, customer_details.cust_phone, customer_details.cust_alt_phone, customer_details.cust_address, customer_details.cust_city, customer_details.cust_state, customer_details.cust_gsttin, bill.payment_type, bill.amount, bill.cgst_amnt as TCGST, bill.sgst_amnt as TSGST, sales_invoice.sku_no, sales_invoice.unit_price, sales_invoice.tax/2 as TaxPer, sales_invoice.cgst_amnt, sales_invoice.sgst_amnt, (sales_invoice.cgst_amnt + sales_invoice.sgst_amnt + sales_invoice.unit_price) as pAmount, '8517' as pHSNSAC, purchase.imei_number, CONCAT(brand.brand,' ', model.model) as PName FROM bill JOIN sales_invoice on (bill.bill_no = sales_invoice.bill_no) JOIN purchase on (sales_invoice.sku_no = purchase.sku_no) JOIN model on (purchase.item_id = model.item_id) JOIN brand on (model.bid = brand.bid) JOIN customer_details ON (bill.cust_id = customer_details.cust_id) WHERE bill.bill_no = '" + req.body.billNo + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
