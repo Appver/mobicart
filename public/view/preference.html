@@ -350,6 +350,71 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="purple">
+                                <h4 class="title">Color, RAM & ROM</h4>
+                            </div>
+                            <div class="card-content">
+                                <form>
+                                    <div class="col-md-4">
+                                        <div class="col-md-offset-1 col-md-4">
+                                            <div class="form-group label-floating" ng-init="colorSearch()">
+                                                <label class="control-label">Color</label>
+                                                <input type="text" class="form-control" ng-model="color" list="colorList" capitalize>
+                                                <datalist id="colorList">
+                                                    <option ng-repeat="color in colorArray track by $index" value="{{color}}">
+                                                        {{color}}
+                                                    </option>
+                                                </datalist>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-md-offset-2">
+                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addColor()">Add Color</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="col-md-offset-1 col-md-4">
+                                            <div class="form-group label-floating" ng-init="ramSearch()">
+                                                <label class="control-label">RAM</label>
+                                                <input type="text" class="form-control" ng-model="ram" list="ramList" capitalize>
+                                                <datalist id="ramList">
+                                                    <option ng-repeat="ram in ramArray track by $index" value="{{ram}}">
+                                                        {{ram}}
+                                                    </option>
+                                                </datalist>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-md-offset-2">
+                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addRAM()">Add RAM</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="col-md-offset-1 col-md-4">
+                                            <div class="form-group label-floating" ng-init="romSearch()">
+                                                <label class="control-label">ROM</label>
+                                                <input type="text" class="form-control" ng-model="rom" list="romList" capitalize>
+                                                <datalist id="romList">
+                                                    <option ng-repeat="rom in romArray track by $index" value="{{rom}}">
+                                                        {{color}}
+                                                    </option>
+                                                </datalist>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-md-offset-2">
+                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addROM()">Add ROM</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <footer class="footer">

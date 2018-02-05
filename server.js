@@ -448,7 +448,61 @@ app.get('/skm/sellerNameSearch/', function(req, res) {
 //add into gst_purchase
 app.post('/skm/addGSTPurchase/', function(req, res) {
     let sql = "INSERT INTO gst_purchase (seller_name, invoice_no, invoice_date, commodity_code, purchase_value, cgst_amnt, sgst_amnt, total_value, created_date) VALUES ('" + req.body.sellerName + "','" + req.body.invoiceNo + "','" + req.body.invoiceDate + "','" + req.body.commodityCode + "','" + req.body.purchaseValue + "','" + req.body.cgstAmnt + "','" + req.body.sgstAmnt + "','" + req.body.totalValue + "','" + req.body.createdDate + "')";
-    console.log("SQL : " + sql)
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+
+// get all mobile color
+app.get('/skm/color/', function(req, res) {
+    let sql = "select color from color";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// get all mobile ram
+app.get('/skm/ram/', function(req, res) {
+    let sql = "select ram_size from ram";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// get all mobile rom
+app.get('/skm/rom/', function(req, res) {
+    let sql = "select rom_size from rom";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//add into color
+app.post('/skm/colorInsert/', function(req, res) {
+    let sql = "INSERT INTO color (color) VALUES ('" + req.body.color + "')";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//add into RAM
+app.post('/skm/ramInsert/', function(req, res) {
+    let sql = "INSERT INTO ram (ram_size) VALUES ('" + req.body.ram + "')";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//add into rom
+app.post('/skm/romInsert/', function(req, res) {
+    let sql = "INSERT INTO rom (rom_size) VALUES ('" + req.body.rom + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

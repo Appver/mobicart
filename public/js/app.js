@@ -331,7 +331,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $("#getConfirmation").modal('hide');
             $http.post('/skm/removeGeneratedBill/', $scope.deleteBillData).then(function(response) {
                 var res = response.data;
-                console.log(res)
                 if (res == 'DONE') {
                     $scope.getGeneratedBillData();
                 } else if (res == 'BILL') {
@@ -1195,9 +1194,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.addGSTPurchase = function() {
             var currentDate = $rootScope.timeToSeconds();
-            //console.log("Before Epoch : " + $scope.checkin);
-            //console.log("Epoch : " + Math.round(new Date($scope.checkin).getTime() / 1000));
-            //console.log("After Epoch : " + secondsToDate(Math.round(new Date($scope.checkin).getTime() / 1000)));
             var addGSTPurData = {
                 sellerName: $scope.gstPurSellerName,
                 invoiceNo: $scope.gstPurInvoiceNo,
@@ -1209,10 +1205,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 totalValue: $scope.gstPurTotalValue,
                 createdDate: currentDate
             }
-            console.log(addGSTPurData)
             $http.post('/skm/addGSTPurchase/', addGSTPurData).then(function(response) {
                 var res = response.data;
-                console.log(res)
                 if (res.affectedRows >= 1) {
                     $("#addConfirmGSTPur").modal('hide');
                     $scope.resetGSTPurchase('success')
@@ -1223,7 +1217,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
         $scope.resetGSTPurchase = function(action) {
-            console.log("action : " + action);
             $scope.gstPurSellerName = '';
             $scope.gstPurInvoiceNo = '';
             $scope.gstPurInvoiceDate = '';
@@ -1265,6 +1258,81 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         }, function(response) {});
 
+        $scope.colorSearch = function() {
+            $scope.colorArray = [];
+            $http.get('/skm/color').then(function(response) {
+                var res = response.data;
+                for (var i = 0, length = res.length; i < length; i++) {
+                    for (obj in res[i]) {
+                        $scope.colorArray.push(res[i][obj]);
+                    }
+                }
+            }, function(response) {});
+        };
+
+        $scope.ramSearch = function() {
+            $scope.ramArray = [];
+            $http.get('/skm/ram').then(function(response) {
+                var res = response.data;
+                for (var i = 0, length = res.length; i < length; i++) {
+                    for (obj in res[i]) {
+                        $scope.ramArray.push(res[i][obj]);
+                    }
+                }
+            }, function(response) {});
+        };
+
+        $scope.romSearch = function() {
+            $scope.romArray = [];
+            $http.get('/skm/rom').then(function(response) {
+                var res = response.data;
+                for (var i = 0, length = res.length; i < length; i++) {
+                    for (obj in res[i]) {
+                        $scope.romArray.push(res[i][obj]);
+                    }
+                }
+            }, function(response) {});
+        };
+
+        $scope.addColor = function() {
+            var colorData = {
+                color: $scope.color
+            };
+            $http.post('/skm/colorInsert/', colorData).then(function(response) {
+                if (response.data.affectedRows > 0) {
+                    toaster.pop("success", "success", "Color Added Successfully");
+                    $scope.colorSearch();
+                    $scope.color = '';
+                }
+            }, function(response) {});
+        };
+
+        $scope.addRAM = function() {
+            var ramData = {
+                ram: $scope.ram
+            };
+            $http.post('/skm/ramInsert/', ramData).then(function(response) {
+                if (response.data.affectedRows > 0) {
+                    toaster.pop("success", "success", "RAM Added Successfully");
+                    $scope.ramSearch();
+                    $scope.ram = '';
+                }
+            }, function(response) {});
+
+        };
+
+        $scope.addROM = function() {
+            var romData = {
+                rom: $scope.rom
+            };
+            $http.post('/skm/romInsert/', romData).then(function(response) {
+                if (response.data.affectedRows > 0) {
+                    toaster.pop("success", "success", "ROM Added Successfully");
+                    $scope.romSearch();
+                    $scope.rom = '';
+                }
+            }, function(response) {});
+        };
 
         $scope.addBrand = function() {
             var data = {
