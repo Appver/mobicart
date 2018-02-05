@@ -4,22 +4,22 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
 
-/*//Create Connection - Remote-Prod
+//Create Connection - Remote-Prod
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
     user: 'sql3214500',
     password: 'Av52djpEBs',
     database: 'sql3214500'
-});*/
+});
 
-
+/*
 //Create Connection - Remote-Dev
 const db = mysql.createConnection({
     host: 'sql12.freesqldatabase.com',
     user: 'sql12215148',
     password: '1mKykHf8kw',
     database: 'sql12215148'
-});
+});*/
 
 //DB Connect
 db.connect((err) => {
