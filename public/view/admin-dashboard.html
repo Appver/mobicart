@@ -133,14 +133,14 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-6 col-md-12">
+                    <div class="col-lg-12 col-md-12">
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
                                 <h4 class="title">Stock Status</h4>
                                 <p class="category">
                                     Stock Status for {{currDateTime}}
-                                    <span style="padding-left:25%;">
-                                        <button rel="tooltip" title="Download Stock Status" class="btn btn-warning
+                                    <span style="padding-left:65%;padding-top:5%;">
+                                        <button rel="tooltip" title="Download Stock Status" class="btn btn-purple
                                             btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockStatusData" report-fields="{
                                             Brand: 'Brand', 
                                             Model: 'Model', 
@@ -168,7 +168,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-12">
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
                         <div class="card">
                             <div class="card-header" data-background-color="orange">
                                 <h4 class="title">Total Bill</h4>
@@ -203,6 +205,38 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="blue">
+                                <h4 class="title">Total Customer Details</h4>
+                                <p class="category">Total Customer Details for {{currDateTime}}</p>
+                            </div>
+                            <div class="card-content table-responsive">
+                                <table ng-table="tableParamsCustomerData" class="table table-hover" show-filter="true">
+                                    <tr ng-repeat="customer in $data">
+                                        <td title="'Customer Name'" filter="{ cust_name: 'text'}" sortable="'BillNo'">
+                                            {{customer.cust_name}}
+                                        </td>
+                                        <td title="'Customer Phone'" filter="{ cust_phone: 'number'}" sortable="'CustomerName'">
+                                            {{customer.cust_phone}}
+                                        </td>
+                                        <td title="'Customer City'" filter="{ cust_city: 'text'}" sortable="'TotalBillAmount'">
+                                            {{customer.cust_city}}
+                                        </td>
+                                        <td title="'Action'">
+                                            <button type="button" rel="tooltip" title="Get Customer Details" class="btn btn-info btn-simple btn-sm" ng-click="viewCustomerData(customer)">
+                                                    <i class="material-icons">info</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <footer class="footer">
@@ -459,6 +493,99 @@
                                     <button type="button" class="btn btn-primary pull-right" ng-click="deleteBill()">Yes</button>
                                     <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">No</button>
                                     <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Core -->
+<div class="modal fade" id="viewCustomerDetails" tabindex="-1" role="dialog" aria-labelledby="viewCustomerDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeCustomerDetails();">&times;</button>
+                <!--<h4 class="modal-title" id="viewCustomerDetailsLabel">Customer Details</h4>-->
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="blue">
+                                    <h4 class="title">{{viewCustomerDetails.cust_name}}'s Details</h4>
+                                </div>
+                                <div class="card-content">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Name : </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{viewCustomerDetails.cust_name}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Phone No : </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{viewCustomerDetails.cust_phone}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Email : </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{viewCustomerDetails.cust_email}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Address : </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{viewCustomerDetails.cust_address}}, {{viewCustomerDetails.cust_city}}, {{viewCustomerDetails.cust_state}}, {{viewCustomerDetails.cust_pinCode}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Customer GSTTIN : </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{viewCustomerDetails.cust_gsttin}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-info pull-right" data-dismiss="modal" ng-click="closeCustomerDetails();">Close</button>
+                                        <div class="clearfix"></div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

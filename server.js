@@ -535,3 +535,12 @@ app.post('/skm/romInsert/', function(req, res) {
         res.send(result);
     });
 });
+
+//admin-dashboard Customer Data 
+app.get('/skm/adminCustomerData/', function(req, res) {
+    let sql = "SELECT * FROM customer_details GROUP BY cust_id ORDER BY cust_name ASC";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});

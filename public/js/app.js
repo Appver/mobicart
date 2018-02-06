@@ -289,7 +289,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var res = response.data;
             var data = angular.fromJson(res);
             $scope.stockStatusData = data;
-            $scope.tableParamsstockData = new NgTableParams({}, { dataset: data });
+            $scope.tableParamsstockData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
         }, function(response) {});
 
         $scope.getGeneratedBillData = function() {
@@ -300,9 +300,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 for (var i = 0; i < data.length; i++) {
                     data[i].IssuedDate = $rootScope.secondsToTime(data[i].IssuedDate);
                 }
-                $scope.tableParamsBillData = new NgTableParams({}, { dataset: data });
+                $scope.tableParamsBillData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
             }, function(response) {});
         };
+
+        $http.get('/skm/adminCustomerData/').then(function(response) {
+            var res = response.data;
+            var data = angular.fromJson(res);
+            $scope.tableParamsCustomerData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
+        }, function(response) {});
 
         $scope.getGeneratedBills = function(getBill) {
             var getBillData = {
@@ -340,6 +346,16 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 }
             }, function(response) {});
         };
+
+        $scope.viewCustomerData = function(viewCustData) {
+            $scope.viewCustomerDetails = viewCustData;
+            $("#viewCustomerDetails").modal();
+        }
+
+        $scope.closeCustomerDetails = function(viewCustData) {
+            $("#viewCustomerDetails").modal('hide');
+            $scope.viewCustomerDetails = '';
+        }
     })
     .controller('SalesInvoiceCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
