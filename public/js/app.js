@@ -1035,7 +1035,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
     })
-    .controller('PurchaseInvoiceCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location, toaster) {
+    .controller('PurchaseInvoiceCntlr', function($q, $rootScope, $scope, $http, $route, $routeParams, $location, toaster) {
         $(document).ready(function() {
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function
