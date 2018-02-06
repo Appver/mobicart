@@ -236,7 +236,7 @@ app.get('/skm/tax/:gid/', function(req, res) {
 });
 
 app.post('/skm/productInsert/', function(req, res) {
-    let sql = "INSERT INTO purchase (item_id, imei_number, details, purchase_price, selling_price, tax_group, bar_code, created_date, modified_date, modified_by) VALUES (" + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.purchase_price + "," + req.body.selling_price + "," + req.body.tax_group + ",'" + req.body.bar_code + "'," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + ")";
+    let sql = "INSERT INTO purchase (item_id, imei_number, details, purchase_price, selling_price, tax_group, bar_code, created_date, modified_date, modified_by, rom_id, ram_id, color_id) VALUES (" + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.purchase_price + "," + req.body.selling_price + "," + req.body.tax_group + ",'" + req.body.bar_code + "'," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + "," + req.body.rom_id + "," + req.body.ram_id + "," + req.body.color_id + ")";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

@@ -161,40 +161,63 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">IMEI Number</label>
-                                                <input type="text" class="form-control" ng-model="imeiNumber">
+                                                <label class="control-label">Description</label>
+                                                <input type="text" class="form-control" ng-model="description">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">ROM</label>
+                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="rom_id">
+                                                    <option ng-repeat="r in mobRom" value="{{r.rom_id}}">{{r.rom_size}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">RAM</label>
+                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="ram_id">
+                                                    <option ng-repeat="a in mobRam" value="{{a.ram_id}}">{{a.ram_size}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">COLOR</label>
+                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="color_id">
+                                                    <option ng-repeat="c in mobColor" value="{{c.col_id}}">{{c.color}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Purchase Price</label>
                                                 <input type="text" class="form-control" ng-model="pprice">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Selling Price</label>
                                                 <input type="text" class="form-control" ng-model="sprice">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Description</label>
-                                                <input type="text" class="form-control" ng-model="description">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Tax</label>
-                                                <input type="text" list="taxgroup" class="form-control" ng-model="tax">
-                                                <datalist id="taxgroup">
-                                                       <option ng-repeat="t in taxes" value="{{t.group_id}}">Tax : {{t.group_name}} {{t.taxes}}</option>
-                                                </datalist>
+                                                <select class="form-control" ng-model="tax">
+                                                    <option ng-repeat="t in taxes" value="{{t.group_id}}">{{t.group_name}}</option>
+                                                </select>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">IMEI Number</label>
+                                            <input type="text" class="form-control" ng-model="imeiNumber">
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary pull-right" ng-click="addProduct()">Add Product</button>

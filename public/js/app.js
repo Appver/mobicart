@@ -1046,7 +1046,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
-
+        var taxlist = [];
+        var taxes = '';
+        var promise = $q.all([]);
+        $http.get('/skm/taxGroup/').then(function(response) {
+            var res = response.data;
+            $scope.taxes = angular.fromJson(res);
+        }, function(response) {});
         $http.get('/skm/brand').then(function(response) {
             var res = response.data;
             $scope.mobBrands = angular.fromJson(res);
@@ -1066,33 +1072,32 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
 
-        var taxlist = [];
-        var taxes = '';
-        $http.get('/skm/taxGroup/').then(function(response) {
+        $http.get('/skm/rom').then(function(response) {
             var res = response.data;
-            for (i = 0; i < res.length; i++) {
-                var group_id = res[i].group_id;
-                var group_name = res[i].group_name;
-                $http.get('/skm/tax/' + group_id + '/').then(function(response) {
-                    var tax = response.data;
-                    taxes = '';
-                    for (j = 0; j < tax.length; j++) {
-                        taxes += tax[j].tax_name + ' ' + tax[j].percentage + '%  ';
-                    }
-                    taxlist.push({ group_id: group_id, group_name: group_name, taxes: taxes });
-
-                }, function(response) {});
-            }
+            $scope.mobRom = angular.fromJson(res);
         }, function(response) {});
 
-        $scope.taxes = taxlist;
+
+        $http.get('/skm/ram').then(function(response) {
+            var res = response.data;
+            $scope.mobRam = angular.fromJson(res);
+        }, function(response) {});
+
+        $http.get('/skm/color').then(function(response) {
+            var res = response.data;
+            $scope.mobColor = angular.fromJson(res);
+        }, function(response) {});
 
         $scope.addProduct = function() {
             var timeToSecond = $rootScope.timeToSeconds();
-            var data = {
+            var imeis = $scope.imeiNumber;
+            var imei_array = imeis.split(",");
+            var pro = {
                 item_id: $scope.item,
-                imei_number: $scope.imeiNumber,
                 details: $scope.description,
+                rom_id: $scope.rom_id,
+                ram_id: $scope.ram_id,
+                color_id: $scope.color_id,
                 purchase_price: $scope.pprice,
                 selling_price: $scope.sprice,
                 price: $scope.sprice,
@@ -1102,24 +1107,41 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 modifiedDate: timeToSecond,
                 modifiedBy: $rootScope.userObj.uid
             };
+            angular.forEach(imei_array, function(im) {
+                promise = promise.then(function() {
+                    pro.imei_number = im;
+                    return productInsert(pro, im);
+                });
+            });
 
-            $http.post('/skm/productInsert/', data).then(function(response) {
-                output = response.data;
-                data.sku_no = output.insertId;
-                data.product_flag = 'Y';
+            promise.finally(function() {
+                console.log('Insert finished!');
+            });
 
-                $http.post('/skm/stockInsert/', data).then(function(response) {
-                    toaster.pop("success", "success", "Product Added Successfully");
-                    $scope.item = '';
-                    $scope.imeiNumber = '';
-                    $scope.description = '';
-                    $scope.pprice = '';
-                    $scope.sprice = '';
-                    $scope.tax = '';
+            function productInsert(pro, im) {
+                $http.post('/skm/productInsert/', pro).then(function(response) {
+                    output = response.data;
 
+                    pro.sku_no = output.insertId;
+                    pro.product_flag = 'Y';
+                    pro.imei_number = im;
+                    $http.post('/skm/stockInsert/', pro).then(function(response) {
+
+                        $scope.brand = '';
+                        $scope.item = '';
+                        $scope.rom_id = '';
+                        $scope.ram_id = '';
+                        $scope.color_id = '';
+                        $scope.imeiNumber = '';
+                        $scope.description = '';
+                        $scope.pprice = '';
+                        $scope.sprice = '';
+                        $scope.tax = '';
+                        return pro.sku_no;
+                    }, function(response) {});
+                    return pro.sku_no;
                 }, function(response) {});
-
-            }, function(response) {});
+            }
         }
     })
     .controller('GSTReturnsCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
