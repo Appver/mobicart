@@ -901,6 +901,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         function taxSplitCal(pTax) {
             return tax = pTax / 2;
         }
+
+        $scope.getCustomerSearch = function() {
+            $http.get('/skm/adminCustomerData/').then(function(response) {
+                var res = response.data;
+                $scope.customerPhoneArray = angular.fromJson(res);
+            }, function(response) {});
+
+        }
     })
     .controller('ProductSearchCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
