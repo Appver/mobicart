@@ -373,7 +373,7 @@ app.post('/skm/getGeneratedBill/', function(req, res) {
 
 //gst-returns bill data
 app.get('/skm/GSTReturnsBillData/', function(req, res) {
-    let sql = "SELECT '' as 'GSTIN',bill.bill_no as 'InvoiceNumber', bill.created_date as 'Invoicedate', bill.amount as 'InvoiceValue', bill.payment_type as 'InvoiceType', '' as 'Rate', bill.sub_total as 'TaxableValue', (bill.cgst_amnt+bill.sgst_amnt) as 'TaxAmount' FROM bill JOIN  customer_details ON (bill.cust_id = customer_details.cust_id) GROUP BY bill.bill_no ORDER BY bill.bill_no DESC";
+    let sql = "SELECT customer_details.cust_gsttin as 'GSTIN',bill.bill_no as 'InvoiceNumber', bill.created_date as 'Invoicedate', bill.amount as 'InvoiceValue', bill.payment_type as 'InvoiceType', '' as 'Rate', bill.sub_total as 'TaxableValue', (bill.cgst_amnt+bill.sgst_amnt) as 'TaxAmount' FROM bill JOIN  customer_details ON (bill.cust_id = customer_details.cust_id) GROUP BY bill.bill_no ORDER BY bill.bill_no DESC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
