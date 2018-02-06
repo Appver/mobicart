@@ -457,7 +457,7 @@ app.post('/skm/addGSTPurchase/', function(req, res) {
 
 // get all mobile color
 app.get('/skm/color/', function(req, res) {
-    let sql = "select color from color";
+    let sql = "select * from color";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -466,7 +466,7 @@ app.get('/skm/color/', function(req, res) {
 
 // get all mobile ram
 app.get('/skm/ram/', function(req, res) {
-    let sql = "select ram_size from ram";
+    let sql = "select * from ram";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -475,6 +475,33 @@ app.get('/skm/ram/', function(req, res) {
 
 // get all mobile rom
 app.get('/skm/rom/', function(req, res) {
+    let sql = "select * from rom";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// get all mobile color
+app.get('/skm/colorDetails/', function(req, res) {
+    let sql = "select color from color";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// get all mobile ram
+app.get('/skm/ramDetails/', function(req, res) {
+    let sql = "select ram_size from ram";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// get all mobile rom
+app.get('/skm/romDetails/', function(req, res) {
     let sql = "select rom_size from rom";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;

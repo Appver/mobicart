@@ -1263,7 +1263,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.colorSearch = function() {
             $scope.colorArray = [];
-            $http.get('/skm/color').then(function(response) {
+            $http.get('/skm/colorDetails').then(function(response) {
                 var res = response.data;
                 for (var i = 0, length = res.length; i < length; i++) {
                     for (obj in res[i]) {
@@ -1275,7 +1275,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.ramSearch = function() {
             $scope.ramArray = [];
-            $http.get('/skm/ram').then(function(response) {
+            $http.get('/skm/ramDetails').then(function(response) {
                 var res = response.data;
                 for (var i = 0, length = res.length; i < length; i++) {
                     for (obj in res[i]) {
@@ -1287,7 +1287,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.romSearch = function() {
             $scope.romArray = [];
-            $http.get('/skm/rom').then(function(response) {
+            $http.get('/skm/romDetails').then(function(response) {
                 var res = response.data;
                 for (var i = 0, length = res.length; i < length; i++) {
                     for (obj in res[i]) {
