@@ -201,7 +201,7 @@ app.post('/skm/addNewCustomer/', function(req, res) {
 
 // Edit new customer id
 app.post('/skm/addEditCustomer/', function(req, res) {
-    let sql = "UPDATE customer_details SET cust_name = '" + req.body.name + "', cust_phone = '" + req.body.phone + "', cust_email =  '" + req.body.email + "', cust_address =  '" + req.body.address + "', cust_city = '" + req.body.city + "', cust_state = '" + req.body.state + "', cust_pincode = '" + req.body.pincode + "', created_date = '" + req.body.created + "', cust_alt_phone = '" + req.body.altphone + "', cust_gsttin = '" + req.body.cust_gsttin + "' WHERE cust_id = '" + req.body.id + "'";
+    let sql = "UPDATE customer_details SET cust_name = '" + req.body.cust_name + "', cust_phone = '" + req.body.cust_phone + "', cust_email =  '" + req.body.email + "', cust_address =  '" + req.body.cust_address + "', cust_city = '" + req.body.cust_city + "', cust_state = '" + req.body.cust_state + "', cust_pincode = '" + req.body.pincode + "', created_date = '" + req.body.created + "', cust_alt_phone = '" + req.body.cust_alt_phone + "', cust_gsttin = '" + req.body.cust_gsttin + "' WHERE cust_id = '" + req.body.id + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
