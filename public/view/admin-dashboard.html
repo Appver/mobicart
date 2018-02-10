@@ -286,7 +286,7 @@
                         <div class="col-md-12">
                             <form>
                                 <div print-section>
-                                    <table border="1" style="margin-left: auto;margin-right: auto;">
+                                    <table border="1" style="margin-left: auto;margin-right: auto;font-size:11px">
                                         <tr>
                                             <td colspan="9" align="center" valign="middle">
                                                 <p style="font-weight: bold;">CASH/CERDIT BILL</p>
@@ -372,6 +372,9 @@
                                             <td align="center" valign="middle">{{$index + 1}}</td>
                                             <td align="center" valign="middle" style="padding: 5px;">
                                                 {{product.PName}}
+                                                <span ng-show="product.isPColor" style="font-size:9px;font-weight:bold;">
+                                                        {{product.pColor}}
+                                                </span>
                                                 <br> IMEI: {{product.imei_number}}
                                                 <!--<br> BATTERY: {{product.pBattery}}
                                                 <br> CHARGER: {{product.pCharger}}-->
@@ -386,8 +389,6 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <br>
-                                                <br>
                                                 <br>
                                                 <br>
                                                 <br>
@@ -584,6 +585,61 @@
                                         </div>
 
                                         <button type="submit" class="btn btn-info pull-right" data-dismiss="modal" ng-click="closeCustomerDetails();">Close</button>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Core -->
+<div class="modal fade" id="getGeneratedBillAmount" tabindex="-1" role="dialog" aria-labelledby="getGeneratedBillAmountLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="purple">
+                                    <h4 class="title">Confirm Bill Amount To Print</h4>
+                                </div>
+                                <div class="card-content">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Bill No :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">{{generatedBillData[0].bill_no}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <label class="control-label">Amount :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group label-floating">
+                                                    <input type="text" class="form-control" ng-model="generatedBillData[0].amount">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" ng-click="generateModifiedBill()">Print Bill</button>
                                         <div class="clearfix"></div>
                                     </form>
                                 </div>

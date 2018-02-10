@@ -154,8 +154,7 @@
                                                         <div class="col-md-8">
                                                             <div class="form-group label-floating" ng-init="getCustomerSearch()">
                                                                 <label class="control-label">Customer Phone</label>
-                                                                <!--<input type="text" class="form-control" ng-model="customerName" ng-change="isValidCustPhone()">-->
-                                                                <input type="text" class="form-control" ng-model="customerName" list="customerPhoneArrayList">
+                                                                <input type="text" class="form-control" ng-model="customerName" list="customerPhoneArrayList" ng-change="isValidCustPhone()">
                                                                 <datalist id="customerPhoneArrayList">
                                                                     <option ng-repeat="customerName in customerPhoneArray track by $index " value="{{customerName.cust_phone}}">
                                                                         {{customerName.cust_name}} ({{customerName.cust_phone}})
@@ -165,18 +164,13 @@
                                                         </div>
                                                         <div class="col-md-2">
                                                             <div class="form-group label-floating">
-                                                                <div class="form-group label-floating" ng-click="getCustomerDetails()">
+                                                                <div class="form-group label-floating" ng-show="isSearchCust" ng-click="getCustomerDetails()">
                                                                     <a href="">
                                                                         <i class="material-icons" rel="tooltip" title="Search Customer">search</i>
                                                                     </a>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <!--<div class="col-md-2">
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label">Issue Date :{{issueDate}}</label>
-                                                            </div>
-                                                        </div>-->
                                                     </div>
                                                 </div>
                                             </div>
@@ -783,7 +777,7 @@
                         <div class="col-md-12">
                             <form>
                                 <div print-section>
-                                    <table border="1" style="margin-left: auto;margin-right: auto;">
+                                    <table border="1" style="margin-left: auto;margin-right: auto; font-size:11px">
                                         <tr>
                                             <td colspan="9" align="center" valign="middle">
                                                 <p style="font-weight: bold;">CASH/CERDIT BILL</p>
@@ -869,6 +863,9 @@
                                             <td align="center" valign="middle">{{$index + 1}}</td>
                                             <td align="center" valign="middle" style="padding: 5px;">
                                                 {{product.pName}}
+                                                <span ng-show="product.isPColor" style="font-size:9px;font-weight:bold;">
+                                                        {{product.pColor}}
+                                                </span>
                                                 <br> IMEI: {{product.pIMEI}}
                                                 <!--<br> BATTERY: {{product.pBattery}}
                                                 <br> CHARGER: {{product.pCharger}}-->
@@ -883,8 +880,6 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <br>
-                                                <br>
                                                 <br>
                                                 <br>
                                                 <br>

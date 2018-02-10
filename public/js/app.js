@@ -317,6 +317,12 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $http.post('/skm/getGeneratedBill/', getBillData).then(function(response) {
                 var res = response.data;
                 $scope.generatedBillData = angular.fromJson(res);
+                for (var i = 0; i < $scope.generatedBillData.length; i++) {
+                    $scope.generatedBillData[i].isPColor = ($scope.generatedBillData[i].isPColor == 'true') ? true : false;
+                }
+                /*if ($rootScope.isAdmin) {
+                    $("#getGeneratedBillAmount").modal();
+                } else {*/
                 $scope.totalCashWor = $rootScope.convertNumberToWords($scope.generatedBillData[0].amount);
                 $scope.geItemsCount = $scope.generatedBillData.length;
                 $http.get('/skm/storeDetails/').then(function(response) {
@@ -324,8 +330,21 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.shopDetail = res[0];
                 }, function(response) {});
                 $("#generatedBill").modal();
+                //}
             }, function(response) {});
         };
+
+        $scope.generateModifiedBill = function() {
+            //$("#getGeneratedBillAmount").modal('hide');
+            $scope.totalCashWor = $rootScope.convertNumberToWords($scope.generatedBillData[0].amount);
+            $scope.geItemsCount = $scope.generatedBillData.length;
+            $http.get('/skm/storeDetails/').then(function(response) {
+                var res = response.data;
+                $scope.shopDetail = res[0];
+            }, function(response) {});
+            $("#generatedBill").modal();
+        }
+
         $scope.removeGeneratedBills = function(deleteBill) {
             $("#getConfirmation").modal();
             $scope.deleteBillData = {
@@ -333,6 +352,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
 
         };
+
         $scope.deleteBill = function() {
             $("#getConfirmation").modal('hide');
             $http.post('/skm/removeGeneratedBill/', $scope.deleteBillData).then(function(response) {
@@ -407,6 +427,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pHSNSAC": null,
                 "pName": null,
                 "pIMEI": null,
+                "pColor": null,
+                "isPColor": false,
                 "pDesc": null,
                 "pQty": null,
                 "pPrice": null,
@@ -442,6 +464,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.isSearchCust = false;
             if ($scope.customerName.length == 10) {
                 $scope.isSearchCust = true;
+                $scope.getCustomerDetails();
             }
         };
         $scope.shopDetail = {};
@@ -599,6 +622,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pHSNSAC": '8517',
                 "pName": selproduct.brand + ' ' + selproduct.model,
                 "pIMEI": selproduct.imei_number,
+                "pColor": selproduct.color,
+                "isPColor": (selproduct.color != 'OTHER') ? true : false,
                 "pDesc": '',
                 "pQty": '',
                 "pPrice": netPrice(pPrice, gstAmt(pPrice, pTax)),
@@ -631,6 +656,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.productPrice = '';
                 $scope.productDis = '';
                 $scope.productTax = '';
+                $scope.sid = '';
                 $scope.isAdd = true;
                 $scope.isModel = false;
                 $scope.isProduct = false;
@@ -643,7 +669,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $http.post('/skm/stockUpdate', stockAddedData).then(function(response) {
 
                 }, function(response) {});
-
                 if ($scope.isCustomerSelected) {
                     $scope.isGenerateBill = false;
                     //$scope.isCustomerSelected = false;
@@ -829,6 +854,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     "pName": null,
                     "pIMEI": null,
                     "pDesc": null,
+                    "pColor": null,
+                    "isPColor": false,
                     "pQty": null,
                     "pPrice": null,
                     "pDis": null,

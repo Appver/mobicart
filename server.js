@@ -15,10 +15,10 @@ const db = mysql.createConnection({
 /*
 //Create Connection - Remote-Dev
 const db = mysql.createConnection({
-    host: 'sql12.freesqldatabase.com',
-    user: 'sql12215148',
-    password: '1mKykHf8kw',
-    database: 'sql12215148'
+    host: 'sql3.freesqldatabase.com',
+    user: 'sql3220223',
+    password: 'UwPnP8hlm6',
+    database: 'sql3220223'
 });*/
 
 //DB Connect
@@ -98,7 +98,7 @@ app.post('/skm/productSearch/', function(req, res) {
 
 // get all productDetails
 app.post('/skm/productDetails/', function(req, res) {
-    let sql = "SELECT s.*,m.model,b.brand,tg.tax_percentage FROM stock s inner join tax_group tg on s.tax_group = tg.group_id inner join model m on s.item_id = m.item_id inner join brand b on m.bid = b.bid WHERE sid = '" + req.body.id + "'";
+    let sql = "SELECT s.*,m.model,b.brand,tg.tax_percentage, c.color, ra.ram_size, ro.rom_size FROM stock s inner join tax_group tg on s.tax_group = tg.group_id inner join model m on s.item_id = m.item_id inner join brand b on m.bid = b.bid inner join purchase p on p.sku_no = s.sku_no inner join color c on c.col_id = p.color_id inner join rom ro on ro.rom_id = p.rom_id inner join ram ra on ra.ram_id = p.ram_id WHERE sid = '" + req.body.id + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -139,10 +139,10 @@ app.post('/skm/stockProductUpdate', function(req, res) {
             let sql = "UPDATE stock SET product_flag = 'Y' WHERE sku_no = '" + req.body.item[i].pSkuno + "'";
             let query = db.query(sql, (err, result) => {
                 if (err) throw err;
-                res.send(result);
             });
         }
     }
+    res.send("DONE RESET");
 });
 
 // update stock
@@ -363,7 +363,7 @@ app.get('/skm/adminBillData/', function(req, res) {
 
 // getGeneratedBill Data
 app.post('/skm/getGeneratedBill/', function(req, res) {
-    let sql = "SELECT bill.created_date as billDate, bill.bill_no, bill.created_date, customer_details.cust_name, customer_details.cust_phone, customer_details.cust_alt_phone, customer_details.cust_address, customer_details.cust_city, customer_details.cust_state, customer_details.cust_gsttin, bill.payment_type, bill.amount, bill.cgst_amnt as TCGST, bill.sgst_amnt as TSGST, sales_invoice.sku_no, sales_invoice.unit_price, sales_invoice.tax/2 as TaxPer, sales_invoice.cgst_amnt, sales_invoice.sgst_amnt, (sales_invoice.cgst_amnt + sales_invoice.sgst_amnt + sales_invoice.unit_price) as pAmount, '8517' as pHSNSAC, purchase.imei_number, CONCAT(brand.brand,' ', model.model) as PName FROM bill JOIN sales_invoice on (bill.bill_no = sales_invoice.bill_no) JOIN purchase on (sales_invoice.sku_no = purchase.sku_no) JOIN model on (purchase.item_id = model.item_id) JOIN brand on (model.bid = brand.bid) JOIN customer_details ON (bill.cust_id = customer_details.cust_id) WHERE bill.bill_no = '" + req.body.billNo + "'";
+    let sql = "SELECT bill.created_date as billDate, bill.bill_no, bill.created_date, customer_details.cust_name, customer_details.cust_phone, customer_details.cust_alt_phone, customer_details.cust_address, customer_details.cust_city, customer_details.cust_state, customer_details.cust_gsttin, bill.payment_type, bill.amount, bill.cgst_amnt as TCGST, bill.sgst_amnt as TSGST, sales_invoice.sku_no, sales_invoice.unit_price, sales_invoice.tax/2 as TaxPer, sales_invoice.cgst_amnt, sales_invoice.sgst_amnt, (sales_invoice.cgst_amnt + sales_invoice.sgst_amnt + sales_invoice.unit_price) as pAmount, '8517' as pHSNSAC, purchase.imei_number, CONCAT(brand.brand,' ', model.model) as PName, color.color as pColor, (CASE WHEN color.color = 'OTHER' THEN 'false' ELSE 'true' END) as isPColor FROM bill JOIN sales_invoice on (bill.bill_no = sales_invoice.bill_no) JOIN purchase on (sales_invoice.sku_no = purchase.sku_no) JOIN model on (purchase.item_id = model.item_id) JOIN brand on (model.bid = brand.bid) JOIN customer_details ON (bill.cust_id = customer_details.cust_id) JOIN color ON (color.col_id = purchase.color_id) JOIN rom ON (rom.rom_id = purchase.rom_id) JOIN ram ON (ram.ram_id = purchase.ram_id) WHERE bill.bill_no = '" + req.body.billNo + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
