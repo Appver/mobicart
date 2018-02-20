@@ -1097,9 +1097,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
+        $scope.isValidIMEI = true;
         var taxlist = [];
         var taxes = '';
         var promise = $q.all([]);
+
         $http.get('/skm/taxGroup/').then(function(response) {
             var res = response.data;
             $scope.taxes = angular.fromJson(res);
@@ -1139,10 +1141,61 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.mobColor = angular.fromJson(res);
         }, function(response) {});
 
+        $scope.validateIMEI = function() {
+            var imeis = $scope.imeiNumber;
+            console.log("imeis : " + imeis);
+            if ($scope.imeiNumber.length >= 15) {
+                var imei_array = imeis.split(",");
+                console.log("imei_array len: " + imei_array.length);
+                angular.forEach(imei_array, function(im) {
+                    promise = promise.then(function() {
+                        return validateImei(im);
+                    });
+                });
+
+                promise.finally(function() {
+                    console.log('Insert finished!');
+                });
+
+                function validateImei(im) {
+                    console.log(" validateImei(im) im.length : " + im.length)
+                    if ((null != im || im != '' || im != undefined) &&
+                        (im.length != 0) &&
+                        (im.length == 15)) {
+                        console.log(" Inside validateImei(im) im.length : " + im.length)
+                        var valIMEI = {
+                            imei: im
+                        }
+                        console.log("valIMEI: " + valIMEI.imei);
+                        $http.post('/skm/validateIMEI/', valIMEI).then(function(response) {
+                            output = response.data;
+                            console.log(output)
+                            if (output.length >= 1) {
+                                $scope.isValidIMEI = true;
+                                alert(" IMEI No " + im + " already present, Please try with different IMEI No");
+                                var index = imei_array.indexOf(im);
+                                if (index > -1) {
+                                    imei_array.splice(index, 1);
+                                }
+                                console.log("imeis : " + imeis + " imei_array : " + imei_array);
+                                $scope.imeiNumber = imei_array;
+                            } else {
+                                console.log("else imeis : " + imeis + " imei_array : " + imei_array);
+                                $scope.isValidIMEI = false;
+                            }
+                        }, function(response) {});
+                    }
+                }
+            }
+        };
+
+
+
         $scope.addProduct = function() {
             var timeToSecond = $rootScope.timeToSeconds();
             var imeis = $scope.imeiNumber;
             var imei_array = imeis.split(",");
+            console.log("addProduct : imei_array : " + imei_array);
             var pro = {
                 item_id: $scope.item,
                 details: $scope.description,

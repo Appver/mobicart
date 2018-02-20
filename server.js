@@ -19,6 +19,14 @@ const db = mysql.createConnection({
     user: 'sql3220223',
     password: 'UwPnP8hlm6',
     database: 'sql3220223'
+});
+
+//Create Connection - Remote-local
+const db = mysql.createConnection({
+    host: '127.0.0.1',
+    user: 'root',
+    password: '',
+    database: 'sql3220223_local'
 });*/
 
 //DB Connect
@@ -539,6 +547,16 @@ app.post('/skm/romInsert/', function(req, res) {
 //admin-dashboard Customer Data 
 app.get('/skm/adminCustomerData/', function(req, res) {
     let sql = "SELECT * FROM customer_details GROUP BY cust_id ORDER BY cust_name ASC";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+
+//get imei
+app.post('/skm/validateIMEI/', function(req, res) {
+    let sql = "SELECT imei_number FROM purchase where imei_number = '" + req.body.imei + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

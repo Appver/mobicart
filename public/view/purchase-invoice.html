@@ -217,7 +217,7 @@
                                     <div class="row">
                                         <div class="form-group label-floating">
                                             <label class="control-label">IMEI Number</label>
-                                            <input type="text" class="form-control" ng-model="imeiNumber">
+                                            <input type="text" class="form-control" ng-model="imeiNumber" ng-change="validateIMEI();">
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary pull-right" ng-click="addProduct()">Add Product</button>
