@@ -80,6 +80,12 @@
                     </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
+                    <a href="#!offers">
+                        <i class="material-icons">card_giftcard</i>
+                        <p>Offers</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!logout">
                         <i class="material-icons">input</i>
                         <p>Logout</p>
@@ -141,12 +147,13 @@
                                 <p class="category">{{currDateTime}} Add Product</p>
                             </div>
                             <div class="card-content">
-                                <form>
+                                <form ng-submit="addProduct()">
+                                    <div class="loader" ng-show="spinner"></div>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Brand</label>
-                                                <select class="form-control" ng-model="brandId" ng-change="getMobmodel()">
+                                                <select class="form-control" ng-model="brandId" ng-change="getMobmodel()" required>
                                                     <option ng-repeat="b in mobBrands" value="{{b.bid}}">{{b.brand}}</option>
                                                 </select>
                                             </div>
@@ -154,7 +161,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Model</label>
-                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="item">
+                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="item" required>
                                                     <option ng-repeat="m in mobModels" value="{{m.item_id}}">{{m.model}}</option>
                                                 </select>
                                             </div>
@@ -162,7 +169,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Description</label>
-                                                <input type="text" class="form-control" ng-model="description">
+                                                <input type="text" class="form-control" ng-model="description" required>
                                             </div>
                                         </div>
                                     </div>
@@ -170,7 +177,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">ROM</label>
-                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="rom_id">
+                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="rom_id" required>
                                                     <option ng-repeat="r in mobRom" value="{{r.rom_id}}">{{r.rom_size}}</option>
                                                 </select>
                                             </div>
@@ -178,7 +185,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">RAM</label>
-                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="ram_id">
+                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="ram_id" required>
                                                     <option ng-repeat="a in mobRam" value="{{a.ram_id}}">{{a.ram_size}}</option>
                                                 </select>
                                             </div>
@@ -186,7 +193,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">COLOR</label>
-                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="color_id">
+                                                <select ng-disabled="isModel !== true" class="form-control" ng-model="color_id" required>
                                                     <option ng-repeat="c in mobColor" value="{{c.col_id}}">{{c.color}}</option>
                                                 </select>
                                             </div>
@@ -196,23 +203,44 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Purchase Price</label>
-                                                <input type="text" class="form-control" ng-model="pprice">
+                                                <input type="text" class="form-control" ng-model="pprice" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Selling Price</label>
-                                                <input type="text" class="form-control" ng-model="sprice">
+                                                <input type="text" class="form-control" ng-model="sprice" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Tax</label>
-                                                <select class="form-control" ng-model="tax">
+                                                <select class="form-control" ng-model="tax" required>
                                                     <option ng-repeat="t in taxes" value="{{t.group_id}}">{{t.group_name}}</option>
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Purchase Type</label>
+                                                <select class="form-control" ng-model="purchaseType" required>
+                                                    <option value="PURCHASE">PURCHASE</option>
+                                                    <option value="WHOLESALE">WHOLESALE</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Stock Type</label>
+                                                <select class="form-control" ng-model="stockType" ng-disabled="true">
+                                                        <option value="IMEI">IMEI</option>
+                                                        <option value="SERIALNO">SERIAL NO</option>
+                                                        <option value="BARCODE">BAR CODE</option>
+                                                    </select>
+                                            </div>
+                                        </div>-->
                                     </div>
                                     <div class="row">
                                         <div class="form-group label-floating">
@@ -220,7 +248,7 @@
                                             <input type="text" class="form-control" ng-model="imeiNumber" ng-change="validateIMEI();">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary pull-right" ng-click="addProduct()">Add Product</button>
+                                    <button type="submit" class="btn btn-primary pull-right">Add Product</button>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>

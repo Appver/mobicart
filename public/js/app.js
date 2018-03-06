@@ -1,4 +1,4 @@
-var app = angular.module('KaviyaMobiles', ['ngJsonExportExcel', 'ngTable', 'ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster']);
+var app = angular.module('KaviyaMobiles', ['ngJsonExportExcel', 'ngTable', 'ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster', '720kb.datepicker']);
 
 app.run(function($rootScope, $location, $cookieStore) {
     $rootScope.isUser = false;
@@ -184,6 +184,10 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: '/view/preference.html',
             controller: 'PreferenceCntlr'
         })
+        .when('/offers', {
+            templateUrl: '/view/offer-page.html',
+            controller: 'OffersCntlr'
+        })
         .when('/logout', {
             templateUrl: '/view/signin-page.html',
             controller: 'LogoutCntlr'
@@ -311,18 +315,58 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         }, function(response) {});
 
         $scope.getGeneratedBills = function(getBill) {
-            var getBillData = {
-                billNo: getBill.BillNo
+            console.log("getGeneratedBills");
+            $scope.getBill = getBill;
+            console.log($scope.getBill);
+            if (getBill.BillType == 'DIS' || getBill.BillType == 'DIS-D') {
+                console.log("If : " + getBill.BillType);
+                $("#getDisConfirmBill").modal();
+            } else {
+                console.log("Else : " + getBill.BillType);
+                var getBillData = {
+                    billNo: getBill.BillNo
+                }
+                $http.post('/skm/getGeneratedBill/', getBillData).then(function(response) {
+                    var res = response.data;
+                    $scope.generatedBillData = angular.fromJson(res);
+                    for (var i = 0; i < $scope.generatedBillData.length; i++) {
+                        $scope.generatedBillData[i].isPColor = ($scope.generatedBillData[i].isPColor == 'true') ? true : false;
+                    }
+                    $scope.totalCashWor = $rootScope.convertNumberToWords($scope.generatedBillData[0].amount);
+                    $scope.geItemsCount = $scope.generatedBillData.length;
+                    $http.get('/skm/storeDetails/').then(function(response) {
+                        var res = response.data;
+                        $scope.shopDetail = res[0];
+                    }, function(response) {});
+                    $("#generatedBill").modal();
+                }, function(response) {});
             }
-            $http.post('/skm/getGeneratedBill/', getBillData).then(function(response) {
+
+        };
+
+        $scope.generateNonDisBill = function() {
+            console.log("generateNonDisBill");
+            var getNonDisBill = $scope.getBill;
+            getNonDisBill.BillType = 'B'
+            $scope.getGeneratedBills(getNonDisBill);
+            $scope.getBill.BillType = 'DIS';
+            console.log(getNonDisBill);
+            console.log("End generateNonDisBill");
+            console.log($scope.getBill);
+        }
+        $scope.generateDisBill = function() {
+            var getDisBill = $scope.getBill;
+            var getDisBillData = {
+                billNo: getDisBill.BillNo
+            }
+            console.log(getDisBillData)
+            console.log(getDisBill)
+            $http.post('/skm/getGeneratedDisBill/', getDisBillData).then(function(response) {
                 var res = response.data;
                 $scope.generatedBillData = angular.fromJson(res);
                 for (var i = 0; i < $scope.generatedBillData.length; i++) {
                     $scope.generatedBillData[i].isPColor = ($scope.generatedBillData[i].isPColor == 'true') ? true : false;
                 }
-                /*if ($rootScope.isAdmin) {
-                    $("#getGeneratedBillAmount").modal();
-                } else {*/
                 $scope.totalCashWor = $rootScope.convertNumberToWords($scope.generatedBillData[0].amount);
                 $scope.geItemsCount = $scope.generatedBillData.length;
                 $http.get('/skm/storeDetails/').then(function(response) {
@@ -330,27 +374,22 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.shopDetail = res[0];
                 }, function(response) {});
                 $("#generatedBill").modal();
-                //}
             }, function(response) {});
-        };
-
-        $scope.generateModifiedBill = function() {
-            //$("#getGeneratedBillAmount").modal('hide');
-            $scope.totalCashWor = $rootScope.convertNumberToWords($scope.generatedBillData[0].amount);
-            $scope.geItemsCount = $scope.generatedBillData.length;
-            $http.get('/skm/storeDetails/').then(function(response) {
-                var res = response.data;
-                $scope.shopDetail = res[0];
-            }, function(response) {});
-            $("#generatedBill").modal();
         }
 
         $scope.removeGeneratedBills = function(deleteBill) {
             $("#getConfirmation").modal();
-            $scope.deleteBillData = {
-                billNo: deleteBill.BillNo
+            if (deleteBill.BillType == 'B') {
+                deleteBill.BillType = 'D'
+            } else if (deleteBill.BillType == 'DIS') {
+                deleteBill.BillType = 'DIS-D'
+            } else {
+                deleteBill.BillType = 'D'
             }
-
+            $scope.deleteBillData = {
+                billNo: deleteBill.BillNo,
+                billType: deleteBill.BillType
+            }
         };
 
         $scope.deleteBill = function() {
@@ -439,17 +478,27 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pCTax": null,
                 "pSTax": null,
                 "pAmount": null,
-                "soldPrice": null
+                "soldPrice": null,
+                "disPrice": null,
+                "disCTax": null,
+                "disSTax": null,
+                "disAmount": null,
+                "disSoldPrice": null
             }],
             "tDisc": 0,
             "tItems": 0,
-            "subTotal": 0.00,
-            "Total": 0.00,
+            "payType": null,
+            "duePay": null,
             "roundOff": 0,
+            "subTotal": 0.00,
             "CGST": 0.00,
             "SGST": 0.00,
-            "payType": null,
-            "duePay": null
+            "Total": 0.00,
+            "disSubTotal": 0.00,
+            "disCGST": 0.00,
+            "disSGST": 0.00,
+            "disTotal": 0.00,
+            "billType": 'B'
         };
         $scope.isProductAdded = false;
         $scope.isGenerateBill = true;
@@ -459,6 +508,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.isPrintBill = false;
         $scope.isBackBill = false;
         $scope.isResetClean = false;
+        $scope.ispurchaseType = false;
 
         $scope.isValidCustPhone = function() {
             $scope.isSearchCust = false;
@@ -566,8 +616,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.productDetails = function() {
+            console.log("$scope.purchaseType : " + $scope.purchaseType);
             var modelId = {
-                id: $scope.modelId
+                id: $scope.modelId,
+                purchase_type: $scope.purchaseType
             }
             $http.post('/skm/productSearch/', modelId).then(function(response) {
                 var res = response.data;
@@ -587,7 +639,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.productSearch = function() {
             $scope.productDetail = {};
             var sId = {
-                id: $scope.sid
+                id: $scope.sid,
+                purchase_type: $scope.purchaseType
             }
             $http.post('/skm/productDetails/', sId).then(function(response) {
                 var res = response.data;
@@ -611,8 +664,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.addProductList = function(selproduct) {
+            $scope.ispurchaseType = true;
             var pTax = selproduct.tax_percentage;
             var pPrice = selproduct.price;
+            var disPrice = selproduct.price - selproduct.discount;
             tax = taxSplitCal(pTax);
             $scope.salesProductList.tItems = $scope.salesProductList.tItems + 1;
             $scope.salesProductList['pList'].push({
@@ -634,12 +689,23 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 "pCTax": round(((gstAmt(pPrice, pTax)) / 2), 2),
                 "pSTax": round(((gstAmt(pPrice, pTax)) / 2), 2),
                 "pAmount": pAmountCal(gstAmt(pPrice, pTax), netPrice(pPrice, gstAmt(pPrice, pTax))),
-                "soldPrice": pPrice
+                "soldPrice": pPrice,
+                "disPrice": netPrice(disPrice, gstAmt(disPrice, pTax)),
+                "disCTax": round(((gstAmt(disPrice, pTax)) / 2), 2),
+                "disSTax": round(((gstAmt(disPrice, pTax)) / 2), 2),
+                "disAmount": pAmountCal(gstAmt(disPrice, pTax), netPrice(disPrice, gstAmt(disPrice, pTax))),
+                "disSoldPrice": disPrice
             });
             $scope.salesProductList.subTotal = round(subTotalCal(netPrice(pPrice, gstAmt(pPrice, pTax))), 2);
             $scope.salesProductList.CGST = round(gstCal(round(((gstAmt(pPrice, pTax)) / 2), 2), $scope.salesProductList.CGST), 2);
             $scope.salesProductList.SGST = round(gstCal(round(((gstAmt(pPrice, pTax)) / 2), 2), $scope.salesProductList.SGST), 2);
             $scope.salesProductList.Total = round(totalCal(), 0);
+
+            $scope.salesProductList.disSubTotal = round(disSubTotalCal(netPrice(disPrice, gstAmt(disPrice, pTax))), 2);
+            $scope.salesProductList.disCGST = round(gstCal(round(((gstAmt(disPrice, pTax)) / 2), 2), $scope.salesProductList.disCGST), 2);
+            $scope.salesProductList.disSGST = round(gstCal(round(((gstAmt(disPrice, pTax)) / 2), 2), $scope.salesProductList.disSGST), 2);
+            $scope.salesProductList.disTotal = round(disTotalCal(), 0);
+
             $scope.isAddProduct = true;
             if ($scope.salesProductList.tItems == 1) {
                 if ($scope.salesProductList.pList.length >= 1) {
@@ -673,6 +739,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.isGenerateBill = false;
                     //$scope.isCustomerSelected = false;
                 }
+                for (var i = 0; i < $scope.salesProductList.pList.length; i++) {
+                    if ($scope.salesProductList.pList[i].pDis > 0) {
+                        $scope.salesProductList.billType = 'DIS';
+                        break;
+                    }
+                }
+                console.log($scope.salesProductList)
             }
         };
 
@@ -683,10 +756,20 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var itemSTax = removeProduct.pSTax;
             var itemPrice = removeProduct.pPrice;
             var sPrice = removeProduct.soldPrice;
+
+            var itemDisPrice = removeProduct.disPrice;
+            var disPrice = removeProduct.disSoldPrice
+
             $scope.salesProductList.subTotal = round(($scope.salesProductList.subTotal - itemPrice), 2);
             $scope.salesProductList.CGST = round(($scope.salesProductList.CGST - itemCTax), 2);
             $scope.salesProductList.SGST = round(($scope.salesProductList.SGST - itemSTax), 2);
             $scope.salesProductList.Total = round(($scope.salesProductList.Total - sPrice), 0);
+
+            $scope.salesProductList.disSubTotal = round(($scope.salesProductList.disSubTotal - itemDisPrice), 2);
+            $scope.salesProductList.disCGST = round(($scope.salesProductList.disCGST - itemCTax), 2);
+            $scope.salesProductList.disSGST = round(($scope.salesProductList.disSGST - itemSTax), 2);
+            $scope.salesProductList.disTotal = round(($scope.salesProductList.disTotal - disPrice), 0);
+
             ritems.splice(removeId, 1);
             $scope.itemsCount = ritems.length;
             $scope.totalCash = $scope.salesProductList.Total;
@@ -699,6 +782,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $http.post('/skm/stockUpdate', stockRemovedData).then(function(response) {
 
             }, function(response) {});
+
+            if ($scope.salesProductList.pList.length == 0) {
+                $scope.ispurchaseType = false;
+            }
         };
 
         $scope.billNo = '';
@@ -711,6 +798,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             salesProductList.paymentType = $scope.paymentType;
             salesProductList.custId = $scope.cusID;
             var timeToSecond = $rootScope.timeToSeconds();
+            console.log("salesProductList : ")
+            console.log(salesProductList);
             var salesProductListData = {
                 item: salesProductList,
                 dueAmnt: 0,
@@ -718,11 +807,37 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 modifiedDate: timeToSecond,
                 modifiedBy: $rootScope.userObj.uid
             }
+            console.log(" $scope.billNo : " + $scope.billNo + " $scope.purchaseType : " + $scope.purchaseType)
+            if ($scope.billNo == '') {
+                console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+                if ($scope.purchaseType == 'PURCHASE') {
+                    console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                    $http.post('/skm/billNo/', salesProductListData).then(function(response) {
+                        output = response.data;
+                        $scope.billNo = output.insertId;
+                    }, function(response) {});
+                } else {
+                    console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                    $http.post('/skm/billNoWholeSale/', salesProductListData).then(function(response) {
+                        output = response.data;
+                        $scope.billNo = output.insertId;
+                    }, function(response) {});
+                }
+            } else if ($scope.billNo == 'C') {
+                console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+                if ($scope.purchaseType == 'PURCHASE') {
+                    console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                    $http.post('/skm/updateBillType/', salesData).then(function(response) {
+                        $scope.isResetBill = false;
+                    }, function(response) {});
+                } else {
+                    console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                    $http.post('/skm/updateBillTypeWholeSale/', salesData).then(function(response) {
+                        $scope.isResetBill = false;
+                    }, function(response) {});
+                }
 
-            $http.post('/skm/billNo/', salesProductListData).then(function(response) {
-                output = response.data;
-                $scope.billNo = output.insertId;
-            }, function(response) {});
+            }
         };
 
         $scope.salesInvoiceSave = function() {
@@ -740,17 +855,30 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedDate: timeToSecond,
                         modifiedBy: $rootScope.userObj.uid
                     }
-                    $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-                        if (response.data == 'DONE') {
-                            alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
-                            $scope.resetSalesInvoice('saveBill');
-                        } else {
-                            alert("Error in Savin Bill No : " + $scope.billNo + ", Please Try after some time !#!#");
-                            $scope.resetSalesInvoice('saveBill');
-                        }
-
-                    }, function(response) {});
-
+                    console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+                    if ($scope.purchaseType == 'PURCHASE') {
+                        console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                        $http.post('/skm/salesInvoice/', salesData).then(function(response) {
+                            if (response.data == 'DONE') {
+                                alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
+                                $scope.resetSalesInvoice('saveBill');
+                            } else {
+                                alert("Error in Savin Bill No : " + $scope.billNo + ", Please Try after some time !#!#");
+                                $scope.resetSalesInvoice('saveBill');
+                            }
+                        }, function(response) {});
+                    } else {
+                        console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                        $http.post('/skm/salesInvoiceWholeSale/', salesData).then(function(response) {
+                            if (response.data == 'DONE') {
+                                alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
+                                $scope.resetSalesInvoice('saveBill');
+                            } else {
+                                alert("Error in Savin Bill No : " + $scope.billNo + ", Please Try after some time !#!#");
+                                $scope.resetSalesInvoice('saveBill');
+                            }
+                        }, function(response) {});
+                    }
                 }
             } else {
                 $scope.billNo = '';
@@ -772,24 +900,43 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedDate: timeToSecond,
                         modifiedBy: $rootScope.userObj.uid
                     }
-                    $http.post('/skm/salesInvoice/', salesData).then(function(response) {
-                        //if (response.data == 'DONE') {
-                        $scope.isSaveBill = true;
-                        $scope.isPrintBill = true;
-                        $scope.isBackBill = true;
-                        $scope.isResetClean = true;
-                        $scope.isResetBill = true;
-                        /*} else {
+                    console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+                    if ($scope.purchaseType == 'PURCHASE') {
+                        console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                        $http.post('/skm/salesInvoice/', salesData).then(function(response) {
+                            //if (response.data == 'DONE') {
                             $scope.isSaveBill = true;
                             $scope.isPrintBill = true;
                             $scope.isBackBill = true;
                             $scope.isResetClean = true;
                             $scope.isResetBill = true;
-                        }*/
-
-                    }, function(response) {});
+                            /*} else {
+                                $scope.isSaveBill = true;
+                                $scope.isPrintBill = true;
+                                $scope.isBackBill = true;
+                                $scope.isResetClean = true;
+                                $scope.isResetBill = true;
+                            }*/
+                        }, function(response) {});
+                    } else {
+                        console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                        $http.post('/skm/salesInvoiceWholeSale/', salesData).then(function(response) {
+                            //if (response.data == 'DONE') {
+                            $scope.isSaveBill = true;
+                            $scope.isPrintBill = true;
+                            $scope.isBackBill = true;
+                            $scope.isResetClean = true;
+                            $scope.isResetBill = true;
+                            /*} else {
+                                $scope.isSaveBill = true;
+                                $scope.isPrintBill = true;
+                                $scope.isBackBill = true;
+                                $scope.isResetClean = true;
+                                $scope.isResetBill = true;
+                            }*/
+                        }, function(response) {});
+                    }
                 }
-
             } else {
                 $scope.billNo = '';
             }
@@ -807,9 +954,18 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var salesData = {
                 billNo: $scope.billNo
             }
-            $http.post('/skm/backToSalesInvoice/', salesData).then(function(response) {
-                $scope.isResetBill = false;
-            }, function(response) {});
+            console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+            if ($scope.purchaseType == 'PURCHASE') {
+                console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                $http.post('/skm/backToSalesInvoice/', salesData).then(function(response) {
+                    $scope.isResetBill = false;
+                }, function(response) {});
+            } else {
+                console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                $http.post('/skm/backToSalesInvoiceWholeSale/', salesData).then(function(response) {
+                    $scope.isResetBill = false;
+                }, function(response) {});
+            }
         };
 
         $scope.resetSalesInvoice = function(action) {
@@ -827,6 +983,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.isProduct = false;
             $scope.isValueLoad = false;
             $scope.brandId = '';
+            $scope.ispurchaseType = false;
             if (action == 'resetBill') {
                 var stockRemovedDataList = {
                     item: $scope.salesProductList.pList
@@ -865,17 +1022,27 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     "pCTax": null,
                     "pSTax": null,
                     "pAmount": null,
-                    "soldPrice": null
+                    "soldPrice": null,
+                    "disPrice": null,
+                    "disCTax": null,
+                    "disSTax": null,
+                    "disAmount": null,
+                    "disSoldPrice": null
                 }],
                 "tDisc": 0,
                 "tItems": 0,
-                "subTotal": 0.00,
-                "Total": 0.00,
+                "payType": null,
+                "duePay": null,
                 "roundOff": 0,
+                "subTotal": 0.00,
                 "CGST": 0.00,
                 "SGST": 0.00,
-                "payType": null,
-                "duePay": null
+                "Total": 0.00,
+                "disSubTotal": 0.00,
+                "disCGST": 0.00,
+                "disSGST": 0.00,
+                "disTotal": 0.00,
+                "billType": 'B'
             };
             $scope.paymentType = 'CASH';
             $scope.isSaveBill = false;
@@ -915,14 +1082,22 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             return ret;
         }
 
+        function disSubTotalCal(price) {
+            var ret = $scope.salesProductList.disSubTotal + price;
+            return ret;
+        }
+
         function gstCal(taxAmnt, gstAmnt) {
             var ret = taxAmnt + gstAmnt;
             return ret;
         }
 
         function totalCal() {
-            return ($scope.salesProductList.subTotal + $scope.salesProductList.tDisc +
-                $scope.salesProductList.roundOff + $scope.salesProductList.CGST + $scope.salesProductList.SGST);
+            return ($scope.salesProductList.subTotal + $scope.salesProductList.roundOff + $scope.salesProductList.CGST + $scope.salesProductList.SGST);
+        }
+
+        function disTotalCal() {
+            return ($scope.salesProductList.disSubTotal + $scope.salesProductList.roundOff + $scope.salesProductList.disCGST + $scope.salesProductList.disSGST);
         }
 
         function taxSplitCal(pTax) {
@@ -1022,6 +1197,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
         $scope.submit = function() {
+            $scope.spinner = true;
             $scope.addEditCustNameArray = [];
             $http.get('/skm/customerDetails/' + $scope.addEditCustPhone).then(function(response) {
                 var res = response.data;
@@ -1083,7 +1259,12 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         $("#addEditCustDBMessage").modal();
                     }, function(response) {});
                 }
-            }, function(response) {});
+            }, function(response) {
+
+            }).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
         };
     })
     .controller('PurchaseInvoiceCntlr', function($q, $rootScope, $scope, $http, $route, $routeParams, $location, toaster) {
@@ -1106,7 +1287,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var res = response.data;
             $scope.taxes = angular.fromJson(res);
         }, function(response) {});
-        $http.get('/skm/brand').then(function(response) {
+        $http.get('/skm/brand/').then(function(response) {
             var res = response.data;
             $scope.mobBrands = angular.fromJson(res);
         }, function(response) {});
@@ -1189,13 +1370,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         };
 
-
-
         $scope.addProduct = function() {
+            $scope.spinner = true;
+            console.log("purchaseType : " + $scope.purchaseType)
             var timeToSecond = $rootScope.timeToSeconds();
             var imeis = $scope.imeiNumber;
             var imei_array = imeis.split(",");
-            console.log("addProduct : imei_array : " + imei_array);
+            console.log("addProduct : imei_array : " + imei_array + "purchaseType : " + $scope.purchaseType);
             var pro = {
                 item_id: $scope.item,
                 details: $scope.description,
@@ -1209,7 +1390,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 bar_code: 'NA',
                 createdDate: timeToSecond,
                 modifiedDate: timeToSecond,
-                modifiedBy: $rootScope.userObj.uid
+                modifiedBy: $rootScope.userObj.uid,
+                purchase_type: $scope.purchaseType
             };
             angular.forEach(imei_array, function(im) {
                 promise = promise.then(function() {
@@ -1219,6 +1401,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             });
 
             promise.finally(function() {
+                $scope.spinner = false;
                 console.log('Insert finished!');
             });
 
@@ -1253,6 +1436,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.$http = $http;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
+        $scope.isFilter = true;
+        $scope.isError = false;
+        var today = new Date();
+        var dd = today.getDate() + 1;
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        $scope.maxDate = mm + '/' + dd + '/' + yyyy;
         $(document).ready(function() {
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function
@@ -1264,21 +1454,81 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
 
-        $http.get('/skm/GSTReturnsBillData/').then(function(response) {
-            var res = response.data;
-            $scope.gstReturnsBillData = angular.fromJson(res);
-            for (var i = 0; i < $scope.gstReturnsBillData.length; i++) {
-                $scope.gstReturnsBillData[i].Invoicedate = $rootScope.secondsToDate($scope.gstReturnsBillData[i].Invoicedate);
-            }
-        }, function(response) {});
+        var startDate = '';
+        var endDate = '';
+        $scope.$watch('startdate', function(value) {
+            $scope.isFilter = true;
+            $scope.isValidStart = false;
+            try {
+                startDate = new Date(value).toString();
+            } catch (e) {}
 
-        $http.get('/skm/GSTReturnsPurchaseData/').then(function(response) {
-            var res = response.data;
-            $scope.gstReturnsPurchaseData = angular.fromJson(res);
-            for (var i = 0; i < $scope.gstReturnsPurchaseData.length; i++) {
-                $scope.gstReturnsPurchaseData[i].invoice_date = $rootScope.secondsToDate($scope.gstReturnsPurchaseData[i].invoice_date);
+            if (!startDate) {
+                $scope.error = "This is not a valid date";
+            } else {
+                $scope.error = false;
             }
-        }, function(response) {});
+        });
+
+        $scope.$watch('enddate', function(value) {
+            $scope.isFilter = true;
+            $scope.isValidSdate = false;
+            try {
+                endDate = new Date(value).toString();
+            } catch (e) {}
+
+            if (!endDate) {
+                $scope.error = "This is not a valid date";
+            } else {
+                $scope.error = false;
+                $scope.isValidDate = false;
+            }
+        });
+        $scope.filterGst = function() {
+            $scope.spinner = true;
+            if (startDate && endDate) {
+                var startTime = Math.round(new Date(startDate).getTime() / 1000);
+                var endTime = Math.round(new Date(endDate).getTime() / 1000);
+                if (startTime > endTime) {
+                    $scope.isError = true;
+                    $scope.error = "Start Date is greater than End Date";
+                } else {
+                    $scope.isFilter = false;
+                    $scope.error = false;
+                }
+            }
+
+            var FilterData = {
+                sdate: startTime,
+                edate: endTime
+            };
+            console.log(FilterData);
+            $http.post('/skm/GSTReturnsBillData/', FilterData).then(function(response) {
+                var res = response.data;
+                $scope.gstReturnsBillData = angular.fromJson(res);
+                for (var i = 0; i < $scope.gstReturnsBillData.length; i++) {
+                    $scope.gstReturnsBillData[i].Invoicedate = $rootScope.secondsToDate($scope.gstReturnsBillData[i].Invoicedate);
+                }
+            }, function(response) {
+
+            }).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
+
+            $http.post('/skm/GSTReturnsPurchaseData/', FilterData).then(function(response) {
+                var res = response.data;
+                $scope.gstReturnsPurchaseData = angular.fromJson(res);
+                for (var i = 0; i < $scope.gstReturnsPurchaseData.length; i++) {
+                    $scope.gstReturnsPurchaseData[i].invoice_date = $rootScope.secondsToDate($scope.gstReturnsPurchaseData[i].invoice_date);
+                }
+            }, function(response) {
+
+            }).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
+        }
     })
     .controller('GSTPurchaseCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
@@ -1294,16 +1544,28 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             } else {
                 $('html').addClass('perfect-scrollbar-off');
             }
-            $('.datepicker').datepicker({
-                weekStart: 1
-            });
         });
         var today = new Date();
         var dd = today.getDate();
+        var dn = today.getDate() + 1;
         var mm = today.getMonth() + 1;
         var yyyy = today.getFullYear();
         $scope.gstPurCurrDate = mm + '/' + dd + '/' + yyyy;
         $scope.isResetGSTPur = false;
+        $scope.maxDate = mm + '/' + dn + '/' + yyyy;
+
+        var gstInvoiceDate = '';
+        $scope.$watch('gstPurInvoiceDate', function(value) {
+            try {
+                gstInvoiceDate = new Date(value).toString();
+            } catch (e) {}
+
+            if (!gstInvoiceDate) {
+                $scope.error = "This is not a valid date";
+            } else {
+                $scope.error = false;
+            }
+        });
 
         $scope.sellerNameSearch = function() {
             $scope.sellerNameArray = [];
@@ -1322,11 +1584,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.addGSTPurchase = function() {
+            $scope.spinner = true;
             var currentDate = $rootScope.timeToSeconds();
+            var invoiceTime = Math.round(new Date(gstInvoiceDate).getTime() / 1000);
             var addGSTPurData = {
                 sellerName: $scope.gstPurSellerName,
                 invoiceNo: $scope.gstPurInvoiceNo,
-                invoiceDate: Math.round(new Date($scope.gstPurInvoiceDate).getTime() / 1000),
+                invoiceDate: invoiceTime,
                 commodityCode: $scope.gstPurCommodityCode,
                 purchaseValue: $scope.gstPurPurchaseValue,
                 cgstAmnt: $scope.gstPurCgstAmnt,
@@ -1343,7 +1607,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $("#addConfirmGSTPur").modal('hide');
                     $scope.resetGSTPurchase('not success')
                 }
-            }, function(response) {});
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
         };
         $scope.resetGSTPurchase = function(action) {
             $scope.gstPurSellerName = '';
@@ -1369,10 +1636,16 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
 
+        function shopDetails() {
+            $http.get('/skm/storeDetails/').then(function(response) {
+                var res = response.data;
+                $scope.shop = angular.fromJson(res[0]);
+            }, function(response) {});
+        }
+        shopDetails();
         $http.get('/skm/brand/').then(function(response) {
             var res = response.data;
             $scope.brandList = angular.fromJson(res);
-
         }, function(response) {});
 
         $http.get('/skm/taxgroup/').then(function(response) {
@@ -1423,7 +1696,32 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
         };
 
+        $scope.saveShop = function() {
+            $scope.spinner = true;
+            var shopData = {
+                name: $scope.shop.name,
+                mobile: $scope.shop.mobile,
+                phone: $scope.shop.phone,
+                gstin: $scope.shop.gstin,
+                email: $scope.shop.email,
+                address: $scope.shop.address,
+                city: $scope.shop.city,
+                state: $scope.shop.state,
+                pincode: $scope.shop.pincode
+            };
+            $http.post('/skm/shopInsert/', shopData).then(function(response) {
+                if (response.data.affectedRows > 0) {
+                    toaster.pop("success", "success", "Shop Details Added Successfully");
+                    shopDetails();
+                }
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
+        };
+
         $scope.addColor = function() {
+            $scope.tspinner = true;
             var colorData = {
                 color: $scope.color
             };
@@ -1433,10 +1731,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.colorSearch();
                     $scope.color = '';
                 }
-            }, function(response) {});
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.tspinner = false;
+            });
         };
 
         $scope.addRAM = function() {
+            $scope.tspinner = true;
             var ramData = {
                 ram: $scope.ram
             };
@@ -1446,11 +1748,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.ramSearch();
                     $scope.ram = '';
                 }
-            }, function(response) {});
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.tspinner = false;
+            });
 
         };
 
         $scope.addROM = function() {
+            $scope.tspinner = true;
             var romData = {
                 rom: $scope.rom
             };
@@ -1460,10 +1766,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.romSearch();
                     $scope.rom = '';
                 }
-            }, function(response) {});
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.tspinner = false;
+            });
         };
 
         $scope.addBrand = function() {
+            $scope.spinner = true;
             var data = {
                 brand: $scope.brand
             };
@@ -1474,10 +1784,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     var res = response.data;
                     $scope.brandList = angular.fromJson(res);
                 }, function(response) {});
-            }, function(response) {});
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
         }
 
         $scope.addModel = function() {
+            $scope.spinner = true;
             var data = {
                 bid: $scope.mbrand,
                 model: $scope.model
@@ -1486,10 +1800,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 toaster.pop("success", "success", "Model Added Successfully");
                 $scope.mbrand = '';
                 $scope.model = '';
-            }, function(response) {});
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
         }
 
         $scope.addTaxGroup = function() {
+            $scope.tspinner = true;
             var data = {
                 group_name: $scope.taxGroup,
                 tax_percentage: $scope.taxPercent
@@ -1503,9 +1821,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
                 }, function(response) {});
 
-            }, function(response) {});
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.tspinner = false;
+            });
         }
         $scope.addTax = function() {
+            $scope.tspinner = true;
             var data = {
                 tax_name: $scope.tax,
                 percentage: $scope.percentage
@@ -1520,10 +1842,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
                 }, function(response) {});
 
-            }, function(response) {});
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.tspinner = false;
+            });
         }
 
         $scope.addTg = function() {
+            $scope.tspinner = true;
             var data = {
                 group_id: $scope.tgroup,
                 tax_id: $scope.ttax
@@ -1532,7 +1858,56 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 toaster.pop("success", "success", "Tax Details Added Successfully");
                 $scope.tgroup = '';
                 $scope.ttax = '';
-            }, function(response) {});
+            }, function(response) {}).finally(function() {
+                // called no matter success or failure
+                $scope.tspinner = false;
+            });
+        }
+    })
+    .controller('OffersCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
+        $scope.$location = $location;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
+        $scope.isofferLink = false;
+        $scope.spinner = false;
+        $scope.isofferLinkVal = function() {
+            if (null != $scope.offerLink) {
+                $scope.isofferLink = true;
+            }
+        }
+        $scope.submit = function() {
+            console.log("submit");
+            $scope.spinner = true;
+            if (null != $scope.offerLink && null != $scope.subject) {
+                $scope.isofferLink = true;
+                var sendOffersData = {
+                    offerLink: $scope.offerLink,
+                    subject: $scope.subject,
+                    senderMail: $scope.senderMail
+                };
+                $http.post('/skm/sendOffers/', sendOffersData).then(function(response) {
+                    console.log(response.data)
+                    if (response.data == 'SEND') {
+                        $scope.offerLink = '';
+                        $scope.senderMail = '';
+                        $scope.subject = '';
+                        $scope.isofferLink = false;
+                    }
+                }, function(response) {
+
+                }).finally(function() {
+                    // called no matter success or failure
+                    $scope.spinner = false;
+                });
+            }
         }
     })
     .controller('LogoutCntlr', function($scope, $route, $routeParams, $location, $cookieStore) {

@@ -80,6 +80,12 @@
                     </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
+                    <a href="#!offers">
+                        <i class="material-icons">card_giftcard</i>
+                        <p>Offers</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!logout">
                         <i class="material-icons">input</i>
                         <p>Logout</p>
@@ -195,7 +201,7 @@
                                             <button type="button" rel="tooltip" title="Print Bill" class="btn btn-warning btn-simple btn-xs" ng-click="getGeneratedBills(bill)">
                                                 <i class="material-icons">print</i>
                                             </button>
-                                            <button type="button" rel="tooltip" title="Delete Bill" class="btn btn-danger btn-simple btn-xs" ng-click="removeGeneratedBills(bill)">
+                                            <button type="button" rel="tooltip" title="Delete Bill" ng-show="(bill.BillType === 'D' ? false : bill.BillType === 'DIS-D' ? false : true)" class="btn btn-danger btn-simple btn-xs" ng-click="removeGeneratedBills(bill)">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>
@@ -599,7 +605,7 @@
 </div>
 
 <!-- Modal Core -->
-<div class="modal fade" id="getGeneratedBillAmount" tabindex="-1" role="dialog" aria-labelledby="getGeneratedBillAmountLabel" aria-hidden="true">
+<div class="modal fade" id="getDisConfirmBill" tabindex="-1" role="dialog" aria-labelledby="getDisConfirmBillLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -610,36 +616,23 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header" data-background-color="purple">
-                                    <h4 class="title">Confirm Bill Amount To Print</h4>
+                                <div class="card-header" data-background-color="orange">
+                                    <h4 class="title">Choose Bill Type To Print</h4>
                                 </div>
                                 <div class="card-content">
                                     <form>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group label-floating">
-                                                    <label class="control-label">Bill No :</label>
+                                                    <button type="button" class="btn btn-warning pull-right" data-dismiss="modal" ng-click="generateNonDisBill()">Print Non Discount Bill</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group label-floating">
-                                                    <label class="control-label">{{generatedBillData[0].bill_no}}</label>
+                                                    <button type="button" class="btn btn-warning pull-right" data-dismiss="modal" ng-click="generateDisBill()">Print Discount Bill</button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group label-floating">
-                                                    <label class="control-label">Amount :</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group label-floating">
-                                                    <input type="text" class="form-control" ng-model="generatedBillData[0].amount">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" ng-click="generateModifiedBill()">Print Bill</button>
                                         <div class="clearfix"></div>
                                     </form>
                                 </div>

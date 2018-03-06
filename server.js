@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+var credentials = require('./public/cred.json');
 
 
 //Create Connection - Remote-Prod
@@ -20,6 +21,7 @@ const db = mysql.createConnection({
     password: 'UwPnP8hlm6',
     database: 'sql3220223'
 });
+
 
 //Create Connection - Remote-local
 const db = mysql.createConnection({
@@ -88,7 +90,7 @@ app.post('/skm/amodelSearch/', function(req, res) {
 
 // get store details
 app.get('/skm/storeDetails/', function(req, res) {
-    let sql = "SELECT * FROM store_details";
+    let sql = "SELECT * FROM store_details  ORDER BY sno DESC LIMIT 0,1";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -97,7 +99,7 @@ app.get('/skm/storeDetails/', function(req, res) {
 
 // get all product
 app.post('/skm/productSearch/', function(req, res) {
-    let sql = "SELECT * FROM stock  WHERE item_id = '" + req.body.id + "' AND product_flag = 'Y'";
+    let sql = "SELECT * FROM stock  WHERE item_id = '" + req.body.id + "' AND product_flag = 'Y' AND purchase_type = '" + req.body.purchase_type + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -106,7 +108,7 @@ app.post('/skm/productSearch/', function(req, res) {
 
 // get all productDetails
 app.post('/skm/productDetails/', function(req, res) {
-    let sql = "SELECT s.*,m.model,b.brand,tg.tax_percentage, c.color, ra.ram_size, ro.rom_size FROM stock s inner join tax_group tg on s.tax_group = tg.group_id inner join model m on s.item_id = m.item_id inner join brand b on m.bid = b.bid inner join purchase p on p.sku_no = s.sku_no inner join color c on c.col_id = p.color_id inner join rom ro on ro.rom_id = p.rom_id inner join ram ra on ra.ram_id = p.ram_id WHERE sid = '" + req.body.id + "'";
+    let sql = "SELECT s.*,m.model,b.brand,tg.tax_percentage, c.color, ra.ram_size, ro.rom_size FROM stock s inner join tax_group tg on s.tax_group = tg.group_id inner join model m on s.item_id = m.item_id inner join brand b on m.bid = b.bid inner join purchase p on p.sku_no = s.sku_no inner join color c on c.col_id = p.color_id inner join rom ro on ro.rom_id = p.rom_id inner join ram ra on ra.ram_id = p.ram_id WHERE sid = '" + req.body.id + "' AND s.purchase_type = '" + req.body.purchase_type + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -124,16 +126,65 @@ app.post('/skm/productTaxDetails/', function(req, res) {
 
 // insert new billNo
 app.post('/skm/billNo/', function(req, res) {
-    let sql = "INSERT INTO bill (cust_id, sub_total, cgst_amnt, sgst_amnt, payment_type, amount, due_amount, created_date, modified_date, modified_by) VALUES (" + req.body.item.custId + "," + req.body.item.subTotal + "," + req.body.item.CGST + "," + req.body.item.SGST + ",'" + req.body.item.paymentType + "'," + req.body.item.Total + "," + req.body.dueAmnt + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + ")";
+    console.log(req.body.item)
+    let sql = "INSERT INTO bill (bill_type, cust_id, sub_total, cgst_amnt, sgst_amnt, payment_type, amount, due_amount, created_date, modified_date, modified_by, dis_sub_total, dis_cgst_amnt, dis_sgst_amnt, dis_amount) VALUES ('" + req.body.item.billType + "'," + req.body.item.custId + "," + req.body.item.subTotal + "," + req.body.item.CGST + "," + req.body.item.SGST + ",'" + req.body.item.paymentType + "'," + req.body.item.Total + "," + req.body.dueAmnt + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + "," + req.body.item.disSubTotal + "," + req.body.item.disCGST + "," + req.body.item.disSGST + "," + req.body.item.disTotal + ")";
+    console.log(sql);
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
     });
 });
 
-// insert Delete billNo
+// insert new billNo bill_wholesale
+app.post('/skm/billNoWholeSale/', function(req, res) {
+    console.log(req.body.item)
+    let sql = "INSERT INTO bill_wholesale (bill_type, cust_id, sub_total, cgst_amnt, sgst_amnt, payment_type, amount, due_amount, created_date, modified_date, modified_by, dis_sub_total, dis_cgst_amnt, dis_sgst_amnt, dis_amount) VALUES ('" + req.body.item.billType + "'," + req.body.item.custId + "," + req.body.item.subTotal + "," + req.body.item.CGST + "," + req.body.item.SGST + ",'" + req.body.item.paymentType + "'," + req.body.item.Total + "," + req.body.dueAmnt + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + "," + req.body.item.disSubTotal + "," + req.body.item.disCGST + "," + req.body.item.disSGST + "," + req.body.item.disTotal + ")";
+    console.log(sql);
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// update billNo with billtype cancel
 app.post('/skm/backToSalesInvoice/', function(req, res) {
-    let sql = "DELETE FROM bill WHERE bill_no = '" + req.body.billNo + "'";
+    let sql = "UPDATE bill SET bill_type = 'C' WHERE bill_no = '" + req.body.billNo + "'";
+    /*DELETE FROM bill WHERE bill_no = '" + req.body.billNo + "'";*/
+    console.log(sql)
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// update billNo with billtype cancel bill_wholesale
+app.post('/skm/backToSalesInvoiceWholeSale/', function(req, res) {
+    let sql = "UPDATE bill_wholesale SET bill_type = 'C' WHERE bill_no = '" + req.body.billNo + "'";
+    /*DELETE FROM bill WHERE bill_no = '" + req.body.billNo + "'";*/
+    console.log(sql)
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+
+// update billNo with billtype B
+app.post('/skm/updateBillType/', function(req, res) {
+    let sql = "UPDATE bill SET bill_type = 'B' WHERE bill_no = '" + req.body.billNo + "'";
+    /*DELETE FROM bill WHERE bill_no = '" + req.body.billNo + "'";*/
+    console.log(sql)
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// update billNo with billtype B bill_wholesale
+app.post('/skm/updateBillTypeWholeSale/', function(req, res) {
+    let sql = "UPDATE bill_wholesale SET bill_type = 'B' WHERE bill_no = '" + req.body.billNo + "'";
+    /*DELETE FROM bill WHERE bill_no = '" + req.body.billNo + "'";*/
+    console.log(sql)
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -167,7 +218,7 @@ app.post('/skm/salesInvoice/', function(req, res) {
     var insertFlag = false;
     if (req.body.item.length > 0) {
         for (var i = 0; i < req.body.item.length; i++) {
-            let sql = "INSERT INTO sales_invoice (bill_no, sku_no, sold_price, unit_price, tax, cgst_amnt, sgst_amnt, created_date, modified_date, modified_by) VALUES (" + req.body.billNo + "," + req.body.item[i].pSkuno + "," + req.body.item[i].soldPrice + "," + req.body.item[i].pPrice + "," + req.body.item[i].pTax + "," + req.body.item[i].pCTax + "," + req.body.item[i].pSTax + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + ")";
+            let sql = "INSERT INTO sales_invoice (bill_no, sku_no, sold_price, unit_price, tax, cgst_amnt, sgst_amnt, created_date, modified_date, modified_by, dis_sold_price, dis_unit_price, dis_cgst_amnt, dis_sgst_amnt) VALUES (" + req.body.billNo + "," + req.body.item[i].pSkuno + "," + req.body.item[i].soldPrice + "," + req.body.item[i].pPrice + "," + req.body.item[i].pTax + "," + req.body.item[i].pCTax + "," + req.body.item[i].pSTax + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + "," + req.body.item[i].disSoldPrice + "," + req.body.item[i].disPrice + "," + req.body.item[i].disCTax + "," + req.body.item[i].disSTax + ")";
             let query = db.query(sql, (err, result) => {
                 if (err) throw err;
             });
@@ -188,6 +239,34 @@ app.post('/skm/salesInvoice/', function(req, res) {
         }
     }
 });
+
+// insert new sales_invoice_wholesale
+app.post('/skm/salesInvoiceWholeSale/', function(req, res) {
+    var insertFlag = false;
+    if (req.body.item.length > 0) {
+        for (var i = 0; i < req.body.item.length; i++) {
+            let sql = "INSERT INTO sales_invoice_wholesale (bill_no, sku_no, sold_price, unit_price, tax, cgst_amnt, sgst_amnt, created_date, modified_date, modified_by, dis_sold_price, dis_unit_price, dis_cgst_amnt, dis_sgst_amnt) VALUES (" + req.body.billNo + "," + req.body.item[i].pSkuno + "," + req.body.item[i].soldPrice + "," + req.body.item[i].pPrice + "," + req.body.item[i].pTax + "," + req.body.item[i].pCTax + "," + req.body.item[i].pSTax + "," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + "," + req.body.item[i].disSoldPrice + "," + req.body.item[i].disPrice + "," + req.body.item[i].disCTax + "," + req.body.item[i].disSTax + ")";
+            let query = db.query(sql, (err, result) => {
+                if (err) throw err;
+            });
+            let sql2 = "DELETE FROM stock WHERE sku_no = '" + req.body.item[i].pSkuno + "'";
+            let query2 = db.query(sql2, (err, result2) => {
+                if (err) throw err;
+            });
+            if (req.body.item.length >= i) {
+                insertFlag = true;
+            }
+        }
+        if (req.body.item.length >= i) {
+            if (insertFlag) {
+                res.send("DONE");
+            } else {
+                res.send("NOT DONE");
+            }
+        }
+    }
+});
+
 
 // get customer details
 app.get('/skm/customerDetails/:customerPhone', function(req, res) {
@@ -244,7 +323,7 @@ app.get('/skm/tax/:gid/', function(req, res) {
 });
 
 app.post('/skm/productInsert/', function(req, res) {
-    let sql = "INSERT INTO purchase (item_id, imei_number, details, purchase_price, selling_price, tax_group, bar_code, created_date, modified_date, modified_by, rom_id, ram_id, color_id) VALUES (" + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.purchase_price + "," + req.body.selling_price + "," + req.body.tax_group + ",'" + req.body.bar_code + "'," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + "," + req.body.rom_id + "," + req.body.ram_id + "," + req.body.color_id + ")";
+    let sql = "INSERT INTO purchase (purchase_type, item_id, imei_number, details, purchase_price, selling_price, tax_group, bar_code, created_date, modified_date, modified_by, rom_id, ram_id, color_id) VALUES ('" + req.body.purchase_type + "', " + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.purchase_price + "," + req.body.selling_price + "," + req.body.tax_group + ",'" + req.body.bar_code + "'," + req.body.createdDate + "," + req.body.modifiedDate + "," + req.body.modifiedBy + "," + req.body.rom_id + "," + req.body.ram_id + "," + req.body.color_id + ")";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -252,7 +331,7 @@ app.post('/skm/productInsert/', function(req, res) {
 });
 
 app.post('/skm/stockInsert/', function(req, res) {
-    let sql = "INSERT INTO stock (sku_no, item_id,imei_number,details,price,tax_group,bar_code, in_time, product_flag) VALUES (" + req.body.sku_no + "," + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group + ",'" + req.body.bar_code + "'," + req.body.createdDate + ",'" + req.body.product_flag + "')";
+    let sql = "INSERT INTO stock (purchase_type, sku_no, item_id,imei_number,details,price,tax_group,bar_code, in_time, product_flag) VALUES ('" + req.body.purchase_type + "', " + req.body.sku_no + "," + req.body.item_id + ",'" + req.body.imei_number + "','" + req.body.details + "'," + req.body.price + "," + req.body.tax_group + ",'" + req.body.bar_code + "'," + req.body.createdDate + ",'" + req.body.product_flag + "')";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -362,7 +441,7 @@ app.get('/skm/adminStockData/', function(req, res) {
 
 //admin-dashboard bill data
 app.get('/skm/adminBillData/', function(req, res) {
-    let sql = "SELECT bill.bill_no as BillNo, customer_details.cust_name as CustomerName, bill.amount as TotalBillAmount, bill.created_date as IssuedDate FROM bill JOIN customer_details ON (bill.cust_id = customer_details.cust_id) GROUP BY bill.bill_no ORDER BY bill.bill_no DESC";
+    let sql = "SELECT bill.bill_no as BillNo, bill.bill_type as BillType, customer_details.cust_name as CustomerName, bill.amount as TotalBillAmount, bill.created_date as IssuedDate FROM bill JOIN customer_details ON (bill.cust_id = customer_details.cust_id) GROUP BY bill.bill_no ORDER BY bill.bill_no DESC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -379,9 +458,19 @@ app.post('/skm/getGeneratedBill/', function(req, res) {
 
 });
 
+// getGeneratedDisBill Data
+app.post('/skm/getGeneratedDisBill/', function(req, res) {
+    let sql = "SELECT bill.created_date as billDate, bill.bill_no, bill.created_date, customer_details.cust_name, customer_details.cust_phone, customer_details.cust_alt_phone, customer_details.cust_address, customer_details.cust_city, customer_details.cust_state, customer_details.cust_gsttin, bill.payment_type, bill.dis_amount as amount, bill.dis_cgst_amnt as TCGST, bill.dis_sgst_amnt as TSGST, sales_invoice.sku_no, sales_invoice.dis_unit_price as unit_price, sales_invoice.tax/2 as TaxPer, sales_invoice.dis_cgst_amnt as cgst_amnt, sales_invoice.dis_sgst_amnt as sgst_amnt, (sales_invoice.dis_cgst_amnt + sales_invoice.dis_sgst_amnt + sales_invoice.dis_unit_price) as pAmount, '8517' as pHSNSAC, purchase.imei_number, CONCAT(brand.brand,' ', model.model) as PName, color.color as pColor, (CASE WHEN color.color = 'OTHER' THEN 'false' ELSE 'true' END) as isPColor FROM bill JOIN sales_invoice on (bill.bill_no = sales_invoice.bill_no) JOIN purchase on (sales_invoice.sku_no = purchase.sku_no) JOIN model on (purchase.item_id = model.item_id) JOIN brand on (model.bid = brand.bid) JOIN customer_details ON (bill.cust_id = customer_details.cust_id) JOIN color ON (color.col_id = purchase.color_id) JOIN rom ON (rom.rom_id = purchase.rom_id) JOIN ram ON (ram.ram_id = purchase.ram_id) WHERE bill.bill_no = '" + req.body.billNo + "'";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+
+});
+
 //gst-returns bill data
-app.get('/skm/GSTReturnsBillData/', function(req, res) {
-    let sql = "SELECT customer_details.cust_gsttin as 'GSTIN',bill.bill_no as 'InvoiceNumber', bill.created_date as 'Invoicedate', bill.amount as 'InvoiceValue', bill.payment_type as 'InvoiceType', '' as 'Rate', bill.sub_total as 'TaxableValue', (bill.cgst_amnt+bill.sgst_amnt) as 'TaxAmount' FROM bill JOIN  customer_details ON (bill.cust_id = customer_details.cust_id) GROUP BY bill.bill_no ORDER BY bill.bill_no DESC";
+app.post('/skm/GSTReturnsBillData/', function(req, res) {
+    let sql = "SELECT customer_details.cust_gsttin as 'GSTIN',bill.bill_no as 'InvoiceNumber', bill.created_date as 'Invoicedate', bill.amount as 'InvoiceValue', bill.payment_type as 'InvoiceType', '' as 'Rate', bill.sub_total as 'TaxableValue', (bill.cgst_amnt+bill.sgst_amnt) as 'TaxAmount' FROM bill JOIN  customer_details ON (bill.cust_id = customer_details.cust_id) WHERE bill.created_date BETWEEN " + req.body.sdate + " AND " + req.body.edate + " ORDER BY bill.bill_no DESC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -389,8 +478,8 @@ app.get('/skm/GSTReturnsBillData/', function(req, res) {
 });
 
 //gst-returns purchase data
-app.get('/skm/GSTReturnsPurchaseData/', function(req, res) {
-    let sql = "SELECT seller_name, invoice_no, invoice_date, commodity_code, purchase_value, cgst_amnt, sgst_amnt, total_value FROM gst_purchase ORDER BY invoice_date DESC";
+app.post('/skm/GSTReturnsPurchaseData/', function(req, res) {
+    let sql = "SELECT seller_name, invoice_no, invoice_date, commodity_code, purchase_value, cgst_amnt, sgst_amnt, total_value FROM gst_purchase WHERE invoice_date BETWEEN " + req.body.sdate + " AND " + req.body.edate + " ORDER BY invoice_date DESC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -419,14 +508,16 @@ app.post('/skm/removeGeneratedBill/', function(req, res) {
                 }
             }
         });
-        let sql3 = "DELETE FROM `sales_invoice` WHERE  bill_no = '" + req.body.billNo + "'";
+        /*let sql3 = "DELETE FROM sales_invoice WHERE  bill_no = '" + req.body.billNo + "'";
         let query3 = db.query(sql3, (err3, result3) => {
             if (err3) throw err3;
             if (result3.affectedRows > 0) {
                 salesDelete = true;
             }
-        });
-        let sql4 = "DELETE FROM `bill` WHERE  bill_no = '" + req.body.billNo + "'";
+        });*/
+        let sql4 = "UPDATE bill SET bill_type = '" + req.body.billType + "' WHERE bill_no = '" + req.body.billNo + "'";
+        console.log("sql4 : " + sql4)
+            /*DELETE FROM bill WHERE  bill_no = '" + req.body.billNo + "'";*/
         let query4 = db.query(sql4, (err4, result4) => {
             if (err4) throw err4;
             if (result4.affectedRows > 0) {
@@ -544,6 +635,15 @@ app.post('/skm/romInsert/', function(req, res) {
     });
 });
 
+//insert shop details
+app.post('/skm/shopInsert/', function(req, res) {
+    let sql = "INSERT INTO store_details (name,gstin,phone,mobile,email,address,city,state,pincode) VALUES ('" + req.body.name + "','" + req.body.gstin + "','" + req.body.phone + "','" + req.body.mobile + "','" + req.body.email + "','" + req.body.address + "','" + req.body.city + "','" + req.body.state + "','" + req.body.pincode + "')";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 //admin-dashboard Customer Data 
 app.get('/skm/adminCustomerData/', function(req, res) {
     let sql = "SELECT * FROM customer_details GROUP BY cust_id ORDER BY cust_name ASC";
@@ -553,7 +653,6 @@ app.get('/skm/adminCustomerData/', function(req, res) {
     });
 });
 
-
 //get imei
 app.post('/skm/validateIMEI/', function(req, res) {
     let sql = "SELECT imei_number FROM purchase where imei_number = '" + req.body.imei + "'";
@@ -561,4 +660,21 @@ app.post('/skm/validateIMEI/', function(req, res) {
         if (err) throw err;
         res.send(result);
     });
+});
+
+//mail sendOffers
+app.post('/skm/sendOffers/', function(req, res) {
+    console.log('* Before /skm/sendOffers/ sending test email' + req.body.offerLink + " : " + req.body.senderMail);
+    const gmailSend = require("gmail-send")({
+        user: credentials.user,
+        pass: credentials.pass,
+        bcc: [req.body.senderMail],
+        subject: req.body.subject,
+        text: 'gmail-send examples 1.1 & 1,2',
+        html: '<html><body><img src="' + req.body.offerLink + '"/></body></html>',
+    }, function(err, res) {
+        console.log('* Inside /skm/sendOffers/ sending test email' + req.body.offerLink, err, '; res:', res);
+    })();
+    console.log('* After /skm/sendOffers/ sending test email' + req.body.offerLink);
+    res.send("SEND");
 });

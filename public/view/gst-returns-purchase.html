@@ -80,6 +80,12 @@
                     </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
+                    <a href="#!offers">
+                        <i class="material-icons">card_giftcard</i>
+                        <p>Offers</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!logout">
                         <i class="material-icons">input</i>
                         <p>Logout</p>
@@ -139,6 +145,7 @@
                                 <h4 class="title">GST Purchase Invoice</h4>
                             </div>
                             <div class="card-content">
+                                <div class="loader" ng-show="spinner"></div>
                                 <form ng-submit="confirmAddGST()">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -160,8 +167,10 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Invoice Date (mm/dd/yyy){{gstPurCurrDate}}</label>
-                                                <input type="text" class="form-control" ng-model="gstPurInvoiceDate" />
+                                                <div datepicker datepicker-class="test-custom-class" date-format="MM/dd/yyyy" date-set={{gstPurCurrDate}} date-min-limit="01/01/2018" date-max-limit={{maxDate}} date-typer="true">
+                                                    <input ng-model="gstPurInvoiceDate" type="text" class="form-control" placeholder="Invoice Date" />
+                                                </div>
+                                                <div ng-show="isError">{{error}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -182,7 +191,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">CGST</label>
-                                                <input type="text" class="form-control" ng-model="gstPurCgstAmnt">
+                                                <input type="text" class="form-control" ng-model="gstPurCgstAmnt" required>
                                             </div>
                                         </div>
                                     </div>
@@ -190,13 +199,13 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">SGST</label>
-                                                <input type="text" class="form-control" ng-model="gstPurSgstAmnt">
+                                                <input type="text" class="form-control" ng-model="gstPurSgstAmnt" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Total value (Rs)</label>
-                                                <input type="text" class="form-control" ng-model="gstPurTotalValue">
+                                                <input type="text" class="form-control" ng-model="gstPurTotalValue" required>
                                             </div>
                                         </div>
                                     </div>

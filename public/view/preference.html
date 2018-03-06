@@ -80,6 +80,12 @@
                     </a>
                 </li>
                 <li ng-show="isAdmin || isUser">
+                    <a href="#!offers">
+                        <i class="material-icons">card_giftcard</i>
+                        <p>Offers</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!logout">
                         <i class="material-icons">input</i>
                         <p>Logout</p>
@@ -133,7 +139,6 @@
         <div class="content">
             <div class="container-fluid">
                 <toaster-container toaster-options="{'time-out': 7000}"></toaster-container>
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -141,62 +146,64 @@
                                 <h4 class="title">Shop Details</h4>
                             </div>
                             <div class="card-content">
-                                <form>
+                                <form ng-submit="saveShop()">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Name</label>
-                                                <input type="text" class="form-control" ng-model="shopName" required>
+                                                <input type="text" class="form-control" ng-model="shop.name" required placeholder="Shop Name">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">GSTIN</label>
-                                                <input type="text" class="form-control" ng-model="gstin" required>
+                                                <input type="text" class="form-control" ng-model="shop.phone" required placeholder="Landline">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Phone</label>
-                                                <input type="number" class="form-control" ng-model="shopPhone" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Email address</label>
-                                                <input type="email" class="form-control" ng-model="shopEmail" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Address</label>
-                                                <input type="text" class="form-control" ng-model="shopAddress" required>
+                                                <input type="text" pattern="[0-9]+" class="form-control" ng-model="shop.mobile" required placeholder="Mobile">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">City</label>
-                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="shopCity" required>
+                                                <input type="text" class="form-control" ng-model="shop.gstin" required placeholder="GSTIN">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">State</label>
-                                                <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="shopState">
+
+                                                <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" ng-model="shop.email" required placeholder="E-Mail">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Postal Code</label>
-                                                <input type="number" class="form-control" ng-model="shopPinCode">
+
+                                                <input type="text" class="form-control" ng-model="shop.address" required placeholder="Address">
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-primary pull-right" ng-click="saveShop()">SAVE</button>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+
+                                                <input type="text" pattern="[a-z A-Z]+" class="form-control" value={{shop.city}} ng-model="shop.city" required placeholder="City">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+
+                                                <input type="text" pattern="[a-z A-Z]+" class="form-control" ng-model="shop.state" required placeholder="State">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group label-floating">
+
+                                                <input type="number" class="form-control" ng-model="shop.pincode" required placeholder="Postal Code">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary pull-right">SAVE</button>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>
@@ -211,25 +218,28 @@
                                 <h4 class="title">Brand & Model</h4>
                             </div>
                             <div class="card-content">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-6">
+                                <div class="loader" ng-show="spinner"></div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form ng-submit="addBrand()">
                                             <div class="col-md-offset-1 col-md-6">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Brand</label>
-                                                    <input type="text" class="form-control" ng-model="brand">
+                                                    <input type="text" class="form-control" ng-model="brand" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-3 col-md-offset-2">
-                                                <button type="submit" class="btn btn-primary pull-right" ng-click="addBrand()">Add Brand</button>
+                                                <button type="submit" class="btn btn-primary pull-right">Add Brand</button>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-6">
+                                            <div class="clearfix"></div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <form ng-submit="addModel()">
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Brand</label>
-                                                    <input type="text" list="brandList" class="form-control" ng-model="mbrand">
+                                                    <input type="text" list="brandList" class="form-control" ng-model="mbrand" required>
                                                     <datalist id="brandList">
                                                        <option ng-repeat="b in brandList" value="{{b.bid}}">{{b.brand}}</option>
                                                     </datalist>
@@ -238,21 +248,20 @@
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Model</label>
-                                                    <input type="text" list="items" class="form-control" ng-model="model">
+                                                    <input type="text" list="items" class="form-control" ng-model="model" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <button type="submit" class="btn btn-primary pull-right" ng-click="addModel()">Add Model</button>
+                                                <button type="submit" class="btn btn-primary pull-right">Add Model</button>
                                             </div>
-                                        </div>
+                                            <div class="clearfix"></div>
+                                        </form>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -260,25 +269,26 @@
                                 <h4 class="title">Tax group</h4>
                             </div>
                             <div class="card-content">
-                                <form>
-                                    <div class="row">
+
+                                <div class="row">
+                                    <form ng-submit="addTaxGroup()">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Tax Group</label>
-                                                <input type="text" class="form-control" ng-model="taxGroup">
+                                                <input type="text" class="form-control" ng-model="taxGroup" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Tax Percentage</label>
-                                                <input type="text" class="form-control" ng-model="taxPercent">
+                                                <input type="text" class="form-control" ng-model="taxPercent" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addTaxGroup()">Add Group </button>
+                                            <button type="submit" class="btn btn-primary pull-right">Add Group </button>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -290,25 +300,26 @@
                                 <h4 class="title">Tax</h4>
                             </div>
                             <div class="card-content">
-                                <form>
-                                    <div class="row">
+                                <div class="loader" ng-show="tspinner"></div>
+                                <div class="row">
+                                    <form ng-submit="addTax()">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Tax</label>
-                                                <input type="text" list="items" class="form-control" ng-model="tax">
+                                                <input type="text" list="items" class="form-control" ng-model="tax" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Percentage</label>
-                                                <input type="text" list="items" class="form-control" ng-model="percentage">
+                                                <input type="text" list="items" class="form-control" ng-model="percentage" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addTax()">Add Tax </button>
+                                            <button type="submit" class="btn btn-primary pull-right">Add Tax </button>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -321,12 +332,12 @@
                                 <h4 class="title">Store Tax</h4>
                             </div>
                             <div class="card-content">
-                                <form>
-                                    <div class="row">
+                                <div class="row">
+                                    <form ng-submit="addTg()">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Tax Group</label>
-                                                <input type="text" list="tgroupList" class="form-control" ng-model="tgroup">
+                                                <input type="text" list="tgroupList" class="form-control" ng-model="tgroup" required>
                                                 <datalist id="tgroupList">
                                                     <option ng-repeat="t in tgroupList" value="{{t.group_id}}">{{t.group_name}}</option>
                                                 </datalist>
@@ -335,22 +346,21 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Tax</label>
-                                                <input type="text" list="ttaxList" class="form-control" ng-model="ttax">
+                                                <input type="text" list="ttaxList" class="form-control" ng-model="ttax" required>
                                                 <datalist id="ttaxList">
                                                     <option ng-repeat="tt in ttaxList" value="{{tt.tax_id}}">{{tt.tax_name}}   {{tt.percentage}}%</option>
                                                 </datalist>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addTg()">Add Tax Details</button>
+                                            <button type="submit" class="btn btn-primary pull-right">Add Tax Details</button>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -358,12 +368,11 @@
                                 <h4 class="title">Color, RAM & ROM</h4>
                             </div>
                             <div class="card-content">
-                                <form>
-                                    <div class="col-md-4">
+                                <div class="col-md-4">
+                                    <form ng-submit="addColor()">
                                         <div class="col-md-6">
                                             <div class="form-group label-floating" ng-init="colorSearch()">
-                                                <label class="control-label">Color</label>
-                                                <input type="text" class="form-control" ng-model="color" list="colorList" capitalize>
+                                                <input type="text" class="form-control" placeholder="COLOR" ng-model="color" list="colorList" capitalize required>
                                                 <datalist id="colorList">
                                                     <option ng-repeat="color in colorArray track by $index" value="{{color}}">
                                                         {{color}}
@@ -373,15 +382,16 @@
                                         </div>
                                         <div class="col-md-1"></div>
                                         <div class="col-md-5">
-                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addColor()">Add Color</button>
+                                            <button type="submit" class="btn btn-primary pull-right">Add Color</button>
                                         </div>
-                                    </div>
+                                    </form>
+                                </div>
 
-                                    <div class="col-md-4">
+                                <div class="col-md-4">
+                                    <form ng-submit="addRAM()">
                                         <div class="col-md-6">
                                             <div class="form-group label-floating" ng-init="ramSearch()">
-                                                <label class="control-label">RAM</label>
-                                                <input type="text" class="form-control" ng-model="ram" list="ramList" capitalize>
+                                                <input type="text" placeholder="RAM" class="form-control" ng-model="ram" list="ramList" capitalize required>
                                                 <datalist id="ramList">
                                                     <option ng-repeat="ram in ramArray track by $index" value="{{ram}}">
                                                         {{ram}}
@@ -391,15 +401,16 @@
                                         </div>
                                         <div class="col-md-1"></div>
                                         <div class="col-md-5">
-                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addRAM()">Add RAM</button>
+                                            <button type="submit" class="btn btn-primary pull-right">Add RAM</button>
                                         </div>
-                                    </div>
+                                    </form>
+                                </div>
 
-                                    <div class="col-md-4">
+                                <div class="col-md-4">
+                                    <form ng-submit="addROM()">
                                         <div class="col-md-6">
                                             <div class="form-group label-floating" ng-init="romSearch()">
-                                                <label class="control-label">ROM</label>
-                                                <input type="text" class="form-control" ng-model="rom" list="romList" capitalize>
+                                                <input type="text" placeholder="ROM" class="form-control" ng-model="rom" list="romList" capitalize required>
                                                 <datalist id="romList">
                                                     <option ng-repeat="rom in romArray track by $index" value="{{rom}}">
                                                         {{rom}}
@@ -409,15 +420,14 @@
                                         </div>
                                         <div class="col-md-1"></div>
                                         <div class="col-md-5">
-                                            <button type="submit" class="btn btn-primary pull-right" ng-click="addROM()">Add ROM</button>
+                                            <button type="submit" class="btn btn-primary pull-right">Add ROM</button>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <footer class="footer">

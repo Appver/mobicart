@@ -80,6 +80,12 @@
                     </a>
                 </li>-->
                 <li ng-show="isAdmin || isUser">
+                    <a href="#!offers">
+                        <i class="material-icons">card_giftcard</i>
+                        <p>Offers</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser">
                     <a href="#!logout">
                         <i class="material-icons">input</i>
                         <p>Logout</p>
@@ -140,6 +146,7 @@
                                 <p class="category">{{currDateTime}} Add/Edit Customer</p>
                             </div>
                             <div class="card-content">
+                                <div class="loader" ng-show="spinner"></div>
                                 <form ng-submit="submit()">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -157,7 +164,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Email address</label>
-                                                <input type="email" class="form-control" ng-model="addEditCustEmail">
+                                                <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" ng-model="addEditCustEmail" required>
                                             </div>
                                         </div>
                                     </div>
