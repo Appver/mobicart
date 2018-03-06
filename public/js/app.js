@@ -588,7 +588,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.brandSearch = function() {
-            $http.get('/skm/brandSearch/').then(function(response) {
+            console.log("brandSearch purchaseType : " + $scope.purchaseType);
+            var brandData = {
+                purchase_type: $scope.purchaseType
+            }
+            $http.post('/skm/brandSearch/', brandData).then(function(response) {
                 var res = response.data;
                 $scope.brandNameArray = angular.fromJson(res);
             }, function(response) {});
@@ -596,7 +600,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.modelDetails = function() {
             var brandId = {
-                id: $scope.brandId
+                id: $scope.brandId,
+                purchase_type: $scope.purchaseType
             }
             $http.post('/skm/amodelSearch/', brandId).then(function(response) {
                 var res = response.data;

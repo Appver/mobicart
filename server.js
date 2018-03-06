@@ -22,7 +22,7 @@ const db = mysql.createConnection({
     database: 'sql3220223'
 });
 
-
+/*
 //Create Connection - Remote-local
 const db = mysql.createConnection({
     host: '127.0.0.1',
@@ -62,8 +62,8 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // get all brand
-app.get('/skm/brandSearch/', function(req, res) {
-    let sql = "SELECT * FROM brand";
+app.post('/skm/brandSearch/', function(req, res) {
+    let sql = "SELECT distinct(brand.bid), brand.brand FROM brand inner join model on (model.bid = brand.bid) inner join purchase on (purchase.item_id = model.item_id) inner join stock on (stock.sku_no = purchase.sku_no) where stock.purchase_type = '" + req.body.purchase_type + "' ORDER BY brand.brand ASC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -81,7 +81,7 @@ app.post('/skm/modelSearch/', function(req, res) {
 
 // get available models
 app.post('/skm/amodelSearch/', function(req, res) {
-    let sql = "SELECT DISTINCT(m.model), m.item_id FROM stock s inner join model m on s.item_id = m.item_id and m.bid = '" + req.body.id + "'";
+    let sql = "SELECT DISTINCT(m.model), m.item_id FROM stock s inner join model m on s.item_id = m.item_id and m.bid = '" + req.body.id + "' AND s.purchase_type = '" + req.body.purchase_type + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

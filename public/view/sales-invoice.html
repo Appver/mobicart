@@ -192,14 +192,14 @@
                                                             <div class="col-md-3">
                                                                 <div class="form-group label-floating">
                                                                     <label class="control-label">Prodcut Type</label>
-                                                                    <select class="form-control" ng-model="purchaseType" ng-disabled="ispurchaseType">
+                                                                    <select class="form-control" ng-model="purchaseType" ng-disabled="ispurchaseType" ng-change="brandSearch()">
                                                                         <option value="PURCHASE">PURCHASE</option>
                                                                         <option value="WHOLESALE">WHOLESALE</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
-                                                                <div class="form-group label-floating" ng-init="brandSearch()">
+                                                                <div class="form-group label-floating">
                                                                     <label class="control-label">Brand</label>
                                                                     <div>
                                                                         <select class="form-control" ng-model="brandId" ng-change="modelDetails()">
