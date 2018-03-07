@@ -594,7 +594,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Email address</label>
-                                                    <input type="email" class="form-control" ng-model="addCustomer.email">
+                                                    <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" ng-model="addCustomer.email">
                                                 </div>
                                             </div>
                                         </div>
@@ -622,13 +622,13 @@
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">State</label>
-                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.cust_state">
+                                                    <input type="text" pattern="[a-zA-Z]+" class="form-control" ng-model="addCustomer.cust_state" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group label-floating">
                                                     <label class="control-label">Postal Code</label>
-                                                    <input type="number" class="form-control" ng-model="addCustomer.pincode">
+                                                    <input type="number" class="form-control" ng-model="addCustomer.pincode" required>
                                                 </div>
                                             </div>
                                         </div>

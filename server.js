@@ -22,13 +22,12 @@ const db = mysql.createConnection({
     database: 'sql3220223'
 });
 
-/*
+
 //Create Connection - Remote-local
 const db = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: '',
-    database: 'sql3220223_local'
+    database: 'prod'
 });*/
 
 //DB Connect
