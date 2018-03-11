@@ -1304,6 +1304,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
         $scope.isValidIMEI = true;
+        $scope.retProductIMEI = [];
         var taxlist = [];
         var taxes = '';
         var promise = $q.all([]);
@@ -1455,6 +1456,72 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 }, function(response) {});
             }
         }
+
+        $scope.retBrandSearch = function() {
+            $rootScope.appLogger("INFO", "retBrandSearch retPurchaseType : " + $scope.retPurchaseType);
+            var brandData = {
+                purchase_type: $scope.retPurchaseType
+            }
+            $http.post('/skm/brandSearch/', brandData).then(function(response) {
+                var res = response.data;
+                $scope.retMobBrands = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.retModelDetails = function() {
+            var retBrandId = {
+                id: $scope.retBrandId,
+                purchase_type: $scope.retPurchaseType
+            }
+            $http.post('/skm/amodelSearch/', retBrandId).then(function(response) {
+                var res = response.data;
+                $scope.retMobModels = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.retProductDetails = function() {
+            $rootScope.appLogger("INFO", "retProductDetails retPurchaseType : " + $scope.retPurchaseType);
+            var retModelId = {
+                id: $scope.retModelId,
+                purchase_type: $scope.retPurchaseType
+            }
+            $http.post('/skm/productSearch/', retModelId).then(function(response) {
+                var res = response.data;
+                $scope.retProductIMEIS = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.retCheckItem = function(imei) {
+            for (var i = 0; i < $scope.retProductIMEIS.length; i++) {
+                if (imei == $scope.retProductIMEIS[i].imei_number) {
+                    $scope.retProductIMEI.push(imei);
+                }
+            }
+        };
+
+        $scope.returnProduct = function() {
+            $scope.spinner = true;
+            $rootScope.appLogger("INFO", "returnProduct $scope.retProductIMEI : " + $scope.retProductIMEI);
+            var retIMEIS = {
+                product_imeis: $scope.retProductIMEI,
+                purchase_type: $scope.retPurchaseType
+            }
+            $http.post('/skm/retProduct/', retIMEIS).then(function(response) {
+                    console.log(response.data);
+                    $scope.retPurchaseType = '';
+                    $scope.retMobBrands = ''
+                    $scope.retMobModels = '';
+                    $scope.retProductIMEIS = '';
+                    $scope.retProductIMEI = [];
+                },
+                function(response) {
+
+                }).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
+        };
+
     })
     .controller('GSTReturnsCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;

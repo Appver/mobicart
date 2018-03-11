@@ -684,3 +684,36 @@ app.post('/skm/appLog/', function(req, res) {
     console.log(req.body.loggerData);
     res.send("LOGGED");
 });
+
+//Product return logic
+app.post('/skm/retProduct/', function(req, res) {
+    var insertFlag = false;
+    if (req.body.product_imeis.length > 0) {
+        for (var i = 0; i < req.body.product_imeis.length; i++) {
+            let sql;
+            if (req.body.purchase_type == 'PURCHASE') {
+                sql = "UPDATE purchase SET purchase_type = 'PS-RETURNED' WHERE imei_number = '" + req.body.product_imeis[i] + "'";
+            } else {
+                sql = "UPDATE purchase SET purchase_type = 'WS-RETURNED' WHERE imei_number = '" + req.body.product_imeis[i] + "'";
+            }
+            console.log("sql : " + sql)
+            let query = db.query(sql, (err, result) => {
+                if (err) throw err;
+            });
+            let sql2 = "DELETE FROM stock WHERE imei_number = '" + req.body.product_imeis[i] + "'";
+            let query2 = db.query(sql2, (err, result2) => {
+                if (err) throw err;
+            });
+            if (req.body.product_imeis.length >= i) {
+                insertFlag = true;
+            }
+        }
+        if (req.body.product_imeis.length >= i) {
+            if (insertFlag) {
+                res.send("RETURNED");
+            } else {
+                res.send("NOT RETURNED");
+            }
+        }
+    }
+});
