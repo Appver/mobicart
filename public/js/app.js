@@ -1,6 +1,5 @@
 var app = angular.module('KaviyaMobiles', ['ngJsonExportExcel', 'ngTable', 'ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster', '720kb.datepicker']);
-
-app.run(function($rootScope, $location, $cookieStore) {
+app.run(function($log, $http, $rootScope, $location, $cookieStore) {
     $rootScope.isUser = false;
     $rootScope.isAdmin = false;
     $rootScope.user = $cookieStore.get('user');
@@ -131,6 +130,27 @@ app.run(function($rootScope, $location, $cookieStore) {
             words_string = words_string.split("  ").join(" ");
         }
         return words_string.toUpperCase();
+    };
+
+    $rootScope.appLogger = function(loggerLevel, loggerMessage) {
+        loggerMessage = $rootScope.currDateTime + " " + loggerMessage;
+        if (loggerLevel == "LOG") {
+            $log.log(loggerMessage);
+        } else if (loggerLevel == "INFO") {
+            $log.info(loggerMessage);
+        } else if (loggerLevel == "DEBUG") {
+            $log.debug(loggerMessage);
+        } else if (loggerLevel == "WARN") {
+            $log.warn(loggerMessage);
+        } else if (loggerLevel == "ERROR") {
+            $log.error(loggerMessage);
+        }
+        var loggerMessageData = {
+            loggerData: loggerMessage
+        }
+        $http.post('/skm/appLog/', loggerMessageData).then(function(response) {
+            console.log(response.data)
+        }, function(response) {});
     };
 });
 
@@ -416,7 +436,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.viewCustomerDetails = '';
         }
     })
-    .controller('SalesInvoiceCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
+    .controller('SalesInvoiceCntlr', function($log, $rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
         $scope.$location = $location;
@@ -588,7 +608,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.brandSearch = function() {
-            console.log("brandSearch purchaseType : " + $scope.purchaseType);
+            $rootScope.appLogger("INFO", "brandSearch purchaseType : " + $scope.purchaseType);
             var brandData = {
                 purchase_type: $scope.purchaseType
             }
@@ -621,7 +641,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.productDetails = function() {
-            console.log("$scope.purchaseType : " + $scope.purchaseType);
+            $rootScope.appLogger("INFO", "productDetails purchaseType : " + $scope.purchaseType);
             var modelId = {
                 id: $scope.modelId,
                 purchase_type: $scope.purchaseType
@@ -812,31 +832,31 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 modifiedDate: timeToSecond,
                 modifiedBy: $rootScope.userObj.uid
             }
-            console.log(" $scope.billNo : " + $scope.billNo + " $scope.purchaseType : " + $scope.purchaseType)
+            $rootScope.appLogger("INFO", "generatePreviewBill $scope.billNo : " + $scope.billNo + " $scope.purchaseType : " + $scope.purchaseType);
             if ($scope.billNo == '') {
-                console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+                $rootScope.appLogger("INFO", "BEFORE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
                 if ($scope.purchaseType == 'PURCHASE') {
-                    console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                    $rootScope.appLogger("INFO", "IF generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
                     $http.post('/skm/billNo/', salesProductListData).then(function(response) {
                         output = response.data;
                         $scope.billNo = output.insertId;
                     }, function(response) {});
                 } else {
-                    console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                    $rootScope.appLogger("INFO", "ELSE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
                     $http.post('/skm/billNoWholeSale/', salesProductListData).then(function(response) {
                         output = response.data;
                         $scope.billNo = output.insertId;
                     }, function(response) {});
                 }
             } else if ($scope.billNo == 'C') {
-                console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+                $rootScope.appLogger("INFO", "BEFORE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
                 if ($scope.purchaseType == 'PURCHASE') {
-                    console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                    $rootScope.appLogger("INFO", "IF generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
                     $http.post('/skm/updateBillType/', salesData).then(function(response) {
                         $scope.isResetBill = false;
                     }, function(response) {});
                 } else {
-                    console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                    $rootScope.appLogger("INFO", "ELSE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
                     $http.post('/skm/updateBillTypeWholeSale/', salesData).then(function(response) {
                         $scope.isResetBill = false;
                     }, function(response) {});
@@ -860,9 +880,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedDate: timeToSecond,
                         modifiedBy: $rootScope.userObj.uid
                     }
-                    console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+                    $rootScope.appLogger("INFO", "BEFORE salesInvoiceSave $scope.purchaseType : " + $scope.purchaseType);
                     if ($scope.purchaseType == 'PURCHASE') {
-                        console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                        $rootScope.appLogger("INFO", "IF salesInvoiceSave $scope.purchaseType : " + $scope.purchaseType);
                         $http.post('/skm/salesInvoice/', salesData).then(function(response) {
                             if (response.data == 'DONE') {
                                 alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
@@ -873,7 +893,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                             }
                         }, function(response) {});
                     } else {
-                        console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                        $rootScope.appLogger("INFO", "ELSE salesInvoiceSave $scope.purchaseType : " + $scope.purchaseType);
                         $http.post('/skm/salesInvoiceWholeSale/', salesData).then(function(response) {
                             if (response.data == 'DONE') {
                                 alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
@@ -905,9 +925,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedDate: timeToSecond,
                         modifiedBy: $rootScope.userObj.uid
                     }
-                    console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+                    $rootScope.appLogger("INFO", "BEFORE salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
                     if ($scope.purchaseType == 'PURCHASE') {
-                        console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                        $rootScope.appLogger("INFO", "IF salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
                         $http.post('/skm/salesInvoice/', salesData).then(function(response) {
                             //if (response.data == 'DONE') {
                             $scope.isSaveBill = true;
@@ -924,7 +944,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                             }*/
                         }, function(response) {});
                     } else {
-                        console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                        $rootScope.appLogger("INFO", "ELSE salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
                         $http.post('/skm/salesInvoiceWholeSale/', salesData).then(function(response) {
                             //if (response.data == 'DONE') {
                             $scope.isSaveBill = true;
@@ -959,14 +979,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var salesData = {
                 billNo: $scope.billNo
             }
-            console.log(" BEFORE $scope.purchaseType : " + $scope.purchaseType)
+            $rootScope.appLogger("INFO", "BEFORE backToSalesInvoice salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
             if ($scope.purchaseType == 'PURCHASE') {
-                console.log(" IF $scope.purchaseType : " + $scope.purchaseType)
+                $rootScope.appLogger("INFO", "IF backToSalesInvoice salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
                 $http.post('/skm/backToSalesInvoice/', salesData).then(function(response) {
                     $scope.isResetBill = false;
                 }, function(response) {});
             } else {
-                console.log(" ELSE $scope.purchaseType : " + $scope.purchaseType)
+                $rootScope.appLogger("INFO", "ELSE backToSalesInvoice salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
                 $http.post('/skm/backToSalesInvoiceWholeSale/', salesData).then(function(response) {
                     $scope.isResetBill = false;
                 }, function(response) {});

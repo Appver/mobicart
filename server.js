@@ -677,3 +677,10 @@ app.post('/skm/sendOffers/', function(req, res) {
     console.log('* After /skm/sendOffers/ sending test email' + req.body.offerLink);
     res.send("SEND");
 });
+
+
+//app Logger Mechanism
+app.post('/skm/appLog/', function(req, res) {
+    console.log(req.body.loggerData);
+    res.send("LOGGED");
+});
