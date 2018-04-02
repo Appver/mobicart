@@ -717,3 +717,57 @@ app.post('/skm/retProduct/', function(req, res) {
         }
     }
 });
+
+//get revenue
+app.get('/skm/revenueForMonth/', function(req, res) {
+    let sql = "SELECT SUM(amount) as 'Total' FROM bill WHERE bill_type = 'B' AND  MONTH(FROM_UNIXTIME(created_date)) = MONTH(CURRENT_DATE()) AND YEAR(FROM_UNIXTIME(created_date)) = YEAR(CURRENT_DATE())";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//get purchase credit  for month
+app.get('/skm/PurchaseCreditForMonth/', function(req, res) {
+    let sql = "SELECT SUM(purchase.purchase_price) as 'TotalPurchase' FROM purchase INNER JOIN sales_invoice WHERE purchase.sku_no = sales_invoice.sku_no AND MONTH(FROM_UNIXTIME(purchase.created_date)) = MONTH(CURRENT_DATE()) AND YEAR(FROM_UNIXTIME(purchase.created_date)) = YEAR(CURRENT_DATE())";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//get sales for month
+app.get('/skm/SalesForMonth/', function(req, res) {
+    let sql = "SELECT COUNT(bill_no) as 'Total' FROM `bill` WHERE bill_type = 'B' AND  MONTH(FROM_UNIXTIME(created_date)) = MONTH(CURRENT_DATE()) AND YEAR(FROM_UNIXTIME(created_date)) = YEAR(CURRENT_DATE())";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//get customser for month
+app.get('/skm/CustForMonth/', function(req, res) {
+    let sql = "SELECT COUNT(cust_id) as 'count' FROM customer_details";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//get Daily Sales
+app.get('/skm/dailySales/', function(req, res) {
+    let sql = "SELECT date_format(FROM_UNIXTIME(created_date), '%d/%m') as 'labels', SUM(amount) as 'series' FROM `bill` WHERE bill_type = 'B' AND FROM_UNIXTIME(created_date) >=CURDATE() - INTERVAL  15 DAY AND FROM_UNIXTIME(created_date)  < CURDATE() + INTERVAL  1 DAY GROUP BY date_format(FROM_UNIXTIME(created_date), '%d/%m');";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//get Monthly Sales
+app.get('/skm/monthlySales/', function(req, res) {
+    let sql = "SELECT CASE WHEN MONTH(FROM_UNIXTIME(created_date)) = 1 THEN 'Jan' WHEN MONTH(FROM_UNIXTIME(created_date)) = 2 THEN 'Feb' WHEN MONTH(FROM_UNIXTIME(created_date)) = 3  THEN 'Mar' WHEN MONTH(FROM_UNIXTIME(created_date)) = 4 THEN 'Apr' WHEN MONTH(FROM_UNIXTIME(created_date)) = 5 THEN 'Mai' WHEN MONTH(FROM_UNIXTIME(created_date)) = 6 THEN 'Jun' WHEN MONTH(FROM_UNIXTIME(created_date)) = 7 THEN 'Jul' WHEN MONTH(FROM_UNIXTIME(created_date)) = 8 THEN 'Aug' WHEN MONTH(FROM_UNIXTIME(created_date)) = 9 THEN 'Sep' WHEN MONTH(FROM_UNIXTIME(created_date)) = 10 THEN 'Oct' WHEN MONTH(FROM_UNIXTIME(created_date)) = 11 THEN 'Nov' WHEN MONTH(FROM_UNIXTIME(created_date)) = 12 THEN 'Dec' ELSE MONTH(FROM_UNIXTIME(created_date)) END as 'labels', SUM(amount) as 'series' FROM `bill` WHERE bill_type = 'B' GROUP BY MONTHNAME(FROM_UNIXTIME(created_date)) order by MONTH(FROM_UNIXTIME(created_date)) asc;";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});

@@ -12,19 +12,25 @@
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isSuperAdmin">
+                    <a href="#!superadmindashboard">
+                        <i class="material-icons">dashboard</i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!dashboard">
                         <i class="material-icons">chrome_reader_mode</i>
                         <p>History Data</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!addcustomer">
                         <i class="material-icons">person</i>
                         <p>Add/Edit Customer</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!salesinvoice">
                         <i class="material-icons">content_paste</i>
                         <p>Sales Invoice</p>
@@ -43,19 +49,19 @@
                         <p>Product Bar/QR Code</p>
                     </a>
                 </li>-->
-                <li class="active" ng-show="isAdmin || isUser">
+                <li class="active" ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!purchaseinvoice">
                         <i class=" material-icons">bubble_chart</i>
                         <p>Purchase Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!gstreport">
                         <i class="material-icons">assignment</i>
                         <p>GST Returns</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!gstpurchase">
                         <i class="material-icons">assignment</i>
                         <p>GST Purchase</p>
@@ -73,19 +79,19 @@
                         <p>Transcations</p>
                     </a>
                 </li>-->
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!preference">
                         <i class="material-icons">build</i>
                         <p>Preference</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!offers">
                         <i class="material-icons">card_giftcard</i>
                         <p>Offers</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!logout">
                         <i class="material-icons">input</i>
                         <p>Logout</p>
@@ -149,6 +155,12 @@
                             <div class="card-content">
                                 <form ng-submit="addProduct()">
                                     <div class="loader" ng-show="spinner"></div>
+                                    <!--<div class="row">
+                                        <input type="file" name="file" onchange="angular.element(this).scope().UploadFile(this.files)" />
+                                        <button rel="tooltip" title="Upload Purchase" class="btn btn-purple" ng-disabled="!SelectedFileForUpload" ng-click="ParseExcelDataAndSave()">
+                                            <i class="material-icons">file_upload</i>
+                                        </button>
+                                    </div>-->
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group label-floating">

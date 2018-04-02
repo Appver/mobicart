@@ -10,6 +10,8 @@ app.run(function($log, $http, $rootScope, $location, $cookieStore) {
             $rootScope.isUser = true;
             if ($rootScope.user.rid == 1)
                 $rootScope.isAdmin = true;
+            if ($rootScope.user.rid == 3)
+                $rootScope.isSuperAdmin = true;
         }
     } else {
         $location.path('/');
@@ -160,6 +162,10 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: '/view/signin-page.html',
             controller: 'SigninPageCntlr'
         })
+        .when('/superadmindashboard', {
+            templateUrl: '/view/super-admin-dashboard.html',
+            controller: 'SuperAdminDashboardCntlr'
+        })
         .when('/dashboard', {
             templateUrl: '/view/admin-dashboard.html',
             controller: 'AdminDashboardCntlr'
@@ -270,16 +276,25 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $rootScope.user = user;
                     $rootScope.userObj = user;
                     if (user.rid == 1) {
+                        $rootScope.isUser = false;
                         $rootScope.isAdmin = true;
+                        $rootScope.isSuperAdmin = false;
                         $location.path('/dashboard');
+                    } else if (user.rid == 3) {
+                        $rootScope.isSuperAdmin = true;
+                        $rootScope.isAdmin = false;
+                        $rootScope.isUser = false;
+                        $location.path('/superadmindashboard');
                     } else {
                         $rootScope.isUser = true;
                         $rootScope.isAdmin = false;
+                        $rootScope.isSuperAdmin = false;
                         $location.path('/addcustomer');
                     }
                 } else {
                     $rootScope.isAdmin = false;
                     $rootScope.isUser = false;
+                    $rootScope.isSuperAdmin = false;
                     toaster.pop('error', "error", "Invalid crdentials");
 
                     $location.path('/');
@@ -289,6 +304,140 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         };
     })
+    .controller('SuperAdminDashboardCntlr', function(NgTableParams, $rootScope, $scope, $http, $route, $routeParams, $location) {
+        $scope.$route = $route;
+        $scope.$http = $http;
+        $scope.$location = $location;
+        $scope.$routeParams = $routeParams;
+
+        $(document).ready(function() {
+            $scope.initDashboardPageCharts();
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
+        $scope.isPurBal = false;
+
+        $http.get('/skm/revenueForMonth/').then(function(response) {
+            var data = angular.fromJson(response.data);
+            for (var i = 0; i < data.length; i++) {
+                $scope.totrevmon = data[i].Total;
+            }
+        }, function(response) {});
+
+        $http.get('/skm/PurchaseCreditForMonth/').then(function(response) {
+            var data = angular.fromJson(response.data);
+            for (var i = 0; i < data.length; i++) {
+                $scope.totpurbalmon = data[i].TotalPurchase;
+            }
+        }, function(response) {});
+
+        $http.get('/skm/SalesForMonth/').then(function(response) {
+            var data = angular.fromJson(response.data);
+            for (var i = 0; i < data.length; i++) {
+                $scope.totsales = data[i].Total;
+            }
+        }, function(response) {});
+
+        $http.get('/skm/CustForMonth/').then(function(response) {
+            var data = angular.fromJson(response.data);
+            for (var i = 0; i < data.length; i++) {
+                $scope.totcust = data[i].count;
+            }
+        }, function(response) {});
+
+        $scope.initDashboardPageCharts = function() {
+            $http.get('/skm/dailySales/').then(function(response) {
+                var data = angular.fromJson(response.data);
+                var newLabels = new Array();
+                var newSeries = new Array();
+                $scope.lastVal = 50;
+                for (var i = 0; i < data.length; i++) {
+                    newLabels.push(data[i].labels);
+                    newSeries.push(data[i].series);
+                    for (var j = 1; j < i; j++) {
+                        if (data[j].series > data[i].series) {
+                            $scope.lastVal = data[j].series
+                        }
+                    }
+                }
+                $scope.dataDailySalesChartData = {
+                    labels: newLabels,
+                    series: [newSeries]
+                };
+                /* ----------==========     Daily Sales Chart initialization    ==========---------- */
+                dataDailySalesChart = $scope.dataDailySalesChartData;
+                optionsDailySalesChart = {
+                    lineSmooth: Chartist.Interpolation.cardinal({
+                        tension: 0
+                    }),
+                    low: 0,
+                    high: $scope.lastVal + 70000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                    chartPadding: {
+                        top: 0,
+                        right: 25,
+                        bottom: 0,
+                        left: 25
+                    },
+                }
+                var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+                md.startAnimationForLineChart(dailySalesChart);
+            }, function(response) {});
+
+            $http.get('/skm/monthlySales/').then(function(response) {
+                var data = angular.fromJson(response.data);
+                var newLabels = new Array();
+                var newSeries = new Array();
+                $scope.lastVal = 50;
+                for (var i = 0; i < data.length; i++) {
+                    newLabels.push(data[i].labels);
+                    newSeries.push(data[i].series);
+                    for (var j = 1; j < i; j++) {
+                        if (data[j].series > data[i].series) {
+                            $scope.lastVal = data[j].series
+                        }
+                    }
+                }
+                $scope.dataEmailsSubscriptionChartData = {
+                    labels: newLabels,
+                    series: [newSeries]
+                };
+                /* ----------==========     Monthly  Sales Chart initialization    ==========---------- */
+                dataEmailsSubscriptionChart = $scope.dataEmailsSubscriptionChartData;
+                var optionsEmailsSubscriptionChart = {
+                    axisX: {
+                        showGrid: false
+                    },
+                    low: 0,
+                    high: $scope.lastVal + 1000000,
+                    chartPadding: {
+                        top: 0,
+                        right: 25,
+                        bottom: 0,
+                        left: 25
+                    }
+                };
+                var responsiveOptions = [
+                    ['screen and (max-width: 640px)', {
+                        seriesBarDistance: 5,
+                        axisX: {
+                            labelInterpolationFnc: function(value) {
+                                return value[0];
+                            }
+                        }
+                    }]
+                ];
+                var emailsSubscriptionChart = Chartist.Bar('#emailsSubscriptionChart', dataEmailsSubscriptionChart, optionsEmailsSubscriptionChart, responsiveOptions);
+                //start animation for the Emails Subscription Chart
+                md.startAnimationForBarChart(emailsSubscriptionChart);
+            }, function(response) {});
+        }
+    })
     .controller('AdminDashboardCntlr', function(NgTableParams, $rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$http = $http;
@@ -297,8 +446,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $(document).ready(function() {
             $scope.getGeneratedBillData();
-            // Javascript method's body can be found in assets/js/demos.js
-            //demo.initDashboardPageCharts();
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function
                 $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
@@ -1521,6 +1668,46 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.spinner = false;
             });
         };
+
+        $scope.SelectedFileForUpload = null;
+
+        $scope.UploadFile = function(files) {
+            $scope.$apply(function() { //I have used $scope.$apply because I will call this function from File input type control which is not supported 2 way binding
+                $scope.Message = "";
+                $scope.SelectedFileForUpload = files[0];
+            })
+        }
+
+        //Parse Excel Data 
+        $scope.ParseExcelDataAndSave = function() {
+            var file = $scope.SelectedFileForUpload;
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var data = e.target.result;
+                    //XLSX from js-xlsx library , which I will add in page view page
+                    var workbook = XLSX.read(data, { type: 'binary' });
+                    var sheetName = workbook.SheetNames[0];
+                    var excelData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                    console.log("excelData")
+                    console.log(excelData)
+                    if (excelData.length > 0) {
+                        console.log("Indie excelData")
+                        console.log(excelData)
+                            //Save data 
+                            //$scope.SaveData(excelData);
+                    } else {
+                        $scope.Message = "No data found";
+                    }
+                }
+                reader.onerror = function(ex) {
+                    console.log(ex);
+                }
+
+                reader.readAsBinaryString(file);
+            }
+        }
+
 
     })
     .controller('GSTReturnsCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
