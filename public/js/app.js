@@ -369,13 +369,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 var data = angular.fromJson(response.data);
                 var newLabels = new Array();
                 var newSeries = new Array();
-                $scope.lastVal = 50;
+                $scope.lastDailyVal = 50;
                 for (var i = 0; i < data.length; i++) {
                     newLabels.push(data[i].labels);
                     newSeries.push(data[i].series);
                     for (var j = 1; j < i; j++) {
                         if (data[j].series > data[i].series) {
-                            $scope.lastVal = data[j].series
+                            $scope.lastDailyVal = data[j].series
                         }
                     }
                 }
@@ -390,7 +390,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         tension: 0
                     }),
                     low: 0,
-                    high: $scope.lastVal + 70000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                    high: $scope.lastDailyVal + 70000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
                     chartPadding: {
                         top: 0,
                         right: 25,
@@ -406,13 +406,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 var data = angular.fromJson(response.data);
                 var newLabels = new Array();
                 var newSeries = new Array();
-                $scope.lastVal = 50;
+                $scope.lastMonthlyVal = 50;
                 for (var i = 0; i < data.length; i++) {
                     newLabels.push(data[i].labels);
                     newSeries.push(data[i].series);
                     for (var j = 1; j < i; j++) {
                         if (data[j].series > data[i].series) {
-                            $scope.lastVal = data[j].series
+                            $scope.lastMonthlyVal = data[j].series
                         }
                     }
                 }
@@ -427,7 +427,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         showGrid: false
                     },
                     low: 0,
-                    high: $scope.lastVal + 1000000,
+                    high: $scope.lastMonthlyVal + 1000000,
                     chartPadding: {
                         top: 0,
                         right: 25,
@@ -448,6 +448,54 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 var emailsSubscriptionChart = Chartist.Bar('#emailsSubscriptionChart', dataEmailsSubscriptionChart, optionsEmailsSubscriptionChart, responsiveOptions);
                 //start animation for the Emails Subscription Chart
                 md.startAnimationForBarChart(emailsSubscriptionChart);
+            }, function(response) {});
+
+            $http.get('/skm/mostProductSales/').then(function(response) {
+                var data = angular.fromJson(response.data);
+                var newLabels = new Array();
+                var newSeries = new Array();
+                $scope.lastProdVal = 5;
+                for (var i = 0; i < data.length; i++) {
+                    newLabels.push(data[i].labels);
+                    newSeries.push(data[i].series);
+                    for (var j = 1; j < i; j++) {
+                        if (data[j].series > data[i].series) {
+                            $scope.lastProdVal = data[j].series
+                        }
+                    }
+                }
+                $scope.datamostProductSalesChartData = {
+                    labels: newLabels,
+                    series: [newSeries]
+                };
+                /* ----------==========     Most Product Sales Chart initialization    ==========---------- */
+                datamostProductSalesChart = $scope.datamostProductSalesChartData;
+                var optionsMostProductSalesChart = {
+                    axisX: {
+                        showGrid: false
+                    },
+                    low: 0,
+                    high: $scope.lastProdVal + 5,
+                    chartPadding: {
+                        top: 5,
+                        right: 5,
+                        bottom: 0,
+                        left: 5
+                    }
+                };
+                var responsiveOptions = [
+                    ['screen and (max-width: 640px)', {
+                        seriesBarDistance: 5,
+                        axisX: {
+                            labelInterpolationFnc: function(value) {
+                                return value[0];
+                            }
+                        }
+                    }]
+                ];
+                var mostProductSalesChart = Chartist.Bar('#mostProductSalesChart', datamostProductSalesChart, optionsMostProductSalesChart, responsiveOptions);
+                //start animation for the Emails Subscription Chart
+                md.startAnimationForBarChart(mostProductSalesChart);
             }, function(response) {});
         }
     })

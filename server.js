@@ -965,3 +965,12 @@ app.post('/skm/barcodeIMEI/', function(req, res) {
         res.send(result);
     });
 });
+
+//get Most Product Sales
+app.get('/skm/mostProductSales/', function(req, res) {
+    let sql = "SELECT CONCAT(brand.brand, '-', model.model) AS 'labels', COUNT(bill.bill_no) AS 'series' FROM bill JOIN sales_invoice ON (sales_invoice.bill_no = bill.bill_no AND bill.bill_type = 'B') JOIN purchase ON (purchase.sku_no = sales_invoice.sku_no) JOIN model ON (model.item_id = purchase.item_id) JOIN brand ON (brand.bid = model.bid) AND MONTH(FROM_UNIXTIME(bill.created_date)) = MONTH(CURRENT_DATE()) AND YEAR(FROM_UNIXTIME(bill.created_date)) = YEAR(CURRENT_DATE()) GROUP BY model.model ORDER BY series DESC LIMIT 5";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
