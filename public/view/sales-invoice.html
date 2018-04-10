@@ -41,14 +41,13 @@
                         <i class="material-icons">search</i>
                         <p>Product Search</p>
                     </a>
-                </li>
-                <li ng-show="isAdmin || isUser">
+                </li>-->
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!productbarcode">
                         <i class="material-icons">library_books</i>
-                        <span class="notificationCount">5</span>
-                        <p>Product Bar/QR Code</p>
+                        <p>Product BarCode</p>
                     </a>
-                </li>-->
+                </li>
                 <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!purchaseinvoice">
                         <i class=" material-icons">bubble_chart</i>
@@ -195,7 +194,16 @@
                                                     </div>
                                                     <div class="card-content">
                                                         <div class="row">
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group label-floating">
+                                                                    <label class="control-label">Stock Type</label>
+                                                                    <select class="form-control" ng-model="stockType" ng-disabled="ispurchaseType">
+                                                                        <option value="MOBILE">Mobiles/Smart Phones</option>
+                                                                        <option value="ACCESS">Accessories</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
                                                                 <div class="form-group label-floating">
                                                                     <label class="control-label">Prodcut Type</label>
                                                                     <select class="form-control" ng-model="purchaseType" ng-disabled="ispurchaseType" ng-change="brandSearch()">
@@ -204,7 +212,7 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-2">
                                                                 <div class="form-group label-floating">
                                                                     <label class="control-label">Brand</label>
                                                                     <div>
@@ -261,7 +269,7 @@
                                                             <div class="col-md-3">
                                                                 <div class="form-group label-floating">
                                                                     <button rel="tooltip" title="Add Product" class="btn btn-primary 
-                                                                            btn-fab btn-fab-mini btn-round" ng-disabled="isAdd" ng-click="addProductList(productDetail)">
+                                                                            btn-fab btn-fab-mini btn-round" ng-disabled="isAdd || isCustomerSelected" ng-click="addProductList(productDetail)">
                                                                         <i class="material-icons">add circle</i>
                                                                     </button>
                                                                 </div>
@@ -943,9 +951,9 @@
                                         <tr>
                                             <td colspan="6">
                                                 <ul style="list-style-type:square">
-                                                    <li>GOODS ONCE SOLD CANNOT BE TAKEN BACK</li>
-                                                    <li>WARRENTY SHOULD BE CLAIM FROM MANUFACTURER ONLY</li>
-                                                    <li>SERVICE & REPAIR CONTACT SERVICE CENTRE ONLY</li>
+                                                    <li>விற்பனை செய்த பொருட்கள் மீண்டும் எடுக்கப்படாது.</li>
+                                                    <li>உத்தரவாதத்தை(WARRANTY), தயாரிப்பாளரிடம் இருந்து பெற வேண்டும்.</li>
+                                                    <li>சேவை மற்றும் தொடர்பு சேவைக்கு, தொடர்பு சேவை மையத்தை தொடர்பு கொள்ளவும்.</li>
                                                 </ul>
                                             </td>
                                             <td colspan="2" align="center" valign="middle">

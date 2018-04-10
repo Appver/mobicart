@@ -41,14 +41,13 @@
                         <i class="material-icons">search</i>
                         <p>Product Search</p>
                     </a>
-                </li>
-                <li ng-show="isAdmin || isUser">
+                </li>-->
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!productbarcode">
                         <i class="material-icons">library_books</i>
-                        <span class="notificationCount">5</span>
-                        <p>Product Bar/QR Code</p>
+                        <p>Product BarCode</p>
                     </a>
-                </li>-->
+                </li>
                 <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!purchaseinvoice">
                         <i class="material-icons">bubble_chart</i>
@@ -167,25 +166,47 @@
                                     <br>To file GST returns, GST compliant sales and purchase invoices are required. You can generate
                                 </p>
                                 <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Choose FY : </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="radio">
+                                            <label class="control-label">
+                                            <input type="radio" ng-model="fisYear" value="2017" ng-change="fisYearVal();">FY 2017-18
+                                        </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="radio">
+                                            <label class="control-label">
+                                            <input type="radio" ng-model="fisYear" value="2018" ng-change="fisYearVal();">FY 2018-19
+                                        </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"></div>
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-4 col-md-4">
                                         <div datepicker datepicker-class="test-custom-class" date-format="MM/dd/yyyy" date-min-limit="01/01/2018" date-max-limit={{maxDate}} date-typer="true">
-                                            <input ng-model="startdate" type="text" class="form-control" placeholder="Start Date" />
+                                            <input ng-disabled="!isShow" ng-model="startdate" type="text" class="form-control" placeholder="Start Date" />
                                         </div>
                                         <div ng-show="isError">{{error}}</div>
                                     </div>
                                     <div class="col-lg-4 col-md-4">
                                         <div datepicker datepicker-class="test-custom-class" date-format="MM/dd/yyyy" date-min-limit="01/01/2018" date-max-limit={{maxDate}} date-typer="true">
-                                            <input ng-model="enddate" type="text" class="form-control" placeholder="End Date" />
+                                            <input ng-disabled="!isShow" ng-model="enddate" type="text" class="form-control" placeholder="End Date" />
                                         </div>
                                         <div ng-show="isError">{{error1}}</div>
                                     </div>
                                     <div class="col-lg-4 col-md-4">
-                                        <button type="button" class="btn btn-primary pull-right" ng-click="filterGst()">Filter</button>
+                                        <button ng-disabled="!isShow" type="button" class="btn btn-primary pull-right" ng-click="filterGst()">Filter</button>
                                     </div>
                                 </div>
 
                                 <br>
-                                <button ng-disabled="isFilter" ng-json-export-excel data="gstReturnsBillData" report-fields="{
+                                <button ng-disabled="(isFilter && isShow) ?  false : true" ng-json-export-excel data="gstReturnsBillData" report-fields="{
                                         GSTIN: 'GSTIN/UIN of Recipient', 
                                         InvoiceNumber: 'Invoice Number', 
                                         Invoicedate: 'Invoice date',
@@ -197,7 +218,7 @@
                                         <i class="material-icons">file_download</i>
                                         GST Returns Bill Data
                                 </button>
-                                <button ng-disabled="isFilter" ng-json-export-excel data="gstReturnsPurchaseData" report-fields="{
+                                <button ng-disabled="(isFilter && isShow) ?  false : true" ng-json-export-excel data="gstReturnsPurchaseData" report-fields="{
                                         seller_name: 'Name of the Seller', 
                                         invoice_no: 'Invoice No', 
                                         invoice_date: 'Invoice Date',

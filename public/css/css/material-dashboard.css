@@ -7195,3 +7195,39 @@ footer .btn {
         transform: rotate(360deg);
     }
 }
+
+.barcode-grid-wrapper {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+.barcode-grid-box {
+    color: black;
+    border-radius: 5px;
+    border: solid;
+}
+
+.barcode-label {
+    font-style: monospace;
+    font-size: 8px;
+    color: black;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.barcode-mrp-label {
+    font-style: monospace;
+    font-size: 8px;
+    color: black;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.barcode-model-label {
+    font-style: monospace;
+    font-size: 8px;
+    color: black;
+    font-weight: bold;
+    margin-left: 15px;
+}

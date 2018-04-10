@@ -1,4 +1,10 @@
-var app = angular.module('KaviyaMobiles', ['ngJsonExportExcel', 'ngTable', 'ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster', '720kb.datepicker']);
+var app = angular.module('KaviyaMobiles', ['angular-barcode', 'ngJsonExportExcel', 'ngTable', 'ngAnimate', 'ngRoute', 'AngularPrint', 'ngCookies', 'toaster', '720kb.datepicker']);
+app.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
 app.run(function($log, $http, $rootScope, $location, $cookieStore) {
     $rootScope.isUser = false;
     $rootScope.isAdmin = false;
@@ -351,6 +357,13 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         }, function(response) {});
 
+        $http.get('/skm/dailyProfit/').then(function(response) {
+            var data = angular.fromJson(response.data);
+            for (var i = 0; i < data.length; i++) {
+                $scope.totdailyprofit = data[i].Profit;
+            }
+        }, function(response) {});
+
         $scope.initDashboardPageCharts = function() {
             $http.get('/skm/dailySales/').then(function(response) {
                 var data = angular.fromJson(response.data);
@@ -444,8 +457,12 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
 
+
         $(document).ready(function() {
+            $scope.fisYearBill = '2018';
+            $scope.fisYearBillWhole = '2018';
             $scope.getGeneratedBillData();
+            $scope.getGeneratedBillWhData();
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function
                 $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
@@ -454,7 +471,18 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             } else {
                 $('html').addClass('perfect-scrollbar-off');
             }
+
         });
+
+        $scope.fisYearBillVal = function() {
+            alert("You have Choosen FY : " + $scope.fisYearBill)
+            $scope.getGeneratedBillData();
+        }
+
+        $scope.fisYearBillWholeVal = function() {
+            alert("You have Choosen FY  : " + $scope.fisYearBillWhole)
+            $scope.getGeneratedBillWhData();
+        }
 
         $http.get('/skm/adminStockData/').then(function(response) {
             var res = response.data;
@@ -465,7 +493,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.getGeneratedBillData = function() {
             $scope.deleteBillData = {};
-            $http.get('/skm/adminBillData/').then(function(response) {
+            var billD = {
+                fisYear: $scope.fisYearBill
+            }
+            $http.post('/skm/adminBillData/', billD).then(function(response) {
                 var res = response.data;
                 var data = angular.fromJson(res);
                 for (var i = 0; i < data.length; i++) {
@@ -474,12 +505,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.tableParamsBillData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
             }, function(response) {});
         };
-
-        $http.get('/skm/adminCustomerData/').then(function(response) {
-            var res = response.data;
-            var data = angular.fromJson(res);
-            $scope.tableParamsCustomerData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
-        }, function(response) {});
 
         $scope.getGeneratedBills = function(getBill) {
             console.log("getGeneratedBills");
@@ -491,7 +516,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             } else {
                 console.log("Else : " + getBill.BillType);
                 var getBillData = {
-                    billNo: getBill.BillNo
+                    billNo: getBill.BillNo,
+                    fisYear: $scope.fisYearBill
                 }
                 $http.post('/skm/getGeneratedBill/', getBillData).then(function(response) {
                     var res = response.data;
@@ -524,7 +550,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.generateDisBill = function() {
             var getDisBill = $scope.getBill;
             var getDisBillData = {
-                billNo: getDisBill.BillNo
+                billNo: getDisBill.BillNo,
+                fisYear: $scope.fisYearBill
             }
             console.log(getDisBillData)
             console.log(getDisBill)
@@ -555,7 +582,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
             $scope.deleteBillData = {
                 billNo: deleteBill.BillNo,
-                billType: deleteBill.BillType
+                billType: deleteBill.BillType,
+                fisYear: $scope.fisYearBill
             }
         };
 
@@ -572,6 +600,122 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 }
             }, function(response) {});
         };
+
+        $scope.getGeneratedBillWhData = function() {
+            $scope.deleteBillWholeData = {};
+            var billWD = {
+                fisYearW: $scope.fisYearBillWhole
+            }
+            $http.post('/skm/adminBillWholeData/', billWD).then(function(response) {
+                var res = response.data;
+                var data = angular.fromJson(res);
+                for (var i = 0; i < data.length; i++) {
+                    data[i].IssuedDate = $rootScope.secondsToTime(data[i].IssuedDate);
+                }
+                $scope.tableParamsBillWholeData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
+            }, function(response) {});
+        };
+
+        $scope.getGeneratedBillsWhole = function(getBillWh) {
+            console.log("getGeneratedBillsWhole");
+            $scope.getBillWh = getBillWh;
+            console.log($scope.getBillWh);
+            if (getBillWh.BillType == 'DIS' || getBillWh.BillType == 'DIS-D') {
+                console.log("If : " + getBillWh.BillType);
+                $("#getDisConfirmBill").modal();
+            } else {
+                console.log("Else : " + getBillWh.BillType);
+                var getBillWhData = {
+                    billNo: getBillWh.BillNo,
+                    fisYearW: $scope.fisYearBillWhole
+                }
+                $http.post('/skm/getGeneratedBillWhole/', getBillWhData).then(function(response) {
+                    var res = response.data;
+                    $scope.generatedBillData = angular.fromJson(res);
+                    for (var i = 0; i < $scope.generatedBillData.length; i++) {
+                        $scope.generatedBillData[i].isPColor = ($scope.generatedBillData[i].isPColor == 'true') ? true : false;
+                    }
+                    $scope.totalCashWor = $rootScope.convertNumberToWords($scope.generatedBillData[0].amount);
+                    $scope.geItemsCount = $scope.generatedBillData.length;
+                    $http.get('/skm/storeDetails/').then(function(response) {
+                        var res = response.data;
+                        $scope.shopDetail = res[0];
+                    }, function(response) {});
+                    $("#generatedBill").modal();
+                }, function(response) {});
+            }
+
+        };
+
+        $scope.generateNonDisBillWhole = function() {
+            console.log("generateNonDisBillWhole");
+            var getNonDisBillWh = $scope.getBillWh;
+            getNonDisBillWh.BillType = 'B'
+            $scope.getGeneratedBillsWhole(getNonDisBillWh);
+            $scope.getBillWh.BillType = 'DIS';
+            console.log(getNonDisBillWh);
+            console.log("End generateNonDisBillWhole");
+            console.log($scope.getBillWh);
+        }
+        $scope.generateDisBillWhole = function() {
+            var getDisBillWh = $scope.getBillWh;
+            var getDisBillWhData = {
+                billNo: getDisBillWh.BillNo,
+                fisYearW: $scope.fisYearBillWhole
+            }
+            console.log(getDisBillWhData)
+            console.log(getDisBillWh)
+            $http.post('/skm/getGeneratedDisBillWhole/', getDisBillWhData).then(function(response) {
+                var res = response.data;
+                $scope.generatedBillData = angular.fromJson(res);
+                for (var i = 0; i < $scope.generatedBillData.length; i++) {
+                    $scope.generatedBillData[i].isPColor = ($scope.generatedBillData[i].isPColor == 'true') ? true : false;
+                }
+                $scope.totalCashWor = $rootScope.convertNumberToWords($scope.generatedBillData[0].amount);
+                $scope.geItemsCount = $scope.generatedBillData.length;
+                $http.get('/skm/storeDetails/').then(function(response) {
+                    var res = response.data;
+                    $scope.shopDetail = res[0];
+                }, function(response) {});
+                $("#generatedBill").modal();
+            }, function(response) {});
+        }
+
+        $scope.removeGeneratedBillsWhole = function(deleteBillWh) {
+            $("#getConfirmation").modal();
+            if (deleteBillWh.BillType == 'B') {
+                deleteBillWh.BillType = 'D'
+            } else if (deleteBillWh.BillType == 'DIS') {
+                deleteBillWh.BillType = 'DIS-D'
+            } else {
+                deleteBillWh.BillType = 'D'
+            }
+            $scope.deleteBillWholeData = {
+                billNo: deleteBillWh.BillNo,
+                billType: deleteBillWh.BillType,
+                fisYearW: $scope.fisYearBillWhole
+            }
+        };
+
+        $scope.deleteBillWhole = function() {
+            $("#getConfirmation").modal('hide');
+            $http.post('/skm/removeGeneratedBillWhole/', $scope.deleteBillWholeData).then(function(response) {
+                var res = response.data;
+                if (res == 'DONE') {
+                    $scope.getGeneratedBillWhData();
+                } else if (res == 'BILL') {
+                    $scope.getGeneratedBillWhData();
+                } else {
+                    $scope.getGeneratedBillWhData();
+                }
+            }, function(response) {});
+        };
+
+        $http.get('/skm/adminCustomerData/').then(function(response) {
+            var res = response.data;
+            var data = angular.fromJson(res);
+            $scope.tableParamsCustomerData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
+        }, function(response) {});
 
         $scope.viewCustomerData = function(viewCustData) {
             $scope.viewCustomerDetails = viewCustData;
@@ -670,7 +814,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.isProductAdded = false;
         $scope.isGenerateBill = true;
         $scope.isResetBill = true;
-        $scope.isCustomerSelected = false;
+        $scope.isCustomerSelected = true;
         $scope.isSaveBill = false;
         $scope.isPrintBill = false;
         $scope.isBackBill = false;
@@ -711,7 +855,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.customerName = $scope.customerDetails.cust_name;
             $("#getCustomer").modal('hide');
             $scope.isSearchCust = false;
-            $scope.isCustomerSelected = true;
+            $scope.isCustomerSelected = false;
         }
         $scope.addCustomer = {};
         $scope.addCust = function() {
@@ -743,21 +887,22 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.cusID = newCustId;
                     $scope.addCustomer.cusID = newCustId;
                     $scope.customerName = $scope.addCustomer.cust_name;
-                    $scope.isCustomerSelected = true;
+                    $scope.isCustomerSelected = false;
                     $scope.customerDetails = $scope.addCustomer;
                 } else {
                     $scope.custTitle = "Failed";
                     $scope.custMessage = ", Added Failed. Please try again.";
-                    $scope.isCustomerSelected = false;
+                    $scope.isCustomerSelected = true;
                 }
                 $("#addCustDBMessage").modal();
             }, function(response) {});
         };
 
         $scope.brandSearch = function() {
-            $rootScope.appLogger("INFO", "brandSearch purchaseType : " + $scope.purchaseType);
+            $rootScope.appLogger("INFO", "brandSearch purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
             var brandData = {
-                purchase_type: $scope.purchaseType
+                purchase_type: $scope.purchaseType,
+                stock_type: $scope.stockType
             }
             $http.post('/skm/brandSearch/', brandData).then(function(response) {
                 var res = response.data;
@@ -768,7 +913,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.modelDetails = function() {
             var brandId = {
                 id: $scope.brandId,
-                purchase_type: $scope.purchaseType
+                purchase_type: $scope.purchaseType,
+                stock_type: $scope.stockType
             }
             $http.post('/skm/amodelSearch/', brandId).then(function(response) {
                 var res = response.data;
@@ -788,10 +934,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.productDetails = function() {
-            $rootScope.appLogger("INFO", "productDetails purchaseType : " + $scope.purchaseType);
+            $rootScope.appLogger("INFO", "productDetails purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
             var modelId = {
                 id: $scope.modelId,
-                purchase_type: $scope.purchaseType
+                purchase_type: $scope.purchaseType,
+                stock_type: $scope.stockType
             }
             $http.post('/skm/productSearch/', modelId).then(function(response) {
                 var res = response.data;
@@ -812,7 +959,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.productDetail = {};
             var sId = {
                 id: $scope.sid,
-                purchase_type: $scope.purchaseType
+                purchase_type: $scope.purchaseType,
+                stock_type: $scope.stockType
             }
             $http.post('/skm/productDetails/', sId).then(function(response) {
                 var res = response.data;
@@ -907,9 +1055,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $http.post('/skm/stockUpdate', stockAddedData).then(function(response) {
 
                 }, function(response) {});
-                if ($scope.isCustomerSelected) {
+                if (!$scope.isCustomerSelected) {
                     $scope.isGenerateBill = false;
-                    //$scope.isCustomerSelected = false;
                 }
                 for (var i = 0; i < $scope.salesProductList.pList.length; i++) {
                     if ($scope.salesProductList.pList[i].pDis > 0) {
@@ -979,31 +1126,31 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 modifiedDate: timeToSecond,
                 modifiedBy: $rootScope.userObj.uid
             }
-            $rootScope.appLogger("INFO", "generatePreviewBill $scope.billNo : " + $scope.billNo + " $scope.purchaseType : " + $scope.purchaseType);
+            $rootScope.appLogger("INFO", "generatePreviewBill $scope.billNo : " + $scope.billNo + " $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
             if ($scope.billNo == '') {
-                $rootScope.appLogger("INFO", "BEFORE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
+                $rootScope.appLogger("INFO", "BEFORE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                 if ($scope.purchaseType == 'PURCHASE') {
-                    $rootScope.appLogger("INFO", "IF generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
+                    $rootScope.appLogger("INFO", "IF generatePreviewBill $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                     $http.post('/skm/billNo/', salesProductListData).then(function(response) {
                         output = response.data;
                         $scope.billNo = output.insertId;
                     }, function(response) {});
                 } else {
-                    $rootScope.appLogger("INFO", "ELSE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
+                    $rootScope.appLogger("INFO", "ELSE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                     $http.post('/skm/billNoWholeSale/', salesProductListData).then(function(response) {
                         output = response.data;
                         $scope.billNo = output.insertId;
                     }, function(response) {});
                 }
             } else if ($scope.billNo == 'C') {
-                $rootScope.appLogger("INFO", "BEFORE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
+                $rootScope.appLogger("INFO", "BEFORE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                 if ($scope.purchaseType == 'PURCHASE') {
-                    $rootScope.appLogger("INFO", "IF generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
+                    $rootScope.appLogger("INFO", "IF generatePreviewBill $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                     $http.post('/skm/updateBillType/', salesData).then(function(response) {
                         $scope.isResetBill = false;
                     }, function(response) {});
                 } else {
-                    $rootScope.appLogger("INFO", "ELSE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType);
+                    $rootScope.appLogger("INFO", "ELSE generatePreviewBill $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                     $http.post('/skm/updateBillTypeWholeSale/', salesData).then(function(response) {
                         $scope.isResetBill = false;
                     }, function(response) {});
@@ -1027,9 +1174,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedDate: timeToSecond,
                         modifiedBy: $rootScope.userObj.uid
                     }
-                    $rootScope.appLogger("INFO", "BEFORE salesInvoiceSave $scope.purchaseType : " + $scope.purchaseType);
+                    $rootScope.appLogger("INFO", "BEFORE salesInvoiceSave $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                     if ($scope.purchaseType == 'PURCHASE') {
-                        $rootScope.appLogger("INFO", "IF salesInvoiceSave $scope.purchaseType : " + $scope.purchaseType);
+                        $rootScope.appLogger("INFO", "IF salesInvoiceSave $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                         $http.post('/skm/salesInvoice/', salesData).then(function(response) {
                             if (response.data == 'DONE') {
                                 alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
@@ -1040,7 +1187,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                             }
                         }, function(response) {});
                     } else {
-                        $rootScope.appLogger("INFO", "ELSE salesInvoiceSave $scope.purchaseType : " + $scope.purchaseType);
+                        $rootScope.appLogger("INFO", "ELSE salesInvoiceSave $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                         $http.post('/skm/salesInvoiceWholeSale/', salesData).then(function(response) {
                             if (response.data == 'DONE') {
                                 alert("Bill No : " + $scope.billNo + " Saved Successfully !#!#");
@@ -1072,9 +1219,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         modifiedDate: timeToSecond,
                         modifiedBy: $rootScope.userObj.uid
                     }
-                    $rootScope.appLogger("INFO", "BEFORE salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
+                    $rootScope.appLogger("INFO", "BEFORE salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                     if ($scope.purchaseType == 'PURCHASE') {
-                        $rootScope.appLogger("INFO", "IF salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
+                        $rootScope.appLogger("INFO", "IF salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                         $http.post('/skm/salesInvoice/', salesData).then(function(response) {
                             //if (response.data == 'DONE') {
                             $scope.isSaveBill = true;
@@ -1091,7 +1238,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                             }*/
                         }, function(response) {});
                     } else {
-                        $rootScope.appLogger("INFO", "ELSE salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
+                        $rootScope.appLogger("INFO", "ELSE salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                         $http.post('/skm/salesInvoiceWholeSale/', salesData).then(function(response) {
                             //if (response.data == 'DONE') {
                             $scope.isSaveBill = true;
@@ -1126,14 +1273,14 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var salesData = {
                 billNo: $scope.billNo
             }
-            $rootScope.appLogger("INFO", "BEFORE backToSalesInvoice salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
+            $rootScope.appLogger("INFO", "BEFORE backToSalesInvoice salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
             if ($scope.purchaseType == 'PURCHASE') {
-                $rootScope.appLogger("INFO", "IF backToSalesInvoice salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
+                $rootScope.appLogger("INFO", "IF backToSalesInvoice salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                 $http.post('/skm/backToSalesInvoice/', salesData).then(function(response) {
                     $scope.isResetBill = false;
                 }, function(response) {});
             } else {
-                $rootScope.appLogger("INFO", "ELSE backToSalesInvoice salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType);
+                $rootScope.appLogger("INFO", "ELSE backToSalesInvoice salesInvoicePrint $scope.purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
                 $http.post('/skm/backToSalesInvoiceWholeSale/', salesData).then(function(response) {
                     $scope.isResetBill = false;
                 }, function(response) {});
@@ -1141,7 +1288,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.resetSalesInvoice = function(action) {
-            $scope.isCustomerSelected = false;
+            $scope.isCustomerSelected = true;
             $scope.cusID = '';
             $scope.customerName = '';
             $scope.isProductAdded = false;
@@ -1338,7 +1485,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
     })
-    .controller('ProductBarCodeCntlr', function($scope, $route, $routeParams, $location) {
+    .controller('ProductBarCodeCntlr', function($scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
@@ -1352,6 +1499,123 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
+
+        $scope.barcodePrint = function() {
+
+        }
+
+        var barcodestartDate = '';
+        var barcodeendDate = '';
+
+        $scope.$watch('barcodestartdate', function(value) {
+            $scope.isFilter = false;
+            $scope.isValidStart = false;
+            try {
+                barcodestartDate = new Date(value).toString();
+            } catch (e) {}
+
+            if (!barcodestartDate) {
+                $scope.error = "This is not a valid date";
+            } else {
+                $scope.error = false;
+            }
+        });
+
+        $scope.$watch('barcodeenddate', function(value) {
+            $scope.isFilter = false;
+            $scope.isValidSdate = false;
+            try {
+                barcodeendDate = new Date(value).toString();
+            } catch (e) {}
+
+            if (!barcodeendDate) {
+                $scope.error = "This is not a valid date";
+            } else {
+                $scope.error = false;
+                $scope.isValidDate = false;
+            }
+        });
+        $scope.barcodeCurrentPage = 0;
+        $scope.barcodePageSize = 40;
+        $scope.barcodeImei = [];
+        $scope.barcodeNumberOfPages = function() {
+            return Math.ceil($scope.barcodeImei.length / $scope.barcodePageSize);
+        }
+
+        $scope.filterBarcode = function() {
+            $scope.barcodeSpinner = true;
+            if (barcodestartDate && barcodeendDate) {
+                var startTime = Math.round(new Date(barcodestartDate).getTime() / 1000);
+                var endTime = Math.round(new Date(barcodeendDate).getTime() / 1000);
+                if (startTime > endTime) {
+                    $scope.isError = true;
+                    $scope.error = "Start Date is greater than End Date";
+                } else {
+                    $scope.isFilter = true;
+                    $scope.error = false;
+                }
+            }
+            var barcodeFilterData = {
+                sdate: startTime,
+                edate: endTime
+            };
+            console.log(barcodeFilterData);
+            $http.post('/skm/barcodeIMEI/', barcodeFilterData).then(function(response) {
+                var res = response.data;
+                $scope.barcodeImei = angular.fromJson(res);
+                $("#generateBarCode").modal();
+                console.log("$scope.barcodeImei");
+                console.log($scope.barcodeImei);
+                $scope.isGenerated = true;
+            }, function(response) {
+
+            }).finally(function() {
+                // called no matter success or failure
+                $scope.barcodeSpinner = false;
+            });
+        }
+
+        $scope.$watch('bc', function() {
+            for (var key in $scope.bc) {
+                if ($scope.bc.hasOwnProperty(key)) {
+                    switch (typeof $scope.bc[key]) {
+                        case 'number':
+                            if ($scope.bc[key] === null) {
+                                delete $scope.bc[key];
+                            }
+                            break;
+                        case 'string':
+                            if ($scope.bc[key].length === 0) {
+                                delete $scope.bc[key];
+                            }
+                            break;
+                        case 'boolean':
+                            break;
+                    }
+                }
+            }
+        }, true);
+
+        $scope.bc = {
+            format: 'CODE39',
+            lineColor: '#000000',
+            width: 0.25,
+            height: 20,
+            displayValue: true,
+            fontOptions: '',
+            font: 'monospace',
+            textAlign: 'center',
+            textPosition: 'bottom',
+            textMargin: 3,
+            fontSize: 10,
+            background: '#ffffff',
+            margin: 8,
+            marginTop: 8,
+            marginBottom: 8,
+            marginLeft: 8,
+            marginRight: 8,
+            valid: function(valid) {}
+        }
     })
     .controller('AddCustomerCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
         $scope.$route = $route;
@@ -1452,9 +1716,34 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         });
         $scope.isValidIMEI = true;
         $scope.retProductIMEI = [];
+        $scope.upProductIMEI = [];
+        $scope.stockType = 'MOBILE';
+        $scope.retStockType = 'MOBILE';
+        $scope.upStockType = 'MOBILE';
+        $scope.stockTypeCode = 'IMEI';
+        $scope.retStockTypeCode = 'IMEI';
+        $scope.upStockTypeCode = 'IMEI';
         var taxlist = [];
         var taxes = '';
         var promise = $q.all([]);
+
+        $scope.isstockType = function() {
+            if ($scope.stockType == 'MOBILE') {
+                $scope.stockTypeCode = 'IMEI';
+            } else if ($scope.stockType == 'ACCESS') {
+                $scope.stockTypeCode = 'SERIAL';
+            }
+            if ($scope.retStockType == 'MOBILE') {
+                $scope.retStockTypeCode = 'IMEI';
+            } else if ($scope.retStockType == 'ACCESS') {
+                $scope.retStockTypeCode = 'SERIAL';
+            }
+            if ($scope.upStockType == 'MOBILE') {
+                $scope.upStockTypeCode = 'IMEI';
+            } else if ($scope.upStockType == 'ACCESS') {
+                $scope.upStockTypeCode = 'SERIAL';
+            }
+        }
 
         $http.get('/skm/taxGroup/').then(function(response) {
             var res = response.data;
@@ -1495,12 +1784,23 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.mobColor = angular.fromJson(res);
         }, function(response) {});
 
+        $scope.validateInputs = function() {
+            if ($scope.stockType == 'IMEI') {
+                $scope.validateIMEI();
+            }
+            /*else {
+                           $scope.validateSERIAL();
+                       }*/
+        }
+
+        $scope.validateSERIAL = function() {}
+
         $scope.validateIMEI = function() {
             var imeis = $scope.imeiNumber;
-            console.log("imeis : " + imeis);
+            console.log("validateIMEI imeis : " + imeis);
             if ($scope.imeiNumber.length >= 15) {
                 var imei_array = imeis.split(",");
-                console.log("imei_array len: " + imei_array.length);
+                console.log("validateIMEI imei_array len: " + imei_array.length);
                 angular.forEach(imei_array, function(im) {
                     promise = promise.then(function() {
                         return validateImei(im);
@@ -1549,7 +1849,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var timeToSecond = $rootScope.timeToSeconds();
             var imeis = $scope.imeiNumber;
             var imei_array = imeis.split(",");
-            console.log("addProduct : imei_array : " + imei_array + "purchaseType : " + $scope.purchaseType);
+            console.log("addProduct : imei_array : " + imei_array + "purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
             var pro = {
                 item_id: $scope.item,
                 details: $scope.description,
@@ -1564,7 +1864,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 createdDate: timeToSecond,
                 modifiedDate: timeToSecond,
                 modifiedBy: $rootScope.userObj.uid,
-                purchase_type: $scope.purchaseType
+                purchase_type: $scope.purchaseType,
+                stock_type: $scope.stockType
             };
             angular.forEach(imei_array, function(im) {
                 promise = promise.then(function() {
@@ -1597,6 +1898,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                         $scope.pprice = '';
                         $scope.sprice = '';
                         $scope.tax = '';
+                        $scope.purchaseType = '';
+                        $scope.stockType = 'MOBILE';
+                        $scope.stockTypeCode = 'IMEI';
                         return pro.sku_no;
                     }, function(response) {});
                     return pro.sku_no;
@@ -1605,9 +1909,10 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         }
 
         $scope.retBrandSearch = function() {
-            $rootScope.appLogger("INFO", "retBrandSearch retPurchaseType : " + $scope.retPurchaseType);
+            $rootScope.appLogger("INFO", "retBrandSearch retPurchaseType : " + $scope.retPurchaseType + " retStockType : " + $scope.retStockType);
             var brandData = {
-                purchase_type: $scope.retPurchaseType
+                purchase_type: $scope.retPurchaseType,
+                stock_type: $scope.retStockType
             }
             $http.post('/skm/brandSearch/', brandData).then(function(response) {
                 var res = response.data;
@@ -1618,7 +1923,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.retModelDetails = function() {
             var retBrandId = {
                 id: $scope.retBrandId,
-                purchase_type: $scope.retPurchaseType
+                purchase_type: $scope.retPurchaseType,
+                stock_type: $scope.retStockType
             }
             $http.post('/skm/amodelSearch/', retBrandId).then(function(response) {
                 var res = response.data;
@@ -1627,10 +1933,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         };
 
         $scope.retProductDetails = function() {
-            $rootScope.appLogger("INFO", "retProductDetails retPurchaseType : " + $scope.retPurchaseType);
+            $rootScope.appLogger("INFO", "retProductDetails retPurchaseType : " + $scope.retPurchaseType + " retStockType : " + $scope.retStockType);
             var retModelId = {
                 id: $scope.retModelId,
-                purchase_type: $scope.retPurchaseType
+                purchase_type: $scope.retPurchaseType,
+                stock_type: $scope.retStockType
             }
             $http.post('/skm/productSearch/', retModelId).then(function(response) {
                 var res = response.data;
@@ -1660,6 +1967,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.retMobModels = '';
                     $scope.retProductIMEIS = '';
                     $scope.retProductIMEI = [];
+                    $scope.retStockType = 'MOBILE';
+                    $scope.retStockTypeCode = 'IMEI';
                 },
                 function(response) {
 
@@ -1668,6 +1977,79 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.spinner = false;
             });
         };
+
+        $scope.upBrandSearch = function() {
+            $rootScope.appLogger("INFO", "upBrandSearch upPurchaseType : " + $scope.upPurchaseType + " upStockType : " + $scope.upStockType);
+            var upBrandData = {
+                purchase_type: $scope.upPurchaseType,
+                stock_type: $scope.upStockType
+            }
+            $http.post('/skm/brandSearch/', upBrandData).then(function(response) {
+                var res = response.data;
+                $scope.upMobBrands = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.upModelDetails = function() {
+            var upBrandId = {
+                id: $scope.upBrandId,
+                purchase_type: $scope.upPurchaseType,
+                stock_type: $scope.upStockType
+            }
+            $http.post('/skm/amodelSearch/', upBrandId).then(function(response) {
+                var res = response.data;
+                $scope.upMobModels = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.upProductDetails = function() {
+            $rootScope.appLogger("INFO", "upProductDetails upPurchaseType : " + $scope.upPurchaseType + " upStockType : " + $scope.upStockType);
+            var upModelId = {
+                id: $scope.upModelId,
+                purchase_type: $scope.upPurchaseType,
+                stock_type: $scope.upStockType
+            }
+            $http.post('/skm/productSearch/', upModelId).then(function(response) {
+                var res = response.data;
+                $scope.upProductIMEIS = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.upCheckItem = function(imei) {
+            for (var i = 0; i < $scope.upProductIMEIS.length; i++) {
+                if (imei == $scope.upProductIMEIS[i].imei_number) {
+                    $scope.upProductIMEI.push(imei);
+                }
+            }
+        };
+
+        $scope.updateProduct = function() {
+            $scope.updatespinner = true;
+            $rootScope.appLogger("INFO", "updateProduct $scope.upProductIMEI : " + $scope.upProductIMEI);
+            var upIMEIS = {
+                product_imeis: $scope.upProductIMEI,
+                purchase_type: $scope.upPurchaseType,
+                upPPrice: $scope.upPPrice
+            }
+            $http.post('/skm/upProduct/', upIMEIS).then(function(response) {
+                    console.log(response.data);
+                    $scope.upPPrice = '';
+                    $scope.upPurchaseType = '';
+                    $scope.upMobBrands = ''
+                    $scope.upMobModels = '';
+                    $scope.upProductIMEIS = '';
+                    $scope.upProductIMEI = [];
+                    $scope.upStockType = 'MOBILE';
+                    $scope.upStockTypeCode = 'IMEI';
+                },
+                function(response) {
+
+                }).finally(function() {
+                // called no matter success or failure
+                $scope.updatespinner = false;
+            });
+        };
+
 
         $scope.SelectedFileForUpload = null;
 
@@ -1715,7 +2097,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.$http = $http;
         $scope.$location = $location;
         $scope.$routeParams = $routeParams;
-        $scope.isFilter = true;
+        $scope.isFilter = false;
+        $scope.isShow = false;
         $scope.isError = false;
         var today = new Date();
         var dd = today.getDate() + 1;
@@ -1733,10 +2116,19 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
 
+        $scope.fisYearVal = function() {
+            if ($scope.fisYear > 0) {
+                $scope.isShow = true;
+            } else {
+                $scope.isShow = false;
+            }
+        }
+
         var startDate = '';
         var endDate = '';
+
         $scope.$watch('startdate', function(value) {
-            $scope.isFilter = true;
+            $scope.isFilter = false;
             $scope.isValidStart = false;
             try {
                 startDate = new Date(value).toString();
@@ -1750,7 +2142,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         });
 
         $scope.$watch('enddate', function(value) {
-            $scope.isFilter = true;
+            $scope.isFilter = false;
             $scope.isValidSdate = false;
             try {
                 endDate = new Date(value).toString();
@@ -1763,6 +2155,8 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.isValidDate = false;
             }
         });
+
+
         $scope.filterGst = function() {
             $scope.spinner = true;
             if (startDate && endDate) {
@@ -1772,14 +2166,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                     $scope.isError = true;
                     $scope.error = "Start Date is greater than End Date";
                 } else {
-                    $scope.isFilter = false;
+                    $scope.isFilter = true;
                     $scope.error = false;
                 }
             }
 
             var FilterData = {
                 sdate: startTime,
-                edate: endTime
+                edate: endTime,
+                fisYear: $scope.fisYear
             };
             console.log(FilterData);
             $http.post('/skm/GSTReturnsBillData/', FilterData).then(function(response) {

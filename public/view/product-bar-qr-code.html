@@ -12,62 +12,85 @@
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li ng-show="isAdmin && !isUser">
-                    <a href="#!dashboard">
+                <li ng-show="isSuperAdmin">
+                    <a href="#!superadmindashboard">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
+                    <a href="#!dashboard">
+                        <i class="material-icons">chrome_reader_mode</i>
+                        <p>History Data</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!addcustomer">
                         <i class="material-icons">person</i>
                         <p>Add/Edit Customer</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!salesinvoice">
                         <i class="material-icons">content_paste</i>
                         <p>Sales Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <!--<li ng-show="isAdmin || isUser">
                     <a href="#!productsearch">
                         <i class="material-icons">search</i>
                         <p>Product Search</p>
                     </a>
-                </li>
-                <li class="active" ng-show="isAdmin || isUser">
+                </li>-->
+                <li class="active" ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!productbarcode">
                         <i class="material-icons">library_books</i>
-                        <span class="notificationCount">5</span>
-                        <p>Product Bar/QR Code</p>
+                        <p>Product BarCode</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!purchaseinvoice">
-                        <i class="material-icons">bubble_chart</i>
+                        <i class=" material-icons">bubble_chart</i>
                         <p>Purchase Invoice</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin && !isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
+                    <a href="#!gstreport">
+                        <i class="material-icons">assignment</i>
+                        <p>GST Returns</p>
+                    </a>
+                </li>
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
+                    <a href="#!gstpurchase">
+                        <i class="material-icons">assignment</i>
+                        <p>GST Purchase</p>
+                    </a>
+                </li>
+                <!--<li ng-show="isAdmin">
                     <a href="#!notifications">
                         <i class="material-icons text-gray">notifications</i>
                         <p>Notifications</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin && !isUser">
+                <li ng-show="isAdmin">
                     <a href="#!notifications">
                         <i class="material-icons">assessment</i>
                         <p>Transcations</p>
                     </a>
+                </li>-->
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
+                    <a href="#!preference">
+                        <i class="material-icons">build</i>
+                        <p>Preference</p>
+                    </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!offers">
-                        <i class="material-icons">input</i>
+                        <i class="material-icons">card_giftcard</i>
                         <p>Offers</p>
                     </a>
                 </li>
-                <li ng-show="isAdmin || isUser">
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!logout">
                         <i class="material-icons">input</i>
                         <p>Logout</p>
@@ -81,12 +104,12 @@
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    <a style="color: #555555 !important;" class="navbar-brand" href="#">Product Bar/QR Code Generator </a>
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a style="color: #555555 !important;" class="navbar-brand" href="#">Product BarCode</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -123,56 +146,32 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
+                            <div class="loader" ng-show="barcodeSpinner"></div>
                             <div class="card-header" data-background-color="purple">
-                                <h4 class="title">Product Bar/QR Code Generator </h4>
-                                <p class="category">{{currDateTime}} Product Bar/QR Code Generator</p>
+                                <h4 class="title">Product BarCode Generator </h4>
+                                <p class="category">{{currDateTime}} Product BarCode Generator</p>
                             </div>
                             <div class="card-content">
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group label-floating">
-                                                <div class="radio">
-                                                    <label>
-                                                    <input type="radio" name="optionsRadios"> Data For Today [ {{ystrDate}} ]
-                                                </label>
-                                                </div>
+                                        <div class="col-lg-4 col-md-4">
+                                            <div datepicker datepicker-class="test-custom-class" date-format="MM/dd/yyyy" date-min-limit="01/01/2018" date-max-limit={{maxDate}} date-typer="true">
+                                                <input ng-model="barcodestartdate" type="text" class="form-control" placeholder="Start Date" />
                                             </div>
+                                            <div ng-show="isError">{{error}}</div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group label-floating">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="optionsRadios" onchange="showDateRange();"> Range
-                                                    </label>
-                                                </div>
+                                        <div class="col-lg-4 col-md-4">
+                                            <div datepicker datepicker-class="test-custom-class" date-format="MM/dd/yyyy" date-min-limit="01/01/2018" date-max-limit={{maxDate}} date-typer="true">
+                                                <input ng-model="barcodeenddate" type="text" class="form-control" placeholder="End Date" />
                                             </div>
+                                            <div ng-show="isError">{{error1}}</div>
                                         </div>
-                                        <div class="col-md-3"></div>
-                                    </div>
-                                    <div class="row" ng-show="isDatePicker">
-                                        <div class="col-md-3"></div>
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-1">
-                                            <div class="form-group label-floating">
-                                                <input class="datepicker form-control" type="text" value="03/12/2016" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group label-floating">
-                                                <input class="datepicker form-control" type="text" value="03/12/2016" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"></div>
-                                        <div class="col-md-6"></div>
-                                        <div class="col-md-3">
-                                            <button type="submit" class="btn btn-primary pull-right">Generate Bar/QR Code</button>
+                                        <div class="col-lg-4 col-md-4">
+                                            <button type="button" class="btn btn-primary pull-right" ng-click="filterBarcode()">Generate BarCode</button>
                                         </div>
                                     </div>
-                                    <div class="clearfix"></div>
+
+                                    <div class="clearfix "></div>
                                 </form>
                             </div>
                         </div>
@@ -180,36 +179,78 @@
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container-fluid">
-                <nav class="pull-left">
+        <footer class="footer ">
+            <div class="container-fluid ">
+                <nav class="pull-left ">
                     <ul>
                         <li>
-                            <a href="coming-soon.html">
+                            <a href="coming-soon.html ">
                                         Home
                                     </a>
                         </li>
                         <li>
-                            <a href="coming-soon.html">
+                            <a href="coming-soon.html ">
                                         Company
                                     </a>
                         </li>
                         <li>
-                            <a href="coming-soon.html">
+                            <a href="coming-soon.html ">
                                         About Us
                                     </a>
                         </li>
                         <li>
-                            <a href="coming-soon.html">
+                            <a href="coming-soon.html ">
                                         Contact Us
                                     </a>
                         </li>
                     </ul>
                 </nav>
-                <p class="copyright pull-right">
+                <p class="copyright pull-right ">
                     &copy; {{currYear}} InnoSols, made with love for a better web
                 </p>
             </div>
         </footer>
+    </div>
+</div>
+
+!-- Modal Core -->
+<div class="modal fade" id="generateBarCode" tabindex="-1" role="dialog" aria-labelledby="generateBarCodeLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:800px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeBill();">&times;</button>
+                <div class="row">
+                    <button ng-disabled="barcodeCurrentPage == 0" ng-click="barcodeCurrentPage=barcodeCurrentPage-1" class="btn btn-primary btn-fab btn-fab-mini btn-round">
+                        << 
+                    </button> {{barcodeCurrentPage+1}}/{{barcodeNumberOfPages()}}
+                    <button ng-disabled="barcodeCurrentPage >= barcodeImei.length/barcodePageSize - 1" ng-click="barcodeCurrentPage=barcodeCurrentPage+1" class="btn btn-primary btn-fab btn-fab-mini btn-round">
+                        >>
+                    </button>
+                    <button print-btn type="button" class="btn btn-primary btn-fab btn-fab-mini btn-round pull-right" ng-click="barcodePrint();">
+                        <i class="material-icons">print</i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div print-section>
+                                <div class="row">
+                                    <div class="barcode-grid-wrapper">
+                                        <div class="barcode-grid-box" ng-repeat="barcode in barcodeImei | startFrom:barcodeCurrentPage*barcodePageSize | limitTo:barcodePageSize">
+                                            <label class="barcode-label ">காவியா மொபைல்ஸ்</label>
+                                            <angular-barcode ng-model="barcode.imei_number " bc-options="bc " bc-class="barcode " bc-type="canvas "></angular-barcode>
+                                            <label class="barcode-mrp-label ">₹{{barcode.price}}</label>
+                                            <label class="barcode-model-label ">{{barcode.Model}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

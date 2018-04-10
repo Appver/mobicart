@@ -41,14 +41,13 @@
                         <i class="material-icons">search</i>
                         <p>Product Search</p>
                     </a>
-                </li>
-                <li ng-show="isAdmin || isUser">
+                </li>-->
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!productbarcode">
                         <i class="material-icons">library_books</i>
-                        <span class="notificationCount">5</span>
-                        <p>Product Bar/QR Code</p>
+                        <p>Product BarCode</p>
                     </a>
-                </li>-->
+                </li>
                 <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!purchaseinvoice">
                         <i class="material-icons">bubble_chart</i>
@@ -155,7 +154,9 @@
                                         <button rel="tooltip" title="Download Stock Status" class="btn btn-purple
                                             btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockStatusData" report-fields="{
                                             Brand: 'Brand', 
-                                            Model: 'Model', 
+                                            Model: 'Model',
+                                            Purchase: 'Purchase',
+                                            MRP: 'MRP', 
                                             Count: 'Count'
                                             }" filename="'StockStatus'" separator=';'>
                                             <i class="material-icons">print</i>
@@ -172,6 +173,12 @@
                                         <td title="'Model'" filter="{ Model: 'text'}" sortable="'Model'">
                                             {{sStatus.Model}}
                                         </td>
+                                        <td title="'Purchase'" filter="{ Purchase: 'number'}" sortable="'Purchase'">
+                                            {{sStatus.Purchase}}
+                                        </td>
+                                        <td title="'MRP'" filter="{ MRP: 'number'}" sortable="'MRP'">
+                                            {{sStatus.MRP}}
+                                        </td>
                                         <td title="'Count'" filter="{ Count: 'number'}" sortable="'Count'">
                                             {{sStatus.Count}}
                                         </td>
@@ -185,8 +192,23 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="card">
                             <div class="card-header" data-background-color="orange">
-                                <h4 class="title">Total Bill</h4>
-                                <p class="category">Total Bill for {{currDateTime}}</p>
+                                <h4 class="title">Total Bill Purchase</h4>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <p style="color:white;" class="category">Total Bill Purchase for</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="radio">
+                                            <label style="color:white;" class="control-label"><input type="radio" ng-model="fisYearBill" value="2018" ng-change="fisYearBillVal();">FY 2018-19</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="radio">
+                                            <label style="color:white;" class="control-label"><input type="radio" ng-model="fisYearBill" value="2017" ng-change="fisYearBillVal();">FY 2017-18</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
                             </div>
                             <div class="card-content table-responsive">
                                 <table ng-table="tableParamsBillData" class="table table-hover" show-filter="true">
@@ -208,6 +230,58 @@
                                                 <i class="material-icons">print</i>
                                             </button>
                                             <button type="button" rel="tooltip" title="Delete Bill" ng-show="(bill.BillType === 'D' ? false : bill.BillType === 'DIS-D' ? false : true)" class="btn btn-danger btn-simple btn-xs" ng-click="removeGeneratedBills(bill)">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="orange">
+                                <h4 class="title">Total Bill WholeSales</h4>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <p style="color:white;" class="category">Total Bill WholeSales for</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="radio">
+                                            <label style="color:white;" class="control-label"><input type="radio" ng-model="fisYearBillWhole" value="2018" ng-change="fisYearBillWholeVal();">FY 2018-19</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="radio">
+                                            <label style="color:white;" class="control-label"><input type="radio" ng-model="fisYearBillWhole" value="2017" ng-change="fisYearBillWholeVal();">FY 2017-18</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                            </div>
+                            <div class="card-content table-responsive">
+                                <table ng-table="tableParamsBillWholeData" class="table table-hover" show-filter="true">
+                                    <tr ng-repeat="billWh in $data">
+                                        <td title="'Bill No'" filter="{ BillNo: 'number'}" sortable="'BillNo'">
+                                            {{billWh.BillNo}}
+                                        </td>
+                                        <td title="'Customer Name'" filter="{ CustomerName: 'text'}" sortable="'CustomerName'">
+                                            {{billWh.CustomerName}}
+                                        </td>
+                                        <td title="'Bill Amount'" filter="{ TotalBillAmount: 'number'}" sortable="'TotalBillAmount'">
+                                            {{billWh.TotalBillAmount}}
+                                        </td>
+                                        <td title="'Bill Date'">
+                                            {{billWh.IssuedDate}}
+                                        </td>
+                                        <td title="'Action'">
+                                            <button type="button" rel="tooltip" title="Print WholeSales Bill" class="btn btn-warning btn-simple btn-xs" ng-click="getGeneratedBillsWhole(billWh)">
+                                                <i class="material-icons">print</i>
+                                            </button>
+                                            <button type="button" rel="tooltip" title="Delete WholeSales Bill" ng-show="(billWh.BillType === 'D' ? false : billWh.BillType === 'DIS-D' ? false : true)" class="btn btn-danger btn-simple btn-xs" ng-click="removeGeneratedBillsWhole(billWh)">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>
@@ -445,9 +519,9 @@
                                         <tr>
                                             <td colspan="6">
                                                 <ul style="list-style-type:square">
-                                                    <li>GOODS ONCE SOLD CANNOT BE TAKEN BACK</li>
-                                                    <li>WARRENTY SHOULD BE CLAIM FROM MANUFACTURER ONLY</li>
-                                                    <li>SERVICE & REPAIR CONTACT SERVICE CENTRE ONLY</li>
+                                                    <li>விற்பனை செய்த பொருட்கள் மீண்டும் எடுக்கப்படாது.</li>
+                                                    <li>உத்தரவாதத்தை(WARRANTY), தயாரிப்பாளரிடம் இருந்து பெற வேண்டும்.</li>
+                                                    <li>சேவை மற்றும் தொடர்பு சேவைக்கு, தொடர்பு சேவை மையத்தை தொடர்பு கொள்ளவும்.</li>
                                                 </ul>
                                             </td>
                                             <td colspan="2" align="center" valign="middle">

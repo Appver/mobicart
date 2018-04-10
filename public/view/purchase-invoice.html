@@ -41,14 +41,13 @@
                         <i class="material-icons">search</i>
                         <p>Product Search</p>
                     </a>
-                </li>
-                <li ng-show="isAdmin || isUser">
+                </li>-->
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!productbarcode">
                         <i class="material-icons">library_books</i>
-                        <span class="notificationCount">5</span>
-                        <p>Product Bar/QR Code</p>
+                        <p>Product BarCode</p>
                     </a>
-                </li>-->
+                </li>
                 <li class="active" ng-show="isAdmin || isUser || isSuperAdmin">
                     <a href="#!purchaseinvoice">
                         <i class=" material-icons">bubble_chart</i>
@@ -190,6 +189,7 @@
                                             <div class="form-group label-floating">
                                                 <label class="control-label">ROM</label>
                                                 <select ng-disabled="isModel !== true" class="form-control" ng-model="rom_id" required>
+                                                    <option value="" selected="selected">Select</option>
                                                     <option ng-repeat="r in mobRom" value="{{r.rom_id}}">{{r.rom_size}}</option>
                                                 </select>
                                             </div>
@@ -198,6 +198,7 @@
                                             <div class="form-group label-floating">
                                                 <label class="control-label">RAM</label>
                                                 <select ng-disabled="isModel !== true" class="form-control" ng-model="ram_id" required>
+                                                    <option value="" selected="selected">Select</option>
                                                     <option ng-repeat="a in mobRam" value="{{a.ram_id}}">{{a.ram_size}}</option>
                                                 </select>
                                             </div>
@@ -206,6 +207,7 @@
                                             <div class="form-group label-floating">
                                                 <label class="control-label">COLOR</label>
                                                 <select ng-disabled="isModel !== true" class="form-control" ng-model="color_id" required>
+                                                    <option value="" selected="selected">Select</option>
                                                     <option ng-repeat="c in mobColor" value="{{c.col_id}}">{{c.color}}</option>
                                                 </select>
                                             </div>
@@ -243,21 +245,21 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <!--<div class="col-md-6">
+                                        <div class="col-md-6">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Stock Type</label>
-                                                <select class="form-control" ng-model="stockType" ng-disabled="true">
-                                                        <option value="IMEI">IMEI</option>
-                                                        <option value="SERIALNO">SERIAL NO</option>
-                                                        <option value="BARCODE">BAR CODE</option>
-                                                    </select>
+                                                <select class="form-control" ng-model="stockType" ng-change="isstockType();">
+                                                    <option value="MOBILE">Mobiles/Smart Phones</option>
+                                                    <option value="ACCESS">Accessories</option>
+                                                    <!--<option value="BARCODE">BAR CODE</option>-->
+                                                </select>
                                             </div>
-                                        </div>-->
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group label-floating">
-                                            <label class="control-label">IMEI Number</label>
-                                            <input type="text" class="form-control" ng-model="imeiNumber" ng-change="validateIMEI();">
+                                            <label class="control-label">{{stockTypeCode}} Number</label>
+                                            <input type="text" class="form-control" ng-model="imeiNumber" ng-change="validateInputs();">
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary pull-right">Add Product</button>
@@ -281,6 +283,15 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group label-floating">
+                                                <label class="control-label">Stock Type</label>
+                                                <select class="form-control" ng-model="retStockType" ng-change="isstockType();">
+                                                    <option value="MOBILE">Mobiles/Smart Phones</option>
+                                                    <option value="ACCESS">Accessories</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group label-floating">
                                                 <label class="control-label">Prodcut Type</label>
                                                 <select class="form-control" ng-model="retPurchaseType" ng-change="retBrandSearch()">
                                                     <option value="PURCHASE">PURCHASE</option>
@@ -288,7 +299,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Brand</label>
                                                 <select class="form-control" ng-model="retBrandId" ng-change="retModelDetails()" required>
@@ -296,7 +307,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Model</label>
                                                 <select class="form-control" ng-model="retModelId" required>
@@ -317,7 +328,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Choose IMEI's To Return !!</label>
+                                                <label class="control-label">Choose {{retStockTypeCode}}'s No To Return !!</label>
                                             </div>
                                         </div>
                                     </div>
@@ -336,6 +347,97 @@
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary pull-right">Return Product</button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <toaster-container toaster-options="{'time-out': 7000}"></toaster-container>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="purple">
+                                <h4 class="title">Update Product Price</h4>
+                                <p class="category">{{currDateTime}} Update Product Price</p>
+                            </div>
+                            <div class="card-content">
+                                <form ng-submit="updateProduct()">
+                                    <div class="loader" ng-show="updatespinner"></div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Stock Type</label>
+                                                <select class="form-control" ng-model="upStockType" ng-change="isstockType();">
+                                                    <option value="MOBILE">Mobiles/Smart Phones</option>
+                                                    <option value="ACCESS">Accessories</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Prodcut Type</label>
+                                                <select class="form-control" ng-model="upPurchaseType" ng-change="upBrandSearch()">
+                                                        <option value="PURCHASE">PURCHASE</option>
+                                                        <option value="WHOLESALE">WHOLESALE</option>
+                                                    </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Brand</label>
+                                                <select class="form-control" ng-model="upBrandId" ng-change="upModelDetails()" required>
+                                                        <option ng-repeat="b in upMobBrands" value="{{b.bid}} ">{{b.brand}}</option>
+                                                    </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Model</label>
+                                                <select class="form-control" ng-model="upModelId" required>
+                                                        <option ng-repeat="m in upMobModels" value="{{m.item_id}}">{{m.model}}</option>
+                                                    </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group label-floating">
+                                                <div class="form-group label-floating" ng-click="upProductDetails()">
+                                                    <a href="">
+                                                        <i class="material-icons" rel="tooltip" title="Update Product Price">search</i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Choose {{upStockTypeCode}}'s No To Update New Price !!</label>
+                                                <input type="text" class="form-control" ng-model="upPPrice">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-repeat="upP in upProductIMEIS">
+                                        <div class="col-md-1">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" ng-model="upProduct" ng-change="upCheckItem(upP.imei_number)">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label" ng-model="upProductIMEI">{{upP.imei_number}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Old Price - {{upP.price}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary pull-right">Update Product</button>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>
