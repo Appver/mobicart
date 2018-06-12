@@ -1778,6 +1778,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.isstockType = function() {
             if ($scope.stockType == 'MOBILE') {
                 $scope.stockTypeCode = 'IMEI';
+
             } else if ($scope.stockType == 'ACCESS') {
                 $scope.stockTypeCode = 'SERIAL';
             }
@@ -1833,7 +1834,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         }, function(response) {});
 
         $scope.validateInputs = function() {
-            if ($scope.stockType == 'IMEI') {
+            if ($scope.stockTypeCode == 'IMEI') {
                 $scope.validateIMEI();
             }
             /*else {
