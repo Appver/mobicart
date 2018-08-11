@@ -950,7 +950,7 @@ app.get('/skm/monthlySales/', function(req, res) {
 
 //get Daily Profit Sales
 app.get('/skm/dailyProfit/', function(req, res) {
-    let sql = "SELECT sum(b.amount) - sum(p.purchase_price) as Profit FROM `bill` b inner join sales_invoice s on (b.bill_no = s.bill_no) inner join purchase p on (s.sku_no = p.sku_no) WHERE b.bill_type = 'B' AND MONTH(FROM_UNIXTIME(b.created_date)) = MONTH(CURRENT_DATE()) AND YEAR(FROM_UNIXTIME(b.created_date)) = YEAR(CURRENT_DATE())";
+    let sql = "SELECT sum(b.amount) - sum(p.purchase_price) as Profit FROM bill b inner join sales_invoice s on (b.bill_no = s.bill_no) inner join purchase p on (s.sku_no = p.sku_no) WHERE b.bill_type = 'B' AND DATE(FROM_UNIXTIME(b.created_date)) = DATE(CURRENT_DATE()) AND MONTH(FROM_UNIXTIME(b.created_date)) = MONTH(CURRENT_DATE()) AND YEAR(FROM_UNIXTIME(b.created_date)) = YEAR(CURRENT_DATE())";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

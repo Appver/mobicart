@@ -144,6 +144,59 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="purple">
+                                <h4 class="title">Stock Value</h4>
+                                <p class="category">
+                                    Stock Worth for {{currDateTime}}
+                                    <span style="padding-left:65%;padding-top:5%;">
+                                        <button rel="tooltip" title="Download Stock Value" class="btn btn-purple
+                                            btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockStatusData" report-fields="{
+                                            Brand: 'Brand', 
+                                            Model: 'Model',
+                                            Purchase: 'Purchase',
+                                            MRP: 'MRP', 
+                                            Count: 'Count',
+                                            Pworth: 'Pworth',
+                                            Sworth: 'Sworth'
+                                            }" filename="'Stock'" separator=';'>
+                                            <i class="material-icons">print</i>
+                                        </button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="card-content table-responsive" style="height:50%">
+                                <table ng-table="tableParamsstockData" class="table table-hover">
+                                    <tr ng-repeat="sStatus in $data">
+                                        <td title="'Brand'">
+                                            {{sStatus.Brand}}
+                                        </td>
+                                        <td title="'Model'">
+                                            {{sStatus.Model}}
+                                        </td>
+                                        <td title="'Cost'">
+                                            {{sStatus.Purchase}}
+                                        </td>
+                                        <td title="'Selling'">
+                                            {{sStatus.MRP}}
+                                        </td>
+                                        <td title="'Count'">
+                                            {{sStatus.Count}}
+                                        </td>
+                                        <td title="'Cost Price'">
+                                            {{sStatus.Pworth}}
+                                        </td>
+                                        <td title="'Sell Price'">
+                                            {{sStatus.Sworth}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="card card-stats">
                             <div class="card-header" data-background-color="blue">
