@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 var credentials = require('./public/cred.json');
 
-
+/*
 //Create Connection - Remote-Prod-store1
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
@@ -13,14 +13,13 @@ const db = mysql.createConnection({
     database: 'sql3214500'
 });
 
-/*
 //Create Connection - Remote-Prod-store2
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
     user: 'sql3231751',
     password: 'EcNKeAMq7F',
     database: 'sql3231751'
-});
+});*/
 
 //Create Connection - Remote-Dev
 const db = mysql.createConnection({
@@ -29,7 +28,7 @@ const db = mysql.createConnection({
     password: 'UwPnP8hlm6',
     database: 'sql3220223'
 });
-
+/*
 //Create Connection - Remote-local
 const db = mysql.createConnection({
     host: '127.0.0.1',
@@ -969,6 +968,15 @@ app.post('/skm/barcodeIMEI/', function(req, res) {
 //get Most Product Sales
 app.get('/skm/mostProductSales/', function(req, res) {
     let sql = "SELECT CONCAT(brand.brand, '-', model.model) AS 'labels', COUNT(bill.bill_no) AS 'series' FROM bill JOIN sales_invoice ON (sales_invoice.bill_no = bill.bill_no AND bill.bill_type = 'B') JOIN purchase ON (purchase.sku_no = sales_invoice.sku_no) JOIN model ON (model.item_id = purchase.item_id) JOIN brand ON (brand.bid = model.bid) AND MONTH(FROM_UNIXTIME(bill.created_date)) = MONTH(CURRENT_DATE()) AND YEAR(FROM_UNIXTIME(bill.created_date)) = YEAR(CURRENT_DATE()) GROUP BY model.model ORDER BY series DESC LIMIT 5";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// get Sellar details
+app.get('/skm/sellarDetails/:sellarName', function(req, res) {
+    let sql = "SELECT * FROM customer_details WHERE cust_phone = '" + req.params.customerPhone + "'";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

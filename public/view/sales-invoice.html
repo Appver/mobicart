@@ -66,6 +66,12 @@
                         <p>GST Purchase</p>
                     </a>
                 </li>
+                <li ng-show="isAdmin || isUser || isSuperAdmin">
+                    <a href="#!editgstpurchase">
+                        <i class="material-icons">assignment</i>
+                        <p>Edit GST Purchase</p>
+                    </a>
+                </li>
                 <!--<li ng-show="isAdmin">
                     <a href="#!notifications">
                         <i class="material-icons text-gray">notifications</i>
@@ -168,7 +174,7 @@
                                                                 <input type="text" class="form-control" ng-model="customerName" list="customerPhoneArrayList" ng-change="isValidCustPhone()">
                                                                 <datalist id="customerPhoneArrayList">
                                                                     <option ng-repeat="customerName in customerPhoneArray track by $index " value="{{customerName.cust_phone}}">
-                                                                        {{customerName.cust_name}} ({{customerName.cust_phone}})
+                                                                        {{customerName.cust_name}}  | {{customerName.cust_city}}, {{customerName.cust_state}} - {{customerName.cust_pincode}}
                                                                     </option>
                                                                 </datalist>
                                                             </div>

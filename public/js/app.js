@@ -195,6 +195,9 @@ app.config(function($routeProvider, $locationProvider) {
         .when('/gstpurchase', {
             templateUrl: '/view/gst-returns-purchase.html',
             controller: 'GSTPurchaseCntlr'
+        }).when('/editgstpurchase', {
+            templateUrl: '/view/gst-purchase-edit.html',
+            controller: 'EditGSTPurchaseCntlr'
         })
         .when('/productsearch', {
             templateUrl: '/view/product-search.html',
@@ -898,6 +901,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.getCustomerDetails = function() {
             $http.get('/skm/customerDetails/' + $scope.customerName).then(function(response) {
                 var res = response.data;
+                console.log("Cust res : " + res)
                 if (res.length == 0) {
                     $scope.isSearchCust = false;
                     $("#addCustomer").modal();
@@ -2356,6 +2360,111 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.gstPurSgstAmnt = '';
             $scope.gstPurTotalValue = '';
             $scope.sellerNameSearch();
+        };
+    })
+    .controller('EditGSTPurchaseCntlr', function($rootScope, $scope, $http, $route, $routeParams, $location) {
+        $scope.$route = $route;
+        $scope.$http = $http;
+        $scope.$location = $location;
+        $scope.$routeParams = $routeParams;
+        $(document).ready(function() {
+            if (isWindows) {
+                // if we are on windows OS we activate the perfectScrollbar function
+                $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+                $('html').addClass('perfect-scrollbar-on');
+            } else {
+                $('html').addClass('perfect-scrollbar-off');
+            }
+        });
+        var edittoday = new Date();
+        var dd = edittoday.getDate();
+        var dn = edittoday.getDate();
+        var mm = edittoday.getMonth() + 1;
+        var yyyy = edittoday.getFullYear();
+        $scope.editgstPurCurrDate = mm + '/' + dd + '/' + yyyy;
+        $scope.isResetGSTPur = false;
+        $scope.editmaxDate = mm + '/' + dn + '/' + yyyy;
+
+        var editgstInvoiceDate = '';
+
+        $scope.getSellarDetails = function() {
+            $http.get('/skm/sellarDetails/' + $scope.sellarName).then(function(response) {
+                var res = response.data;
+                console.log("sellar res : " + res)
+
+            }, function(response) {});
+        };
+
+        $scope.submit = function() {
+            $scope.spinner = true;
+            $scope.addEditCustNameArray = [];
+            $http.get('/skm/customerDetails/' + $scope.addEditCustPhone).then(function(response) {
+                var res = response.data;
+                for (var i = 0, length = res.length; i < length; i++) {
+                    for (obj in res[i]) {
+                        $scope.addEditCustNameArray.push(res[i][obj]);
+                    }
+                }
+                if ($scope.addEditCustNameArray.length == 0 || $scope.addEditCustNameArray == undefined) {
+                    var currentDate = $rootScope.timeToSeconds();
+                    var addEditCustData = {
+                        cust_name: $scope.addEditCustName,
+                        cust_phone: $scope.addEditCustPhone,
+                        email: $scope.addEditCustEmail,
+                        cust_address: $scope.addEditCustAddress,
+                        cust_gsttin: $scope.addEditCustTin,
+                        cust_city: $scope.addEditCustCity,
+                        cust_state: $scope.addEditCustState,
+                        pincode: $scope.addEditCustPinCode,
+                        created: currentDate,
+                        cust_alt_phone: $scope.addEditCustPhone
+                    }
+                    $http.post('/skm/addNewCustomer/', addEditCustData).then(function(response) {
+                        $scope.addEditCustomerName = $scope.addEditCustName;
+                        if (response.data.affectedRows == 1) {
+                            $scope.addEditCustTitle = "Added";
+                            $scope.addEditCustMessage = ", Added Successfully.";
+                        } else {
+                            $scope.addEditCustTitle = "Failed";
+                            $scope.addEditCustMessage = ", Added Failed. Please try again.";
+                        }
+                        $("#addEditCustDBMessage").modal();
+                    }, function(response) {});
+                } else {
+                    var newAddEditCustId = $scope.addEditCustNameArray[0];
+                    var currentDate = $rootScope.timeToSeconds();
+                    var editCustData = {
+                        id: newAddEditCustId,
+                        cust_name: $scope.addEditCustName,
+                        cust_phone: $scope.addEditCustPhone,
+                        email: $scope.addEditCustEmail,
+                        cust_address: $scope.addEditCustAddress,
+                        cust_gsttin: $scope.addEditCustTin,
+                        cust_city: $scope.addEditCustCity,
+                        cust_state: $scope.addEditCustState,
+                        pincode: $scope.addEditCustPinCode,
+                        created: currentDate,
+                        cust_alt_phone: $scope.addEditCustPhone
+                    }
+                    $http.post('/skm/addEditCustomer/', editCustData).then(function(response) {
+                        $scope.addEditCustomerName = $scope.addEditCustName;
+                        if (response.data.affectedRows == 1) {
+                            $scope.addEditCustTitle = "Updated";
+                            $scope.addEditCustMessage = ", Updated Successfully.";
+                        } else {
+                            $scope.addEditCustTitle = "Updation Failed";
+                            $scope.addEditCustMessage = ", Updation Failed. Please try again.";
+                        }
+                        $("#addEditCustDBMessage").modal();
+                    }, function(response) {});
+                }
+            }, function(response) {
+
+            }).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
         };
     })
     .controller('PreferenceCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
