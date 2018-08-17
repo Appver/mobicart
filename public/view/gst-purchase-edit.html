@@ -161,20 +161,14 @@
                                 <form ng-submit="submit()">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group label-floating" ng-init="getSellarSearch()">
-                                                <label class="control-label">Customer Phone</label>
-                                                <input type="text" class="form-control" ng-model="customerName" list="customerPhoneArrayList" ng-change="isValidSellar()">
-                                                <datalist id="sellarArrayList">
-                                                    <option ng-repeat="sellarName in sellarArray track by $index " value="{{sellarName.Name}}">
-                                                        {{customerName.cust_name}}  | {{customerName.cust_city}}, {{customerName.cust_state}} - {{customerName.cust_pincode}}
+                                            <div class="form-group label-floating" ng-init="getsellerSearch()">
+                                                <label class="control-label">Name of the seller</label>
+                                                <input type="text" class="form-control" ng-model="seller" list="sellerNameArrayList" ng-change="getsellerDetails()">
+                                                <datalist id="sellerNameArrayList">
+                                                    <option ng-repeat="seller in sellerNameArray track by $index " value="{{seller.seller_name}}">
+                                                        {{seller.seller_name}}
                                                     </option>
                                                 </datalist>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Name of the seller </label>
-                                                <input type="text" pattern="[a-z A-Z]+" class="form-control" ng-model="addEditCustName" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -187,19 +181,23 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Total value (Rs)</label>
-                                                <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" ng-model="addEditCustEmail">
+                                            </div>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label" ng-show="isValueGSTLoad">{{gstTotalAmount}}</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Balance (Rs)</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustTin">
+                                            </div>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label" ng-show="isValueGSTLoad">{{gstBalAmount}}</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Paid Amount (Rs)</label>
                                                 <input type="text" class="form-control" ng-model="addEditCustAddress" required>
@@ -207,29 +205,29 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <div class="form-group label-floating">
-                                                <label class="control-label">Payment Type : </label>
+                                                <label class="control-label">Payment Mode : </label>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="radio">
                                                 <label class="control-label">
-                                                        <input type="radio" ng-model="paymentType" value="CASH">Cash
-                                                    </label>
+                                                    <input type="radio" ng-model="paymentMode" value="CASH">Cash
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="radio">
                                                 <label class="control-label">
-                                                        <input type="radio" ng-model="paymentType" value="CHEQUE">Cheque
-                                                    </label>
+                                                    <input type="radio" ng-model="paymentMode" value="CHEQUE">Cheque
+                                                </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Cheque No</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustAddress" required>
+                                                <input type="text" class="form-control" ng-model="chequeNo">
                                             </div>
                                         </div>
                                     </div>

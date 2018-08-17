@@ -2377,6 +2377,9 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
+        $scope.isValueGSTLoad = false;
+        $scope.paymentMode = 'CASH';
+        $scope.chequeNo = 'CASH';
         var edittoday = new Date();
         var dd = edittoday.getDate();
         var dn = edittoday.getDate();
@@ -2388,11 +2391,25 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         var editgstInvoiceDate = '';
 
-        $scope.getSellarDetails = function() {
-            $http.get('/skm/sellarDetails/' + $scope.sellarName).then(function(response) {
-                var res = response.data;
-                console.log("sellar res : " + res)
 
+        $scope.getsellerSearch = function() {
+            $http.get('/skm/sellerData/').then(function(response) {
+                var res = response.data;
+                $scope.sellerNameArray = angular.fromJson(res);
+            }, function(response) {});
+
+        }
+
+        $scope.getsellerDetails = function() {
+            $http.get('/skm/sellerDetails/' + $scope.seller).then(function(response) {
+                var res = response.data;
+                res = angular.fromJson(res);
+                for (var i = 0, length = res.length; i < length; i++) {
+                    $scope.gstTotalAmount = res[i].total_value;
+                    $scope.gstBalAmount = res[i].balance_value;
+                }
+                $scope.isValueGSTLoad = true;
+                console.log("seller res : " + res)
             }, function(response) {});
         };
 

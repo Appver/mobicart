@@ -974,9 +974,18 @@ app.get('/skm/mostProductSales/', function(req, res) {
     });
 });
 
-// get Sellar details
-app.get('/skm/sellarDetails/:sellarName', function(req, res) {
-    let sql = "SELECT * FROM customer_details WHERE cust_phone = '" + req.params.customerPhone + "'";
+//seller Data 
+app.get('/skm/sellerData/', function(req, res) {
+    let sql = "SELECT DISTINCT(seller_name) FROM gst_purchase ORDER BY seller_name ASC";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// get seller details
+app.get('/skm/sellerDetails/:sellerName', function(req, res) {
+    let sql = "SELECT * FROM gst_edit_purchase where seller_name = '" + req.params.sellerName + "' ORDER BY modified_date DESC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
