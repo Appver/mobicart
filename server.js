@@ -682,7 +682,7 @@ app.post('/skm/GSTReturnsPurchaseData/', function(req, res) {
 
 //get all sellerName
 app.get('/skm/sellerNameSearch/', function(req, res) {
-    let sql = "select seller_name from gst_purchase";
+    let sql = "SELECT DISTINCT(seller_name) FROM gst_purchase ORDER BY seller_name ASC";
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -985,7 +985,18 @@ app.get('/skm/sellerData/', function(req, res) {
 
 // get seller details
 app.get('/skm/sellerDetails/:sellerName', function(req, res) {
-    let sql = "SELECT * FROM gst_edit_purchase where seller_name = '" + req.params.sellerName + "' ORDER BY modified_date DESC";
+    let sql = "SELECT * FROM gst_edit_purchase where seller_name = '" + req.params.sellerName + "' ORDER BY gst_edit_id ASC";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// insert seller details
+app.post('/skm/insertSellerDetails/', function(req, res) {
+    console.log(req.body)
+    let sql = "INSERT INTO gst_edit_purchase (seller_name,  total_value, balance_value, latest_payment, payment_mode, payment_details, modified_date, modified_by)  VALUES ('" + req.body.sellarName + "'," + req.body.totallValue + "," + req.body.balanceValue + "," + req.body.latestPayment + ",'" + req.body.paymentMode + "','" + req.body.paymentDetails + "'," + req.body.modifiedDate + "," + req.body.modifiedBy + ")";
+    console.log(sql);
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         res.send(result);

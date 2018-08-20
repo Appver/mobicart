@@ -2349,6 +2349,32 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 // called no matter success or failure
                 $scope.spinner = false;
             });
+            var localgstTotalAmount = 0;
+            var localgstBalAmount = 0;
+            $http.get('/skm/sellerDetails/' + $scope.gstPurSellerName).then(function(response) {
+                var res = response.data;
+                res = angular.fromJson(res);
+                for (var i = 0, length = res.length; i < length; i++) {
+                    localgstTotalAmount = res[i].total_value;
+                    localgstBalAmount = res[i].balance_value;
+                }
+                console.log("localgstTotalAmount : " + localgstTotalAmount + " localgstBalAmount" + localgstBalAmount + " gstPurSellerName " + $scope.gstPurSellerName + "gstPurTotalValue" + $scope.gstPurTotalValue)
+                var sellarList = {
+                    sellarName: $scope.gstPurSellerName,
+                    totallValue: localgstTotalAmount + $scope.gstPurTotalValue,
+                    balanceValue: localgstBalAmount + $scope.gstPurTotalValue,
+                    latestPayment: 0,
+                    paymentMode: 'ENTRY',
+                    paymentDetails: 'ENTRY',
+                    modifiedDate: currentDate,
+                    modifiedBy: $rootScope.userObj.uid
+                }
+                $http.post('/skm/insertSellerDetails/', sellarList).then(function(response) {
+                    output = response.data;
+                }, function(response) {})
+            }, function(response) {});
+
+
         };
         $scope.resetGSTPurchase = function(action) {
             $scope.gstPurSellerName = '';
@@ -2377,6 +2403,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
+
         $scope.isValueGSTLoad = false;
         $scope.paymentMode = 'CASH';
         $scope.chequeNo = 'CASH';
@@ -2388,10 +2415,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.editgstPurCurrDate = mm + '/' + dd + '/' + yyyy;
         $scope.isResetGSTPur = false;
         $scope.editmaxDate = mm + '/' + dn + '/' + yyyy;
-
-        var editgstInvoiceDate = '';
-
-
         $scope.getsellerSearch = function() {
             $http.get('/skm/sellerData/').then(function(response) {
                 var res = response.data;
@@ -2399,7 +2422,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }, function(response) {});
 
         }
-
         $scope.getsellerDetails = function() {
             $http.get('/skm/sellerDetails/' + $scope.seller).then(function(response) {
                 var res = response.data;
@@ -2412,75 +2434,33 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 console.log("seller res : " + res)
             }, function(response) {});
         };
-
-        $scope.submit = function() {
+        $scope.submitSellerDetails = function() {
+            if ($scope.paymentMode == 'CASH') {
+                $scope.chequeNo = $scope.paymentMode;
+            }
             $scope.spinner = true;
-            $scope.addEditCustNameArray = [];
-            $http.get('/skm/customerDetails/' + $scope.addEditCustPhone).then(function(response) {
-                var res = response.data;
-                for (var i = 0, length = res.length; i < length; i++) {
-                    for (obj in res[i]) {
-                        $scope.addEditCustNameArray.push(res[i][obj]);
-                    }
-                }
-                if ($scope.addEditCustNameArray.length == 0 || $scope.addEditCustNameArray == undefined) {
-                    var currentDate = $rootScope.timeToSeconds();
-                    var addEditCustData = {
-                        cust_name: $scope.addEditCustName,
-                        cust_phone: $scope.addEditCustPhone,
-                        email: $scope.addEditCustEmail,
-                        cust_address: $scope.addEditCustAddress,
-                        cust_gsttin: $scope.addEditCustTin,
-                        cust_city: $scope.addEditCustCity,
-                        cust_state: $scope.addEditCustState,
-                        pincode: $scope.addEditCustPinCode,
-                        created: currentDate,
-                        cust_alt_phone: $scope.addEditCustPhone
-                    }
-                    $http.post('/skm/addNewCustomer/', addEditCustData).then(function(response) {
-                        $scope.addEditCustomerName = $scope.addEditCustName;
-                        if (response.data.affectedRows == 1) {
-                            $scope.addEditCustTitle = "Added";
-                            $scope.addEditCustMessage = ", Added Successfully.";
-                        } else {
-                            $scope.addEditCustTitle = "Failed";
-                            $scope.addEditCustMessage = ", Added Failed. Please try again.";
-                        }
-                        $("#addEditCustDBMessage").modal();
-                    }, function(response) {});
-                } else {
-                    var newAddEditCustId = $scope.addEditCustNameArray[0];
-                    var currentDate = $rootScope.timeToSeconds();
-                    var editCustData = {
-                        id: newAddEditCustId,
-                        cust_name: $scope.addEditCustName,
-                        cust_phone: $scope.addEditCustPhone,
-                        email: $scope.addEditCustEmail,
-                        cust_address: $scope.addEditCustAddress,
-                        cust_gsttin: $scope.addEditCustTin,
-                        cust_city: $scope.addEditCustCity,
-                        cust_state: $scope.addEditCustState,
-                        pincode: $scope.addEditCustPinCode,
-                        created: currentDate,
-                        cust_alt_phone: $scope.addEditCustPhone
-                    }
-                    $http.post('/skm/addEditCustomer/', editCustData).then(function(response) {
-                        $scope.addEditCustomerName = $scope.addEditCustName;
-                        if (response.data.affectedRows == 1) {
-                            $scope.addEditCustTitle = "Updated";
-                            $scope.addEditCustMessage = ", Updated Successfully.";
-                        } else {
-                            $scope.addEditCustTitle = "Updation Failed";
-                            $scope.addEditCustMessage = ", Updation Failed. Please try again.";
-                        }
-                        $("#addEditCustDBMessage").modal();
-                    }, function(response) {});
-                }
-            }, function(response) {
-
-            }).finally(function() {
+            var sellarList = {
+                sellarName: $scope.seller,
+                totallValue: $scope.gstTotalAmount,
+                balanceValue: $scope.gstBalAmount - $scope.gstBalAmountLatest,
+                latestPayment: $scope.gstBalAmountLatest,
+                paymentMode: $scope.paymentMode,
+                paymentDetails: $scope.chequeNo,
+                modifiedDate: Math.round(new Date($scope.editgstPurInvoiceDate).getTime() / 1000),
+                modifiedBy: $rootScope.userObj.uid
+            }
+            $http.post('/skm/insertSellerDetails/', sellarList).then(function(response) {
+                output = response.data;
+            }, function(response) {}).finally(function() {
                 // called no matter success or failure
+                $scope.gstTotalAmount = '';
+                $scope.gstBalAmount = '';
+                $scope.gstBalAmountLatest = '';
+                $scope.seller = '';
+                $scope.chequeNo = 'CASH';
+                $scope.paymentMode = 'CASH';
                 $scope.spinner = false;
+                $scope.editgstPurInvoiceDate = $scope.editgstPurCurrDate;
             });
         };
     })

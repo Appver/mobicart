@@ -158,7 +158,7 @@
                             </div>
                             <div class="card-content">
                                 <div class="loader" ng-show="spinner"></div>
-                                <form ng-submit="submit()">
+                                <form ng-submit="submitSellerDetails()">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group label-floating" ng-init="getsellerSearch()">
@@ -200,7 +200,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Paid Amount (Rs)</label>
-                                                <input type="text" class="form-control" ng-model="addEditCustAddress" required>
+                                                <input type="text" class="form-control" ng-model="gstBalAmountLatest" required>
                                             </div>
                                         </div>
                                     </div>
