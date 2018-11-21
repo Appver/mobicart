@@ -156,7 +156,7 @@
                                 <h4 class="title">Stock Status</h4>
                                 <p class="category">
                                     Stock Status for {{currDateTime}}
-                                    <span style="padding-left:65%;padding-top:5%;">
+                                    <span style="padding-left:10%;padding-top:5%;">
                                         <button rel="tooltip" title="Download Stock Status" class="btn btn-purple
                                             btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockStatusData" report-fields="{
                                             Brand: 'Brand', 
@@ -166,6 +166,17 @@
                                             Count: 'Count'
                                             }" filename="'StockStatus'" separator=';'>
                                             <i class="material-icons">print</i>
+                                        </button>
+                                    </span>
+                                    <span style="padding-left:50%;padding-top:5%;">
+                                        <button rel="tooltip" title="Download Stock Sales Status" class="btn btn-orange
+                                            btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockSalesStatusData" report-fields="{
+                                            Brand: 'Brand', 
+                                            Model: 'Model',
+                                            COUNT: 'Count',
+                                            BillDate: 'Bill Date'
+                                            }" filename="'StockSalesStatus'" separator=';'>
+                                            <i class="material-icons">archive</i>
                                         </button>
                                     </span>
                                 </p>

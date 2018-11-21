@@ -343,6 +343,12 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.tableParamsstockData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
         }, function(response) {});
 
+        $http.get('/skm/adminStockSalesData/').then(function(response) {
+            var res = response.data;
+            var data = angular.fromJson(res);
+            $scope.stockSalesStatusData = data;
+        }, function(response) {});
+
         $http.get('/skm/revenueForMonth/').then(function(response) {
             var data = angular.fromJson(response.data);
             for (var i = 0; i < data.length; i++) {
@@ -551,6 +557,12 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var data = angular.fromJson(res);
             $scope.stockStatusData = data;
             $scope.tableParamsstockData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
+        }, function(response) {});
+
+        $http.get('/skm/adminStockSalesData/').then(function(response) {
+            var res = response.data;
+            var data = angular.fromJson(res);
+            $scope.stockSalesStatusData = data;
         }, function(response) {});
 
         $scope.getGeneratedBillData = function() {

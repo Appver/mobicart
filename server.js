@@ -450,6 +450,17 @@ app.get('/skm/adminStockData/', function(req, res) {
     });
 });
 
+
+//admin-dashboard stock-sales data
+app.get('/skm/adminStockSalesData/', function(req, res) {
+    let sql = "SELECT brand.brand AS Brand, model.model AS Model, COUNT(sales_invoice.sku_no) AS COUNT, FROM_UNIXTIME( sales_invoice.created_date, \"%Y-%m-%d\") AS BillDate FROM sales_invoice JOIN purchase ON ( purchase.sku_no = sales_invoice.sku_no ) JOIN model ON ( model.item_id = purchase.item_id ) JOIN brand ON (brand.bid = model.bid) GROUP BY FROM_UNIXTIME( sales_invoice.created_date, \"%Y-%m-%d\" ) ORDER BY brand.brand, model.model ASC";
+    let query = db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+
 //admin-dashboard bill data
 app.post('/skm/adminBillData/', function(req, res) {
     let sql;
