@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 var credentials = require('./public/cred.json');
 
-/*
+
 //Create Connection - Remote-Prod-store1
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
