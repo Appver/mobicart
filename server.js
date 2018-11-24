@@ -12,14 +12,14 @@ const db = mysql.createConnection({
     password: 'Av52djpEBs',
     database: 'sql3214500'
 });
-
+/*
 //Create Connection - Remote-Prod-store2
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
     user: 'sql3231751',
     password: 'EcNKeAMq7F',
     database: 'sql3231751'
-});*/
+});
 
 //Create Connection - Remote-Dev
 const db = mysql.createConnection({
@@ -27,7 +27,7 @@ const db = mysql.createConnection({
     user: 'sql3220223',
     password: 'UwPnP8hlm6',
     database: 'sql3220223'
-});
+});*/
 /*
 //Create Connection - Remote-local
 const db = mysql.createConnection({
