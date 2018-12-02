@@ -1790,14 +1790,11 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             }
         });
         $scope.isValidIMEI = true;
-        $scope.retProductIMEI = [];
-        $scope.upProductIMEI = [];
+
         $scope.stockType = 'MOBILE';
-        $scope.retStockType = 'MOBILE';
-        $scope.upStockType = 'MOBILE';
+
         $scope.stockTypeCode = 'IMEI';
-        $scope.retStockTypeCode = 'IMEI';
-        $scope.upStockTypeCode = 'IMEI';
+
         var taxlist = [];
         var taxes = '';
         var promise = $q.all([]);
@@ -1983,149 +1980,6 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 }, function(response) {});
             }
         }
-
-        $scope.retBrandSearch = function() {
-            $rootScope.appLogger("INFO", "retBrandSearch retPurchaseType : " + $scope.retPurchaseType + " retStockType : " + $scope.retStockType);
-            var brandData = {
-                purchase_type: $scope.retPurchaseType,
-                stock_type: $scope.retStockType
-            }
-            $http.post('/skm/brandSearch/', brandData).then(function(response) {
-                var res = response.data;
-                $scope.retMobBrands = angular.fromJson(res);
-            }, function(response) {});
-        };
-
-        $scope.retModelDetails = function() {
-            var retBrandId = {
-                id: $scope.retBrandId,
-                purchase_type: $scope.retPurchaseType,
-                stock_type: $scope.retStockType
-            }
-            $http.post('/skm/amodelSearch/', retBrandId).then(function(response) {
-                var res = response.data;
-                $scope.retMobModels = angular.fromJson(res);
-            }, function(response) {});
-        };
-
-        $scope.retProductDetails = function() {
-            $rootScope.appLogger("INFO", "retProductDetails retPurchaseType : " + $scope.retPurchaseType + " retStockType : " + $scope.retStockType);
-            var retModelId = {
-                id: $scope.retModelId,
-                purchase_type: $scope.retPurchaseType,
-                stock_type: $scope.retStockType
-            }
-            $http.post('/skm/productSearch/', retModelId).then(function(response) {
-                var res = response.data;
-                $scope.retProductIMEIS = angular.fromJson(res);
-            }, function(response) {});
-        };
-
-        $scope.retCheckItem = function(imei) {
-            for (var i = 0; i < $scope.retProductIMEIS.length; i++) {
-                if (imei == $scope.retProductIMEIS[i].imei_number) {
-                    $scope.retProductIMEI.push(imei);
-                }
-            }
-        };
-
-        $scope.returnProduct = function() {
-            $scope.spinner = true;
-            $rootScope.appLogger("INFO", "returnProduct $scope.retProductIMEI : " + $scope.retProductIMEI);
-            var retIMEIS = {
-                product_imeis: $scope.retProductIMEI,
-                purchase_type: $scope.retPurchaseType
-            }
-            $http.post('/skm/retProduct/', retIMEIS).then(function(response) {
-                    console.log(response.data);
-                    $scope.retPurchaseType = '';
-                    $scope.retMobBrands = ''
-                    $scope.retMobModels = '';
-                    $scope.retProductIMEIS = '';
-                    $scope.retProductIMEI = [];
-                    $scope.retStockType = 'MOBILE';
-                    $scope.retStockTypeCode = 'IMEI';
-                },
-                function(response) {
-
-                }).finally(function() {
-                // called no matter success or failure
-                $scope.spinner = false;
-            });
-        };
-
-        $scope.upBrandSearch = function() {
-            $rootScope.appLogger("INFO", "upBrandSearch upPurchaseType : " + $scope.upPurchaseType + " upStockType : " + $scope.upStockType);
-            var upBrandData = {
-                purchase_type: $scope.upPurchaseType,
-                stock_type: $scope.upStockType
-            }
-            $http.post('/skm/brandSearch/', upBrandData).then(function(response) {
-                var res = response.data;
-                $scope.upMobBrands = angular.fromJson(res);
-            }, function(response) {});
-        };
-
-        $scope.upModelDetails = function() {
-            var upBrandId = {
-                id: $scope.upBrandId,
-                purchase_type: $scope.upPurchaseType,
-                stock_type: $scope.upStockType
-            }
-            $http.post('/skm/amodelSearch/', upBrandId).then(function(response) {
-                var res = response.data;
-                $scope.upMobModels = angular.fromJson(res);
-            }, function(response) {});
-        };
-
-        $scope.upProductDetails = function() {
-            $rootScope.appLogger("INFO", "upProductDetails upPurchaseType : " + $scope.upPurchaseType + " upStockType : " + $scope.upStockType);
-            var upModelId = {
-                id: $scope.upModelId,
-                purchase_type: $scope.upPurchaseType,
-                stock_type: $scope.upStockType
-            }
-            $http.post('/skm/productSearch/', upModelId).then(function(response) {
-                var res = response.data;
-                $scope.upProductIMEIS = angular.fromJson(res);
-            }, function(response) {});
-        };
-
-        $scope.upCheckItem = function(imei) {
-            for (var i = 0; i < $scope.upProductIMEIS.length; i++) {
-                if (imei == $scope.upProductIMEIS[i].imei_number) {
-                    $scope.upProductIMEI.push(imei);
-                }
-            }
-        };
-
-        $scope.updateProduct = function() {
-            $scope.updatespinner = true;
-            $rootScope.appLogger("INFO", "updateProduct $scope.upProductIMEI : " + $scope.upProductIMEI);
-            var upIMEIS = {
-                product_imeis: $scope.upProductIMEI,
-                purchase_type: $scope.upPurchaseType,
-                upPPrice: $scope.upPPrice
-            }
-            $http.post('/skm/upProduct/', upIMEIS).then(function(response) {
-                    console.log(response.data);
-                    $scope.upPPrice = '';
-                    $scope.upPurchaseType = '';
-                    $scope.upMobBrands = ''
-                    $scope.upMobModels = '';
-                    $scope.upProductIMEIS = '';
-                    $scope.upProductIMEI = [];
-                    $scope.upStockType = 'MOBILE';
-                    $scope.upStockTypeCode = 'IMEI';
-                },
-                function(response) {
-
-                }).finally(function() {
-                // called no matter success or failure
-                $scope.updatespinner = false;
-            });
-        };
-
 
         $scope.SelectedFileForUpload = null;
 
@@ -2476,7 +2330,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             });
         };
     })
-    .controller('PreferenceCntlr', function($scope, $http, $route, $routeParams, $location, toaster) {
+    .controller('PreferenceCntlr', function($scope, $rootScope, $http, $route, $routeParams, $location, toaster) {
         $(document).ready(function() {
             if (isWindows) {
                 // if we are on windows OS we activate the perfectScrollbar function
@@ -2487,6 +2341,167 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $('html').addClass('perfect-scrollbar-off');
             }
         });
+
+        $scope.retProductIMEI = [];
+        $scope.upProductIMEI = [];
+
+        $scope.retStockType = 'MOBILE';
+        $scope.upStockType = 'MOBILE';
+
+        $scope.retStockTypeCode = 'IMEI';
+        $scope.upStockTypeCode = 'IMEI';
+
+        $scope.retBrandSearch = function() {
+            $rootScope.appLogger("INFO", "retBrandSearch retPurchaseType : " + $scope.retPurchaseType + " retStockType : " + $scope.retStockType);
+            var brandData = {
+                purchase_type: $scope.retPurchaseType,
+                stock_type: $scope.retStockType
+            }
+            $http.post('/skm/brandSearch/', brandData).then(function(response) {
+                var res = response.data;
+                $scope.retMobBrands = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.retModelDetails = function() {
+            var retBrandId = {
+                id: $scope.retBrandId,
+                purchase_type: $scope.retPurchaseType,
+                stock_type: $scope.retStockType
+            }
+            $http.post('/skm/amodelSearch/', retBrandId).then(function(response) {
+                var res = response.data;
+                $scope.retMobModels = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.retProductDetails = function() {
+            $rootScope.appLogger("INFO", "retProductDetails retPurchaseType : " + $scope.retPurchaseType + " retStockType : " + $scope.retStockType);
+            var retModelId = {
+                id: $scope.retModelId,
+                purchase_type: $scope.retPurchaseType,
+                stock_type: $scope.retStockType
+            }
+            $http.post('/skm/productSearch/', retModelId).then(function(response) {
+                var res = response.data;
+                $scope.retProductIMEIS = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.retCheckItem = function(imei) {
+
+            if ($scope.retProductIMEIS[imei]) {
+                $scope.retProductIMEI.push(imei);
+            } else {
+                var index = $scope.retProductIMEI.indexOf(imei);
+                if (index > -1) {
+                    $scope.retProductIMEI.splice(index, 1);
+                }
+            }
+
+        };
+
+        $scope.returnProduct = function() {
+            $scope.spinner = true;
+            $rootScope.appLogger("INFO", "returnProduct $scope.retProductIMEI : " + $scope.retProductIMEI);
+            var retIMEIS = {
+                product_imeis: $scope.retProductIMEI,
+                purchase_type: $scope.retPurchaseType
+            }
+            $http.post('/skm/retProduct/', retIMEIS).then(function(response) {
+                    console.log(response.data);
+                    $scope.retPurchaseType = '';
+                    $scope.retMobBrands = ''
+                    $scope.retMobModels = '';
+                    $scope.retProductIMEIS = '';
+                    $scope.retProductIMEI = [];
+                    $scope.retStockType = 'MOBILE';
+                    $scope.retStockTypeCode = 'IMEI';
+                },
+                function(response) {
+
+                }).finally(function() {
+                // called no matter success or failure
+                $scope.spinner = false;
+            });
+        };
+
+        $scope.upBrandSearch = function() {
+            $rootScope.appLogger("INFO", "upBrandSearch upPurchaseType : " + $scope.upPurchaseType + " upStockType : " + $scope.upStockType);
+            var upBrandData = {
+                purchase_type: $scope.upPurchaseType,
+                stock_type: $scope.upStockType
+            }
+            $http.post('/skm/brandSearch/', upBrandData).then(function(response) {
+                var res = response.data;
+                $scope.upMobBrands = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.upModelDetails = function() {
+            var upBrandId = {
+                id: $scope.upBrandId,
+                purchase_type: $scope.upPurchaseType,
+                stock_type: $scope.upStockType
+            }
+            $http.post('/skm/amodelSearch/', upBrandId).then(function(response) {
+                var res = response.data;
+                $scope.upMobModels = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.upProductDetails = function() {
+            $rootScope.appLogger("INFO", "upProductDetails upPurchaseType : " + $scope.upPurchaseType + " upStockType : " + $scope.upStockType);
+            var upModelId = {
+                id: $scope.upModelId,
+                purchase_type: $scope.upPurchaseType,
+                stock_type: $scope.upStockType
+            }
+            $http.post('/skm/productSearch/', upModelId).then(function(response) {
+                var res = response.data;
+                $scope.upProductIMEIS = angular.fromJson(res);
+            }, function(response) {});
+        };
+
+        $scope.upCheckItem = function(imei) {
+
+            if ($scope.upProductIMEIS[imei]) {
+                $scope.upProductIMEI.push(imei);
+            } else {
+                var index = $scope.upProductIMEI.indexOf(imei);
+                if (index > -1) {
+                    $scope.upProductIMEI.splice(index, 1);
+                }
+            }
+        };
+
+        $scope.updateProduct = function() {
+            $scope.updatespinner = true;
+            $rootScope.appLogger("INFO", "updateProduct $scope.upProductIMEI : " + $scope.upProductIMEI);
+            var upIMEIS = {
+                product_imeis: $scope.upProductIMEI,
+                purchase_type: $scope.upPurchaseType,
+                upPPrice: $scope.upPPrice
+            }
+            $http.post('/skm/upProduct/', upIMEIS).then(function(response) {
+                    console.log(response.data);
+                    $scope.upPPrice = '';
+                    $scope.upPurchaseType = '';
+                    $scope.upMobBrands = ''
+                    $scope.upMobModels = '';
+                    $scope.upProductIMEIS = '';
+                    $scope.upProductIMEI = [];
+                    $scope.upStockType = 'MOBILE';
+                    $scope.upStockTypeCode = 'IMEI';
+                },
+                function(response) {
+
+                }).finally(function() {
+                // called no matter success or failure
+                $scope.updatespinner = false;
+            });
+        };
+
 
         function shopDetails() {
             $http.get('/skm/storeDetails/').then(function(response) {
