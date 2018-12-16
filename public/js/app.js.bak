@@ -329,38 +329,26 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             } else {
                 $('html').addClass('perfect-scrollbar-off');
             }
-            $scope.stockDataLoad();
-
         });
         $scope.isPurBal = false;
-        $scope.stockTypeValue = 'MOBILE';
-        //$scope.stockDataLoad();
-        $scope.stockDataChange = function() {
-            console.log("stockDataLoad Calling")
-            $scope.stockDataLoad();
-        }
 
-        $scope.stockDataLoad = function() {
-            console.log("stockDataLoad Called")
-            $http.get('/skm/adminStockData/'+$scope.stockTypeValue).then(function(response) {
-                var res = response.data;
-                var data = angular.fromJson(res);
-                for (var i = 0; i < data.length; i++) {
-                    data[i].Pworth = data[i].Purchase * data[i].Count;
-                    data[i].Sworth = data[i].MRP * data[i].Count;
-                }
-                $scope.stockStatusData = data;
-                $scope.tableParamsstockData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
-            }, function(response) {});
-    
-            $http.get('/skm/adminStockSalesData/'+$scope.stockTypeValue).then(function(response) {
-                var res = response.data;
-                var data = angular.fromJson(res);
-                $scope.stockSalesStatusData = data;
-            }, function(response) {});
-    
-        }
-        
+        $http.get('/skm/adminStockData/').then(function(response) {
+            var res = response.data;
+            var data = angular.fromJson(res);
+            for (var i = 0; i < data.length; i++) {
+                data[i].Pworth = data[i].Purchase * data[i].Count;
+                data[i].Sworth = data[i].MRP * data[i].Count;
+            }
+            $scope.stockStatusData = data;
+            $scope.tableParamsstockData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
+        }, function(response) {});
+
+        $http.get('/skm/adminStockSalesData/').then(function(response) {
+            var res = response.data;
+            var data = angular.fromJson(res);
+            $scope.stockSalesStatusData = data;
+        }, function(response) {});
+
         $http.get('/skm/revenueForMonth/').then(function(response) {
             var data = angular.fromJson(response.data);
             for (var i = 0; i < data.length; i++) {
@@ -564,7 +552,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             $scope.getGeneratedBillWhData();
         }
 
-        /*$http.get('/skm/adminStockData/').then(function(response) {
+        $http.get('/skm/adminStockData/').then(function(response) {
             var res = response.data;
             var data = angular.fromJson(res);
             $scope.stockStatusData = data;
@@ -575,7 +563,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             var res = response.data;
             var data = angular.fromJson(res);
             $scope.stockSalesStatusData = data;
-        }, function(response) {});*/
+        }, function(response) {});
 
         $scope.getGeneratedBillData = function() {
             $scope.deleteBillData = {};
@@ -1870,116 +1858,70 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         }, function(response) {});
 
         $scope.validateInputs = function() {
-            console.log(" validateInputs : "+$scope.stockTypeCode)
+            if ($scope.stockTypeCode == 'IMEI') {
+                $scope.validateIMEI();
+            }
+            /*else {
+                           $scope.validateSERIAL();
+                       }*/
+        }
+
+        $scope.validateSERIAL = function() {}
+
+        $scope.validateIMEI = function() {
             var imeis = $scope.imeiNumber;
             console.log("validateIMEI imeis : " + imeis);
-            if ($scope.stockTypeCode == 'IMEI') {
-                //$scope.validateIMEI();
-                if ($scope.imeiNumber.length >= 15) {
-                    var imei_array = imeis.split(",");
-                    console.log("validateIMEI imei_array len: " + imei_array.length);
-                    angular.forEach(imei_array, function(im) {
-                        promise = promise.then(function() {
-                            return validateImei(im);
-                        });
+            if ($scope.imeiNumber.length >= 15) {
+                var imei_array = imeis.split(",");
+                console.log("validateIMEI imei_array len: " + imei_array.length);
+                angular.forEach(imei_array, function(im) {
+                    promise = promise.then(function() {
+                        return validateImei(im);
                     });
-    
-                    promise.finally(function() {
-                        console.log('Insert finished!');
-                    });
-    
-                    function validateImei(im) {
-                        console.log(" validateImei(im) im.length : " + im.length)
-                        if ((null != im || im != '' || im != undefined) &&
-                            (im.length != 0) &&
-                            (im.length == 15)) {
-                            console.log(" Inside validateImei(im) im.length : " + im.length)
-                            var valIMEI = {
-                                imei: im
-                            }
-                            console.log("valIMEI: " + valIMEI.imei);
-                            $http.post('/skm/validateIMEI/', valIMEI).then(function(response) {
-                                output = response.data;
-                                console.log(output)
-                                if (output.length >= 1) {
-                                    $scope.isValidIMEI = true;
-                                    alert(" IMEI No " + im + " already present, Please try with different IMEI No");
-                                    var index = imei_array.indexOf(im);
-                                    if (index > -1) {
-                                        imei_array.splice(index, 1);
-                                    }
-                                    console.log("imeis : " + imeis + " imei_array : " + imei_array);
-                                    $scope.imeiNumber = imei_array;
-                                } else {
-                                    console.log("else imeis : " + imeis + " imei_array : " + imei_array);
-                                    $scope.isValidIMEI = false;
-                                }
-                            }, function(response) {});
+                });
+
+                promise.finally(function() {
+                    console.log('Insert finished!');
+                });
+
+                function validateImei(im) {
+                    console.log(" validateImei(im) im.length : " + im.length)
+                    if ((null != im || im != '' || im != undefined) &&
+                        (im.length != 0) &&
+                        (im.length == 15)) {
+                        console.log(" Inside validateImei(im) im.length : " + im.length)
+                        var valIMEI = {
+                            imei: im
                         }
-                    }
-                }
-            }else {
-                //$scope.validateSERIAL();
-                console.log("validateIMEI Serials : " + imeis);
-                if ($scope.imeiNumber.length >= 5) {
-                    var imei_array = imeis.split(",");
-                    console.log("validateSerial Serial len: " + imei_array.length);
-                    angular.forEach(imei_array, function(im) {
-                        promise = promise.then(function() {
-                            return validateSerial(im);
-                        });
-                    });
-    
-                    promise.finally(function() {
-                        console.log('Insert finished!');
-                    });
-    
-                    function validateSerial(im) {
-                        console.log(" validateSerial(im) im.length : " + im.length)
-                        if ((null != im || im != '' || im != undefined) &&
-                            (im.length != 0) &&
-                            (im.length >=5)) {
-                            console.log(" Inside validateSerial(im) im.length : " + im.length)
-                            var valIMEI = {
-                                imei: im
-                            }
-                            console.log("valSerial: " + valIMEI.imei);
-                            $http.post('/skm/validateIMEI/', valIMEI).then(function(response) {
-                                output = response.data;
-                                console.log(output)
-                                if (output.length >= 1) {
-                                    $scope.isValidIMEI = true;
-                                    alert(" Serial No " + im + " already present, Please try with different Serial No");
-                                    var index = imei_array.indexOf(im);
-                                    if (index > -1) {
-                                        imei_array.splice(index, 1);
-                                    }
-                                    console.log("Serials : " + imeis + " Serial_array : " + imei_array);
-                                    $scope.imeiNumber = imei_array;
-                                } else {
-                                    console.log("else Serial : " + imeis + " Serial_array : " + imei_array);
-                                    $scope.isValidIMEI = false;
+                        console.log("valIMEI: " + valIMEI.imei);
+                        $http.post('/skm/validateIMEI/', valIMEI).then(function(response) {
+                            output = response.data;
+                            console.log(output)
+                            if (output.length >= 1) {
+                                $scope.isValidIMEI = true;
+                                alert(" IMEI No " + im + " already present, Please try with different IMEI No");
+                                var index = imei_array.indexOf(im);
+                                if (index > -1) {
+                                    imei_array.splice(index, 1);
                                 }
-                            }, function(response) {});
-                        }
+                                console.log("imeis : " + imeis + " imei_array : " + imei_array);
+                                $scope.imeiNumber = imei_array;
+                            } else {
+                                console.log("else imeis : " + imeis + " imei_array : " + imei_array);
+                                $scope.isValidIMEI = false;
+                            }
+                        }, function(response) {});
                     }
                 }
             }
-            
         };
 
         $scope.addProduct = function() {
             $scope.spinner = true;
             console.log("purchaseType : " + $scope.purchaseType)
-            console.log("$scope.imeiNumber"+$scope.imeiNumber+" imeis.includes(",")"+$scope.imeiNumber.includes(","))
             var timeToSecond = $rootScope.timeToSeconds();
             var imeis = $scope.imeiNumber;
-            if(imeis.includes(",")){
-                var imei_array = imeis.split(",");
-            } else {
-                var imei_array = imeis;
-            }
-            
+            var imei_array = imeis.split(",");
             console.log("addProduct : imei_array : " + imei_array + "purchaseType : " + $scope.purchaseType + " stockType : " + $scope.stockType);
             var pro = {
                 item_id: $scope.item,
@@ -1997,8 +1939,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 modifiedBy: $rootScope.userObj.uid,
                 purchase_type: $scope.purchaseType,
                 stock_type: $scope.stockType
-            };           
-            
+            };
             angular.forEach(imei_array, function(im) {
                 promise = promise.then(function() {
                     pro.imei_number = im;

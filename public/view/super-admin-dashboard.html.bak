@@ -156,16 +156,6 @@
                                 <h4 class="title">Stock Value</h4>
                                 <p class="category">
                                     Stock Worth for {{currDateTime}}
-                                    <div class="col-md-2">
-                                        <div class="radio">
-                                            <label style="color:white;" class="control-label"><input type="radio" ng-model="stockTypeValue" value="MOBILE" ng-change="stockDataChange();">MOBILE</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="radio">
-                                            <label style="color:white;" class="control-label"><input type="radio" ng-model="stockTypeValue" value="ACCESS" ng-change="stockDataChange();">ACCESS</label>
-                                        </div>
-                                    </div>
                                     <span style="padding-left:10%;padding-top:5%;">
                                         <button rel="tooltip" title="Download Stock Value" class="btn btn-purple
                                             btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockStatusData" report-fields="{
@@ -180,7 +170,7 @@
                                             <i class="material-icons">print</i>
                                         </button>
                                     </span>
-                                    <span style="padding-left:40%;padding-top:5%;">
+                                    <span style="padding-left:50%;padding-top:5%;">
                                         <button rel="tooltip" title="Download Stock Sales Status" class="btn btn-orange
                                             btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockSalesStatusData" report-fields="{
                                             Brand: 'Brand', 
