@@ -342,7 +342,7 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
 
         $scope.stockDataLoad = function() {
             console.log("stockDataLoad Called")
-            $http.get('/skm/adminStockData/'+$scope.stockTypeValue).then(function(response) {
+            $http.get('/skm/adminStockData/' + $scope.stockTypeValue).then(function(response) {
                 var res = response.data;
                 var data = angular.fromJson(res);
                 for (var i = 0; i < data.length; i++) {
@@ -352,15 +352,15 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
                 $scope.stockStatusData = data;
                 $scope.tableParamsstockData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
             }, function(response) {});
-    
-            $http.get('/skm/adminStockSalesData/'+$scope.stockTypeValue).then(function(response) {
+
+            $http.get('/skm/adminStockSalesData/' + $scope.stockTypeValue).then(function(response) {
                 var res = response.data;
                 var data = angular.fromJson(res);
                 $scope.stockSalesStatusData = data;
             }, function(response) {});
-    
+
         }
-        
+
         $http.get('/skm/revenueForMonth/').then(function(response) {
             var data = angular.fromJson(response.data);
             for (var i = 0; i < data.length; i++) {
@@ -2229,28 +2229,28 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             });
             var localgstTotalAmount = 0;
             var localgstBalAmount = 0;
-            $http.get('/skm/sellerDetails/' + $scope.gstPurSellerName).then(function(response) {
-                var res = response.data;
-                res = angular.fromJson(res);
-                for (var i = 0, length = res.length; i < length; i++) {
-                    localgstTotalAmount = res[i].total_value;
-                    localgstBalAmount = res[i].balance_value;
-                }
-                console.log("localgstTotalAmount : " + localgstTotalAmount + " localgstBalAmount" + localgstBalAmount + " gstPurSellerName " + $scope.gstPurSellerName + "gstPurTotalValue" + $scope.gstPurTotalValue)
-                var sellarList = {
-                    sellarName: $scope.gstPurSellerName,
-                    totallValue: localgstTotalAmount + $scope.gstPurTotalValue,
-                    balanceValue: localgstBalAmount + $scope.gstPurTotalValue,
-                    latestPayment: 0,
-                    paymentMode: 'ENTRY',
-                    paymentDetails: 'ENTRY',
-                    modifiedDate: currentDate,
-                    modifiedBy: $rootScope.userObj.uid
-                }
-                $http.post('/skm/insertSellerDetails/', sellarList).then(function(response) {
-                    output = response.data;
-                }, function(response) {})
-            }, function(response) {});
+            /* $http.get('/skm/sellerDetails/' + $scope.gstPurSellerName).then(function(response) {
+                 var res = response.data;
+                 res = angular.fromJson(res);
+                 for (var i = 0, length = res.length; i < length; i++) {
+                     localgstTotalAmount = res[i].total_value;
+                     localgstBalAmount = res[i].balance_value;
+                 }
+                 console.log("localgstTotalAmount : " + localgstTotalAmount + " localgstBalAmount" + localgstBalAmount + " gstPurSellerName " + $scope.gstPurSellerName + "gstPurTotalValue" + $scope.gstPurTotalValue)
+                 var sellarList = {
+                     sellarName: $scope.gstPurSellerName,
+                     totallValue: localgstTotalAmount + $scope.gstPurTotalValue,
+                     balanceValue: localgstBalAmount + $scope.gstPurTotalValue,
+                     latestPayment: 0,
+                     paymentMode: 'ENTRY',
+                     paymentDetails: 'ENTRY',
+                     modifiedDate: currentDate,
+                     modifiedBy: $rootScope.userObj.uid
+                 }
+                 $http.post('/skm/insertSellerDetails/', sellarList).then(function(response) {
+                     output = response.data;
+                 }, function(response) {})
+             }, function(response) {});*/
 
 
         };
@@ -2294,53 +2294,53 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
         $scope.isResetGSTPur = false;
         $scope.editmaxDate = mm + '/' + dn + '/' + yyyy;
         $scope.getsellerSearch = function() {
-            $http.get('/skm/sellerData/').then(function(response) {
-                var res = response.data;
-                $scope.sellerNameArray = angular.fromJson(res);
-            }, function(response) {});
+                $http.get('/skm/sellerData/').then(function(response) {
+                    var res = response.data;
+                    $scope.sellerNameArray = angular.fromJson(res);
+                }, function(response) {});
 
-        }
-        $scope.getsellerDetails = function() {
-            $http.get('/skm/sellerDetails/' + $scope.seller).then(function(response) {
-                var res = response.data;
-                res = angular.fromJson(res);
-                for (var i = 0, length = res.length; i < length; i++) {
-                    $scope.gstTotalAmount = res[i].total_value;
-                    $scope.gstBalAmount = res[i].balance_value;
+            }
+            /*$scope.getsellerDetails = function() {
+                $http.get('/skm/sellerDetails/' + $scope.seller).then(function(response) {
+                    var res = response.data;
+                    res = angular.fromJson(res);
+                    for (var i = 0, length = res.length; i < length; i++) {
+                        $scope.gstTotalAmount = res[i].total_value;
+                        $scope.gstBalAmount = res[i].balance_value;
+                    }
+                    $scope.isValueGSTLoad = true;
+                    console.log("seller res : " + res)
+                }, function(response) {});
+            };*/
+            /*$scope.submitSellerDetails = function() {
+                if ($scope.paymentMode == 'CASH') {
+                    $scope.chequeNo = $scope.paymentMode;
                 }
-                $scope.isValueGSTLoad = true;
-                console.log("seller res : " + res)
-            }, function(response) {});
-        };
-        $scope.submitSellerDetails = function() {
-            if ($scope.paymentMode == 'CASH') {
-                $scope.chequeNo = $scope.paymentMode;
-            }
-            $scope.spinner = true;
-            var sellarList = {
-                sellarName: $scope.seller,
-                totallValue: $scope.gstTotalAmount,
-                balanceValue: $scope.gstBalAmount - $scope.gstBalAmountLatest,
-                latestPayment: $scope.gstBalAmountLatest,
-                paymentMode: $scope.paymentMode,
-                paymentDetails: $scope.chequeNo,
-                modifiedDate: Math.round(new Date($scope.editgstPurInvoiceDate).getTime() / 1000),
-                modifiedBy: $rootScope.userObj.uid
-            }
-            $http.post('/skm/insertSellerDetails/', sellarList).then(function(response) {
-                output = response.data;
-            }, function(response) {}).finally(function() {
-                // called no matter success or failure
-                $scope.gstTotalAmount = '';
-                $scope.gstBalAmount = '';
-                $scope.gstBalAmountLatest = '';
-                $scope.seller = '';
-                $scope.chequeNo = 'CASH';
-                $scope.paymentMode = 'CASH';
-                $scope.spinner = false;
-                $scope.editgstPurInvoiceDate = $scope.editgstPurCurrDate;
-            });
-        };
+                $scope.spinner = true;
+                var sellarList = {
+                    sellarName: $scope.seller,
+                    totallValue: $scope.gstTotalAmount,
+                    balanceValue: $scope.gstBalAmount - $scope.gstBalAmountLatest,
+                    latestPayment: $scope.gstBalAmountLatest,
+                    paymentMode: $scope.paymentMode,
+                    paymentDetails: $scope.chequeNo,
+                    modifiedDate: Math.round(new Date($scope.editgstPurInvoiceDate).getTime() / 1000),
+                    modifiedBy: $rootScope.userObj.uid
+                }
+                $http.post('/skm/insertSellerDetails/', sellarList).then(function(response) {
+                    output = response.data;
+                }, function(response) {}).finally(function() {
+                    // called no matter success or failure
+                    $scope.gstTotalAmount = '';
+                    $scope.gstBalAmount = '';
+                    $scope.gstBalAmountLatest = '';
+                    $scope.seller = '';
+                    $scope.chequeNo = 'CASH';
+                    $scope.paymentMode = 'CASH';
+                    $scope.spinner = false;
+                    $scope.editgstPurInvoiceDate = $scope.editgstPurCurrDate;
+                });
+            };*/
     })
     .controller('PreferenceCntlr', function($scope, $rootScope, $http, $route, $routeParams, $location, toaster) {
         $(document).ready(function() {
