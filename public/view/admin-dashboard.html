@@ -149,26 +149,38 @@
         </nav>
         <div class="content">
             <div class="container-fluid">
-                <!--<div class="row">
+                <div class="row">
                     <div class="col-lg-12 col-md-12">
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
-                                <h4 class="title">Stock Status</h4>
+                                <h4 class="title">Stock Value</h4>
                                 <p class="category">
-                                    Stock Status for {{currDateTime}}
+                                    Stock Worth for {{currDateTime}}
+                                    <div class="col-md-2">
+                                        <div class="radio">
+                                            <label style="color:white;" class="control-label"><input type="radio" ng-model="stockTypeValue" value="MOBILE" ng-change="stockDataChange();">MOBILE</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="radio">
+                                            <label style="color:white;" class="control-label"><input type="radio" ng-model="stockTypeValue" value="ACCESS" ng-change="stockDataChange();">ACCESS</label>
+                                        </div>
+                                    </div>
                                     <span style="padding-left:10%;padding-top:5%;">
-                                        <button rel="tooltip" title="Download Stock Status" class="btn btn-purple
+                                        <button rel="tooltip" title="Download Stock Value" class="btn btn-purple
                                             btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockStatusData" report-fields="{
                                             Brand: 'Brand', 
                                             Model: 'Model',
                                             Purchase: 'Purchase',
                                             MRP: 'MRP', 
-                                            Count: 'Count'
-                                            }" filename="'StockStatus'" separator=';'>
+                                            Count: 'Count',
+                                            Pworth: 'Pworth',
+                                            Sworth: 'Sworth'
+                                            }" filename="'Stock'" separator=';'>
                                             <i class="material-icons">print</i>
                                         </button>
                                     </span>
-                                    <span style="padding-left:50%;padding-top:5%;">
+                                    <span style="padding-left:40%;padding-top:5%;">
                                         <button rel="tooltip" title="Download Stock Sales Status" class="btn btn-orange
                                             btn-fab btn-fab-mini btn-round" ng-json-export-excel data="stockSalesStatusData" report-fields="{
                                             Brand: 'Brand', 
@@ -182,29 +194,35 @@
                                 </p>
                             </div>
                             <div class="card-content table-responsive" style="height:50%">
-                                <table ng-table="tableParamsstockData" class="table table-hover" show-filter="true">
+                                <table ng-table="tableParamsstockData" class="table table-hover">
                                     <tr ng-repeat="sStatus in $data">
-                                        <td title="'Brand'" filter="{ Brand: 'text'}" sortable="'Brand'">
+                                        <td title="'Brand'">
                                             {{sStatus.Brand}}
                                         </td>
-                                        <td title="'Model'" filter="{ Model: 'text'}" sortable="'Model'">
+                                        <td title="'Model'">
                                             {{sStatus.Model}}
                                         </td>
-                                        <td title="'Purchase'" filter="{ Purchase: 'number'}" sortable="'Purchase'">
+                                        <td title="'Cost'">
                                             {{sStatus.Purchase}}
                                         </td>
-                                        <td title="'MRP'" filter="{ MRP: 'number'}" sortable="'MRP'">
+                                        <td title="'Selling'">
                                             {{sStatus.MRP}}
                                         </td>
-                                        <td title="'Count'" filter="{ Count: 'number'}" sortable="'Count'">
+                                        <td title="'Count'">
                                             {{sStatus.Count}}
+                                        </td>
+                                        <td title="'Cost Price'">
+                                            {{sStatus.Pworth}}
+                                        </td>
+                                        <td title="'Sell Price'">
+                                            {{sStatus.Sworth}}
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>-->
+                </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
                         <div class="card">

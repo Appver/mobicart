@@ -551,8 +551,37 @@ app.controller('SigninPageCntlr', function($rootScope, $scope, $route, $routePar
             } else {
                 $('html').addClass('perfect-scrollbar-off');
             }
-
+            $scope.stockDataLoad();
         });
+
+        $scope.isPurBal = false;
+        $scope.stockTypeValue = 'MOBILE';
+
+        $scope.stockDataChange = function() {
+            console.log("stockDataLoad Calling")
+            $scope.stockDataLoad();
+        }
+
+        $scope.stockDataLoad = function() {
+            console.log("stockDataLoad Called")
+            $http.get('/skm/adminStockData/' + $scope.stockTypeValue).then(function(response) {
+                var res = response.data;
+                var data = angular.fromJson(res);
+                for (var i = 0; i < data.length; i++) {
+                    data[i].Pworth = data[i].Purchase * data[i].Count;
+                    data[i].Sworth = data[i].MRP * data[i].Count;
+                }
+                $scope.stockStatusData = data;
+                $scope.tableParamsstockData = new NgTableParams({ count: 5 }, { counts: [5, 10, 20, 40], dataset: data });
+            }, function(response) {});
+
+            $http.get('/skm/adminStockSalesData/' + $scope.stockTypeValue).then(function(response) {
+                var res = response.data;
+                var data = angular.fromJson(res);
+                $scope.stockSalesStatusData = data;
+            }, function(response) {});
+
+        }
 
         $scope.fisYearBillVal = function() {
             alert("You have Choosen FY : " + $scope.fisYearBill)
