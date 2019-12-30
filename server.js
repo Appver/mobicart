@@ -4,15 +4,15 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 var credentials = require('./public/cred.json');
 
-
+/*
 //Create Connection - Remote-Prod-store1
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
     user: 'sql3214500',
     password: 'Av52djpEBs',
     database: 'sql3214500'
-});
-/*
+});*/
+
 //Create Connection - Remote-Prod-store2
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
@@ -20,7 +20,7 @@ const db = mysql.createConnection({
     password: 'EcNKeAMq7F',
     database: 'sql3231751'
 });
-
+/*
 //Create Connection - Remote-Dev
 const db = mysql.createConnection({
     host: 'sql3.freesqldatabase.com',
